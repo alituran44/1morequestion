@@ -86,7 +86,7 @@ export default function StudentPortalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f17] flex text-slate-100 selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen bg-[#080c14] flex text-slate-100 selection:bg-amber-500 selection:text-slate-950">
       {/* 1. Left Sidebar */}
       <Sidebar activeRole="STUDENT" onRoleToggle={(r) => {
         if (r === "INSTRUCTOR") window.location.href = "/instructor";
@@ -103,7 +103,7 @@ export default function StudentPortalPage() {
         />
 
         {/* Assigned Homework / Tasks */}
-        <section className="p-5 rounded-3xl bg-[#111827] border border-slate-800 space-y-4 shadow-xl animate-in fade-in">
+        <section className="p-5 rounded-3xl bg-[#0f172a] border border-slate-800 space-y-4 shadow-xl animate-in fade-in">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
@@ -120,7 +120,7 @@ export default function StudentPortalPage() {
             </div>
             <Link
               href="/join"
-              className="text-xs font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 cursor-pointer"
+              className="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer"
             >
               <span>Tümünü Gör</span>
               <ArrowRight className="w-3.5 h-3.5" />

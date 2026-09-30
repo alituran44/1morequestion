@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandLogo } from "./BrandLogo";
 import { 
   Home, 
   Library, 
@@ -53,23 +54,17 @@ export function Sidebar({ activeRole, onRoleToggle }: SidebarProps) {
   const currentNavItems = activeRole === "INSTRUCTOR" ? instructorNavItems : studentNavItems;
 
   return (
-    <aside className="w-64 border-r border-slate-800 bg-[#0d131f] flex flex-col justify-between shrink-0 h-screen sticky top-0">
+    <aside className="w-64 border-r border-slate-800 bg-[#080c14] flex flex-col justify-between shrink-0 h-screen sticky top-0">
       <div>
         {/* Brand Header */}
-        <div className="p-6 border-b border-slate-800 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-white text-lg shadow-lg ${
-              activeRole === "INSTRUCTOR"
-                ? "bg-gradient-to-tr from-sky-600 to-emerald-500 shadow-sky-950"
-                : "bg-gradient-to-tr from-emerald-500 to-amber-500 shadow-emerald-950"
-            }`}>
-              1+
-            </div>
+        <div className="p-5 border-b border-slate-800/80 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 group">
+            <BrandLogo size="md" showText={false} href="" />
             <div>
-              <div className="font-extrabold text-slate-100 tracking-tight text-base leading-none">
-                1morequestion
+              <div className="font-black text-slate-100 tracking-tight text-sm leading-tight group-hover:text-amber-400 transition-colors">
+                1Q MORE QUIZ
               </div>
-              <div className="text-[11px] font-medium tracking-wide mt-1 text-emerald-400">
+              <div className="text-[10px] font-bold tracking-wide mt-0.5 text-amber-400">
                 {activeRole === "INSTRUCTOR" ? "Eğitmen & Yazar Paneli" : "Öğrenci Sınav Arenası"}
               </div>
             </div>
@@ -78,18 +73,18 @@ export function Sidebar({ activeRole, onRoleToggle }: SidebarProps) {
 
         {/* Dedicated Role Identity Box (Completely separate for Student vs Instructor) */}
         {activeRole === "STUDENT" ? (
-          <div className="p-3 mx-4 my-3 rounded-2xl bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-950 border border-emerald-500/30 shadow-lg">
+          <div className="p-3 mx-4 my-3 rounded-2xl bg-gradient-to-br from-amber-950/30 via-slate-900 to-slate-950 border border-amber-500/30 shadow-lg shadow-amber-950/20">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5 overflow-hidden">
-                <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-black text-xs shrink-0">
+                <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 font-black text-xs shrink-0">
                   <GraduationCap className="w-4 h-4" />
                 </div>
                 <div className="overflow-hidden">
                   <div className="text-xs font-black text-slate-100 truncate">
                     Deniz Yılmaz
                   </div>
-                  <div className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <div className="text-[10px] text-amber-400 font-bold flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
                     <span>Öğrenci</span>
                   </div>
                 </div>
@@ -98,17 +93,17 @@ export function Sidebar({ activeRole, onRoleToggle }: SidebarProps) {
               <Link
                 href="/"
                 title="Giriş Portalları & Çıkış"
-                className="text-[10px] text-slate-500 hover:text-slate-300 px-2 py-1 rounded-lg hover:bg-slate-800 transition-colors shrink-0"
+                className="text-[10px] text-slate-400 hover:text-amber-300 px-2 py-1 rounded-lg hover:bg-slate-800 transition-colors shrink-0"
               >
                 Çıkış
               </Link>
             </div>
           </div>
         ) : (
-          <div className="p-3 mx-4 my-3 rounded-2xl bg-gradient-to-br from-sky-950/40 via-slate-900 to-slate-950 border border-sky-500/30 shadow-lg">
+          <div className="p-3 mx-4 my-3 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-amber-500/20 shadow-lg">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5 overflow-hidden">
-                <div className="w-8 h-8 rounded-xl bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-sky-400 font-black text-xs shrink-0">
+                <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-black text-xs shrink-0">
                   <Users className="w-4 h-4" />
                 </div>
                 <div className="overflow-hidden">
@@ -159,41 +154,39 @@ export function Sidebar({ activeRole, onRoleToggle }: SidebarProps) {
                 href={item.href}
                 className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   isActive
-                    ? activeRole === "STUDENT"
-                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold"
-                      : "bg-sky-500/10 text-sky-400 border border-sky-500/30 font-semibold"
+                    ? "bg-amber-500/10 text-amber-300 border border-amber-500/30 font-semibold shadow-sm shadow-amber-500/10"
                     : item.highlight
-                    ? "text-emerald-400 hover:bg-emerald-950/30 hover:text-emerald-300"
+                    ? "text-amber-400 hover:bg-amber-950/20 hover:text-amber-300"
                     : "text-slate-300 hover:bg-slate-800/60 hover:text-slate-100"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <Icon className={`w-4 h-4 ${
                     isActive 
-                      ? activeRole === "STUDENT" ? "text-emerald-400" : "text-sky-400" 
+                      ? "text-amber-400" 
                       : item.highlight 
-                      ? "text-emerald-400" 
+                      ? "text-amber-400" 
                       : "text-slate-400"
                   }`} />
                   <span>{item.label}</span>
                 </div>
                 {item.highlight && (
-                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
                     AI
                   </span>
                 )}
                 {item.pinBadge && (
-                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-fuchsia-500/20 text-fuchsia-300 font-bold border border-fuchsia-500/30">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
                     PIN
                   </span>
                 )}
                 {item.liveBadge && (
-                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30 animate-pulse">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 animate-pulse">
                     Canlı
                   </span>
                 )}
                 {item.adminBadge && (
-                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
                     Master
                   </span>
                 )}
@@ -206,11 +199,11 @@ export function Sidebar({ activeRole, onRoleToggle }: SidebarProps) {
       {/* Footer Info */}
       <div className="p-4 border-t border-slate-800/80 bg-slate-950/60">
         <div className="flex items-center gap-2 text-xs text-slate-400">
-          <ShieldCheck className="w-4 h-4 text-emerald-500" />
+          <ShieldCheck className="w-4 h-4 text-amber-400" />
           <span>{activeRole === "INSTRUCTOR" ? "Paynkolay 3D Korumalı" : "Kişiselleştirilmiş Öğrenme"}</span>
         </div>
         <div className="text-[11px] text-slate-500 mt-1">
-          {activeRole === "INSTRUCTOR" ? "v1.0 • Eğitmen Modu" : "v1.0 • Öğrenci Arenası"}
+          {activeRole === "INSTRUCTOR" ? "1Q MORE QUIZ • Eğitmen Modu" : "1Q MORE QUIZ • Öğrenci Arenası"}
         </div>
       </div>
     </aside>
