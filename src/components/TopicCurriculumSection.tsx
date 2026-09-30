@@ -34,24 +34,25 @@ export function TopicCurriculumSection({ initialExamCode = "IELTS" }: TopicCurri
 
   return (
     <section className="space-y-5 pt-6 border-t border-slate-200">
-      {/* Top Header & Exam Filter Switcher */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h2 className="text-lg font-black tracking-tight text-slate-900">
-              Soru Havuzu & Kazanım Müfredatı
-            </h2>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-bold">
-              {currentExam.shortTitle} Formatı
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Okuma, Yazma, Konuşma (Ses Kayıtlı), Dinleme ve Gramer beceri dağılımları
-          </p>
+      {/* Top Header */}
+      <div className="space-y-1">
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg font-black tracking-tight text-slate-900">
+            Soru Havuzu & Kazanım Müfredatı
+          </h2>
+          <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-bold">
+            {currentExam.shortTitle} Formatı
+          </span>
         </div>
+        <p className="text-xs text-slate-500">
+          Okuma, Yazma, Konuşma (Ses Kayıtlı), Dinleme ve Gramer beceri dağılımları
+        </p>
+      </div>
 
-        {/* Exam Switcher Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+      {/* Exam Switcher Pills - Aligned to Left, Horizontally Scrollable Bar */}
+      <div className="w-full overflow-x-auto pb-1.5 -mx-1 px-1 scrollbar-thin">
+        <div className="inline-flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+          <span className="text-xs font-bold text-slate-500 px-2 shrink-0">Sınav:</span>
           {Object.values(EXAM_SYSTEMS).map((exam) => {
             const isSelected = selectedExamCode === exam.code;
             return (
@@ -61,15 +62,15 @@ export function TopicCurriculumSection({ initialExamCode = "IELTS" }: TopicCurri
                   setSelectedExamCode(exam.code);
                   setSelectedSkillFilter("ALL");
                 }}
-                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                className={`text-xs px-3.5 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap ${
                   isSelected
-                    ? "bg-white text-slate-900 shadow-xs border border-slate-200/80"
-                    : "text-slate-600 hover:text-slate-900"
+                    ? "bg-white text-slate-900 shadow-xs border border-slate-200/80 font-extrabold"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
                 }`}
               >
                 <span>{exam.shortTitle}</span>
                 {exam.category === "UNIVERSITY" && (
-                  <span className={`text-[9px] px-1.5 py-0.2 rounded font-extrabold ${
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded font-extrabold ${
                     isSelected ? "bg-teal-100 text-teal-800" : "bg-slate-200/80 text-teal-700"
                   }`}>
                     Hazırlık
