@@ -24,7 +24,8 @@ import {
   Target,
   Mic,
   PenTool,
-  Settings2
+  Settings2,
+  ChevronRight
 } from "lucide-react";
 import Link from "next/link";
 
@@ -279,89 +280,141 @@ export default function StudentPortalPage() {
 
         {/* Section 2: Online Mock Exams Marketplace */}
         <section className="space-y-6 pt-4 border-t border-slate-200">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-black tracking-tight text-slate-900">
-                  Sınav Denemeleri & Deneme Paketleri
-                </h2>
-                <span className="text-xs px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-bold">
-                  {filteredExams.length} Deneme
-                </span>
-              </div>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Ulusal ve uluslararası sınav standartlarında süre sayaçlı ve optik formlu online denemeler
-              </p>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-black tracking-tight text-slate-900">
+                Sınav Denemeleri & Deneme Paketleri
+              </h2>
+              <span className="text-xs px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-bold">
+                {filteredExams.length} Deneme
+              </span>
             </div>
-
-            {/* Filter Pills */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs text-slate-500 font-medium mr-1">Filtre:</span>
-              <button
-                onClick={() => setSelectedCategory("ALL")}
-                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
-                  selectedCategory === "ALL"
-                    ? "bg-amber-500 text-slate-950 shadow-xs"
-                    : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
-                }`}
-              >
-                Tümü
-              </button>
-              <button
-                onClick={() => setSelectedCategory("NATIONAL")}
-                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
-                  selectedCategory === "NATIONAL"
-                    ? "bg-amber-500 text-slate-950 shadow-xs"
-                    : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
-                }`}
-              >
-                Ulusal (YDT / YDS / YÖKDİL)
-              </button>
-              <button
-                onClick={() => setSelectedCategory("UNIVERSITY")}
-                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
-                  selectedCategory === "UNIVERSITY"
-                    ? "bg-amber-500 text-slate-950 shadow-xs"
-                    : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
-                }`}
-              >
-                🎓 Üniversite Hazırlık (İYS / BUEPT)
-              </button>
-              <button
-                onClick={() => setSelectedCategory("INTERNATIONAL")}
-                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
-                  selectedCategory === "INTERNATIONAL"
-                    ? "bg-amber-500 text-slate-950 shadow-xs"
-                    : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
-                }`}
-              >
-                Uluslararası (IELTS / TOEFL / DET)
-              </button>
-            </div>
+            <p className="text-xs text-slate-500">
+              Ulusal, üniversite hazırlık ve uluslararası sınav standartlarında süre sayaçlı ve optik formlu online denemeler
+            </p>
           </div>
 
-          {/* Grid of Mock Exam Cards */}
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((n) => (
-                <div key={n} className="h-64 rounded-2xl bg-white border border-slate-200 animate-pulse" />
-              ))}
+          {/* 2-Column Layout: Left Vertical Categories (Yukarıdan Aşağıya) + Right Mock Cards */}
+          <div className="flex flex-col lg:flex-row items-start gap-6">
+            {/* Left Column: Vertical Category Filters */}
+            <aside className="w-full lg:w-72 xl:w-80 shrink-0 bg-white border border-slate-200 rounded-3xl p-3.5 shadow-xs space-y-3 lg:sticky lg:top-6">
+              <div className="flex items-center justify-between px-2 pt-1 pb-2 border-b border-slate-100">
+                <span className="text-xs font-black uppercase tracking-wider text-slate-500">
+                  Kategori Filtresi
+                </span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                  {filteredExams.length} Sonuç
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                {/* 1. All */}
+                <button
+                  onClick={() => setSelectedCategory("ALL")}
+                  className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
+                    selectedCategory === "ALL"
+                      ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
+                      : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
+                  }`}
+                >
+                  <div className="space-y-0.5">
+                    <div className="text-xs font-extrabold">Tüm Denemeler</div>
+                    <div className={`text-[10px] ${selectedCategory === "ALL" ? "text-slate-900 font-medium" : "text-slate-500"}`}>
+                      Tüm kategorilerdeki denemeler
+                    </div>
+                  </div>
+                  <ChevronRight className={`w-4 h-4 shrink-0 transition-transform ${
+                    selectedCategory === "ALL" ? "text-slate-950 translate-x-0.5" : "text-slate-400"
+                  }`} />
+                </button>
+
+                {/* 2. National */}
+                <button
+                  onClick={() => setSelectedCategory("NATIONAL")}
+                  className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
+                    selectedCategory === "NATIONAL"
+                      ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
+                      : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
+                  }`}
+                >
+                  <div className="space-y-0.5">
+                    <div className="text-xs font-extrabold">🏛️ ÖSYM / Ulusal Sınavlar</div>
+                    <div className={`text-[10px] ${selectedCategory === "NATIONAL" ? "text-slate-900 font-medium" : "text-slate-500"}`}>
+                      YDT, YDS ve YÖKDİL denemeleri
+                    </div>
+                  </div>
+                  <ChevronRight className={`w-4 h-4 shrink-0 transition-transform ${
+                    selectedCategory === "NATIONAL" ? "text-slate-950 translate-x-0.5" : "text-slate-400"
+                  }`} />
+                </button>
+
+                {/* 3. University */}
+                <button
+                  onClick={() => setSelectedCategory("UNIVERSITY")}
+                  className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
+                    selectedCategory === "UNIVERSITY"
+                      ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
+                      : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
+                  }`}
+                >
+                  <div className="space-y-0.5">
+                    <div className="text-xs font-extrabold">🎓 Üniversite Hazırlık Atlama</div>
+                    <div className={`text-[10px] ${selectedCategory === "UNIVERSITY" ? "text-slate-900 font-medium" : "text-slate-500"}`}>
+                      Boğaziçi BUEPT, ODTÜ İYS, Bilkent PAE
+                    </div>
+                  </div>
+                  <ChevronRight className={`w-4 h-4 shrink-0 transition-transform ${
+                    selectedCategory === "UNIVERSITY" ? "text-slate-950 translate-x-0.5" : "text-slate-400"
+                  }`} />
+                </button>
+
+                {/* 4. International */}
+                <button
+                  onClick={() => setSelectedCategory("INTERNATIONAL")}
+                  className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
+                    selectedCategory === "INTERNATIONAL"
+                      ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
+                      : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
+                  }`}
+                >
+                  <div className="space-y-0.5">
+                    <div className="text-xs font-extrabold">🌐 Uluslararası Sınavlar</div>
+                    <div className={`text-[10px] ${selectedCategory === "INTERNATIONAL" ? "text-slate-900 font-medium" : "text-slate-500"}`}>
+                      IELTS, TOEFL ve PTE / DET
+                    </div>
+                  </div>
+                  <ChevronRight className={`w-4 h-4 shrink-0 transition-transform ${
+                    selectedCategory === "INTERNATIONAL" ? "text-slate-950 translate-x-0.5" : "text-slate-400"
+                  }`} />
+                </button>
+              </div>
+            </aside>
+
+            {/* Right Column: Grid of Mock Exam Cards */}
+            <div className="flex-1 min-w-0 w-full">
+              {isLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {[1, 2, 3].map((n) => (
+                    <div key={n} className="h-64 rounded-2xl bg-white border border-slate-200 animate-pulse" />
+                  ))}
+                </div>
+              ) : filteredExams.length === 0 ? (
+                <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-sm shadow-xs">
+                  Arama kriterlerine uygun sınav denemesi bulunamadı.
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {filteredExams.map((mock) => (
+                    <MockExamCard
+                      key={mock.id}
+                      exam={mock}
+                      onBuyClick={handleBuyClick}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-          ) : filteredExams.length === 0 ? (
-            <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-sm shadow-xs">
-              Arama kriterlerine uygun sınav denemesi bulunamadı.
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredExams.map((mock) => (
-                <MockExamCard
-                  key={mock.id}
-                  exam={mock}
-                  onBuyClick={handleBuyClick}
-                />
-              ))}
-            </div>
-          )}
+          </div>
         </section>
 
         {/* Section 3: Topic Curriculum Tree */}
