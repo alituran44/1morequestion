@@ -1,0 +1,169 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id              String            @id @default(cuid())
+  email           String            @unique
+  name            String
+  role            String            @default("STUDENT") // STUDENT, INSTRUCTOR, ADMIN
+  createdAt       DateTime          @default(now())
+
+  orders          Order[]
+  purchasedMocks  UserMockAccess[]
+  attempts        MockAttempt[]
+  masteryMetrics  UserMasteryMetric[]
+  questionLogs    UserQuestionLog[]
+}
+
+model Exam {
+  id           String        @id @default(cuid())
+  code         String        @unique // "YDT", "YDS", "YOKDIL", "IELTS_ACAD", "TOEFL_IBT", "DET"
+  name         String        // "YDT (YKS-Dil)", "YDS (Yabancı Dil Sınavı)", "IELTS Academic"
+  category     String        // "NATIONAL", "INTERNATIONAL"
+  scoringType  String        // "RAW_NET", "PERCENTAGE", "BAND_9", "TOEFL_120", "DET_160"
+  description  String?
+  badgeColor   String?       @default("#3b82f6")
+
+  mockExams    MockExam[]
+  questions    Question[]
+}
+
+model MockExam {
+  id             String           @id @default(cuid())
+  examId         String
+  exam           Exam             @relation(fields: [examId], references: [id], onDelete: Cascade)
+  title          String           // "2026 YDT Tam Kapsamlı Özgün Deneme #1"
+  description    String?
+  price          Float            @default(0.0) // 0 ise ücretsiz
+  durationMins   Int              @default(120) // Örn: 120 dk
+  totalQuestions Int              @default(80)
+  isPublished    Boolean          @default(false)
+  pdfSourceUrl   String?          // Yüklenen orijinal PDF yolu
+
+  sections       MockSection[]
+  orders         Order[]
+  accessList     UserMockAccess[]
+  attempts       MockAttempt[]
+  createdAt      DateTime         @default(now())
+}
+
+model MockSection {
+  id          String      @id @default(cuid())
+  mockExamId  String
+  mockExam    MockExam    @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
+  title       String      // "Section 1: Grammar & Vocabulary" veya "Reading Passage 1"
+  orderIndex  Int         @default(1)
+  questions   Question[]
+}
+
+model Question {
+  id           String           @id @default(cuid())
+  examId       String?
+  exam         Exam?            @relation(fields: [examId], references: [id], onDelete: SetNull)
+  sectionId    String?
+  section      MockSection?     @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+
+  cefrLevel    String           @default("B2") // A1, A2, B1, B2, C1, C2
+  skillDomain  String           // "Grammar", "Reading", "Vocabulary", "Translation"
+  subTopic     String           // "Conditionals", "Prepositions", "True_False_NG"
+  difficulty   Float            @default(0.0) // IRT zorluk katsayısı (-3.0 to +3.0)
+
+  content      String           // Soru metni
+  passage      String?          // Varsa uzun okuma parçası veya paragraf
+  optionsJson  String           // JSON dizi: [{"key":"A","text":"..."},{"key":"B","text":"..."}]
+  correctKey   String           // "A", "B", "C", "D", "E"
+  explanation  String?          // Detaylı çözüm açıklaması
+
+  isInPool     Boolean          @default(true) // '1 Soru Daha' adaptif havuzunda mı?
+  logs         UserQuestionLog[]
+  createdAt    DateTime         @default(now())
+}
+
+model Order {
+  id              String          @id @default(cuid())
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mockExamId      String
+  mockExam        MockExam        @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
+
+  amount          Float
+  status          String          @default("PENDING") // PENDING, SUCCESS, FAILED
+  paymentProvider String          @default("PAYNKOLAY")
+  orderNumber     String          @unique // ORD-20260929-XXXX
+
+  paynkolayTx     PaynkolayTransaction?
+  createdAt       DateTime        @default(now())
+}
+
+model PaynkolayTransaction {
+  id             String         @id @default(cuid())
+  orderId        String         @unique
+  order          Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  merchantOid    String         // Paynkolay sipariş no
+  transId        String?        // Banka işlem referansı
+  amount         Float
+  hash           String?        // Güvenlik doğrulama hash'i
+  status         String         @default("PENDING") // PENDING, SUCCESS, FAILED
+  rawResponse    String?        // JSON formatında ham callback payload'ı
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model UserMockAccess {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mockExamId  String
+  mockExam    MockExam  @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
+  purchasedAt DateTime  @default(now())
+
+  @@unique([userId, mockExamId])
+}
+
+model MockAttempt {
+  id           String       @id @default(cuid())
+  userId       String
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mockExamId   String
+  mockExam     MockExam     @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
+
+  startedAt    DateTime     @default(now())
+  completedAt  DateTime?
+  timeSpentSec Int          @default(0)
+  answersJson  String       @default("{}") // {"q_id": "A"}
+  scoreRaw     Float?       // Net veya ham puan
+  scoreScaled  String?      // "76.25 Net" veya "Band 7.0"
+  analysisJson String?      // Zayıf konu dökümleri
+}
+
+model UserMasteryMetric {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subTopic     String    // "Grammar::Conditionals"
+  thetaScore   Float     @default(0.0) // Yetenek katsayısı
+  totalSolved  Int       @default(0)
+  totalCorrect Int       @default(0)
+  lastUpdated  DateTime  @updatedAt
+
+  @@unique([userId, subTopic])
+}
+
+model UserQuestionLog {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionId   String
+  question     Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedKey  String
+  isCorrect    Boolean
+  timeSpentSec Int
+  source       String    @default("ADAPTIVE_POOL") // "MOCK_EXAM" veya "ADAPTIVE_POOL"
+  createdAt    DateTime  @default(now())
+}
