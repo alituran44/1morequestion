@@ -122,6 +122,17 @@ export default function AdminPage() {
       submittedDate: "30 Eylül 2026",
       salesCount: 0,
     },
+    {
+      id: "ex-5",
+      title: "2026 Boğaziçi Üniversitesi BUEPT Hazırlık Atlama Denemesi #1",
+      examCode: "BUEPT",
+      author: "Boğaziçi Dil Komisyonu",
+      price: 79.0,
+      questionCount: 40,
+      status: "APPROVED",
+      submittedDate: "1 Ekim 2026",
+      salesCount: 64,
+    },
   ]);
 
   const [users, setUsers] = useState<AdminUserItem[]>([
@@ -145,6 +156,15 @@ export default function AdminPage() {
     },
     {
       id: "usr-3",
+      name: "Ece Tunç",
+      email: "ece.tunc@boun.edu.tr",
+      role: "STUDENT",
+      status: "ACTIVE",
+      createdAt: "24 Eylül 2026",
+      solvedMocks: 9,
+    },
+    {
+      id: "usr-4",
       name: "Selin Demir",
       email: "selin.demir@ogrenci.com",
       role: "STUDENT",
@@ -153,7 +173,7 @@ export default function AdminPage() {
       solvedMocks: 22,
     },
     {
-      id: "usr-4",
+      id: "usr-5",
       name: "Sistem Yöneticisi",
       email: "admin@1morequiz.com",
       role: "ADMIN",

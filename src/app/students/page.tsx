@@ -166,6 +166,39 @@ export default function StudentsPage() {
           masteryRate: "%89"
         }
       ]
+    },
+    {
+      id: "cls-4",
+      code: "BUE-7701",
+      name: "Boğaziçi & ODTÜ Hazırlık Atlama (Proficiency) Grubu",
+      gradeLevel: "Üniversite Hazırlık / Muafiyet",
+      studentCount: 3,
+      color: "#0d9488",
+      requireParentEmail: false,
+      activeAssignment: {
+        title: "2026 Boğaziçi Üniversitesi BUEPT Hazırlık Atlama Denemesi #1",
+        code: "770192",
+        dueDate: "10 Ekim 2026",
+        completionRate: "%85 (17/20 Tamamlandı)"
+      },
+      students: [
+        {
+          id: "st-7",
+          name: "Ece Tunç",
+          email: "ece.tunc@boun.edu.tr",
+          solvedMocksCount: 9,
+          averageScore: "79.50 Puan",
+          masteryRate: "%91"
+        },
+        {
+          id: "st-8",
+          name: "Kaan Yurt",
+          email: "kaan.yurt@metu.edu.tr",
+          solvedMocksCount: 7,
+          averageScore: "74.00 Puan",
+          masteryRate: "%84"
+        }
+      ]
     }
   ]);
 

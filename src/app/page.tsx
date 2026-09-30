@@ -145,7 +145,7 @@ export default function LandingPage() {
           </h1>
 
           <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            YDT, YDS, YÖKDİL, IELTS ve TOEFL sınavlarında; öğretmenler için yapay zeka ile saniyeler içinde deneme üretimi, öğrenciler için 1v1 canlı düellolar ve adaptif "1 Soru Daha" telafi algoritması.
+            YDT, YDS, YÖKDİL, Üniversite Hazırlık Atlama (Proficiency / BUEPT / İYS) ve IELTS/TOEFL sınavlarında; ses kayıtlı Speaking simülatörü, yapay zeka ile deneme üretimi ve adaptif "1 Soru Daha" telafi motoru.
           </p>
         </div>
 
@@ -377,19 +377,21 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3.5">
           {[
-            { code: "YDT", name: "YKS-Dil Hazırlık", tag: "Ulusal", color: "border-amber-200 text-amber-700 bg-amber-50/50" },
-            { code: "YDS", name: "Yabancı Dil Sınavı", tag: "Akademik", color: "border-amber-200 text-amber-700 bg-amber-50/50" },
-            { code: "YÖKDİL", name: "Sağlık / Fen / Sosyal", tag: "Akademik", color: "border-amber-200 text-amber-700 bg-amber-50/50" },
-            { code: "IELTS", name: "Academic Band 7.5+", tag: "Uluslararası", color: "border-slate-200 text-slate-800 bg-white" },
-            { code: "TOEFL", name: "iBT Academic 120", tag: "Uluslararası", color: "border-slate-200 text-slate-800 bg-white" },
-            { code: "DET", name: "Duolingo English Test", tag: "Adaptive", color: "border-amber-200 text-amber-700 bg-amber-50/50" },
+            { code: "YDT", name: "YKS-Dil Hazırlık", tag: "ÖSYM / Ulusal", color: "border-amber-200 text-amber-700 bg-amber-50/50" },
+            { code: "YDS & YÖKDİL", name: "Akademik Dil Sınavları", tag: "ÖSYM / Ulusal", color: "border-amber-200 text-amber-700 bg-amber-50/50" },
+            { code: "BUEPT", name: "Boğaziçi BÜYES Yeterlik", tag: "Hazırlık Atlama", color: "border-teal-200 text-teal-800 bg-teal-50/60" },
+            { code: "ODTÜ / İTÜ İYS", name: "İngilizce Yeterlik (EPE/İYS)", tag: "Hazırlık Atlama", color: "border-teal-200 text-teal-800 bg-teal-50/60" },
+            { code: "PROFICIENCY", name: "Genel Üniversite Muafiyet", tag: "Hazırlık Atlama", color: "border-teal-200 text-teal-800 bg-teal-50/60" },
+            { code: "BİLKENT & KOÇ", name: "PAE / KUEPE Muafiyet", tag: "Hazırlık Atlama", color: "border-teal-200 text-teal-800 bg-teal-50/60" },
+            { code: "IELTS Academic", name: "Band 7.5+ 4 Beceri", tag: "Uluslararası", color: "border-purple-200 text-purple-800 bg-purple-50/50" },
+            { code: "TOEFL iBT & PTE", name: "Yeni Nesil Entegre Sınav", tag: "Uluslararası", color: "border-purple-200 text-purple-800 bg-purple-50/50" },
           ].map((item, idx) => (
-            <div key={idx} className={`p-4 rounded-2xl border ${item.color} text-center space-y-1 shadow-xs`}>
-              <div className="text-[10px] font-bold text-slate-400 uppercase">{item.tag}</div>
-              <div className="text-lg font-black text-slate-900">{item.code}</div>
-              <div className="text-[11px] text-slate-500">{item.name}</div>
+            <div key={idx} className={`p-4 rounded-2xl border ${item.color} text-center space-y-1 shadow-xs hover:shadow-md transition-shadow`}>
+              <div className="text-[10px] font-bold text-slate-500 uppercase">{item.tag}</div>
+              <div className="text-base sm:text-lg font-black text-slate-900">{item.code}</div>
+              <div className="text-[11px] text-slate-600 font-medium">{item.name}</div>
             </div>
           ))}
         </div>

@@ -35,13 +35,15 @@ export default function ExamLobbyPage() {
     title: code === "812044" 
       ? "2026 YDS Master Akademik Paragraf & Çeviri" 
       : code === "770192" 
-      ? "IELTS Academic Reading Band 7+ Mock" 
+      ? "2026 Boğaziçi Üniversitesi BUEPT Hazırlık Atlama Denemesi #1"
+      : code === "552011"
+      ? "2026 ODTÜ & İTÜ Seviye İYS Hazırlık Muafiyet Tam Deneme #1"
       : "2026 YDT Şampiyonlar Özgün Deneme #1",
-    questionsCount: 80,
-    durationMins: 120,
-    instructor: "Ahmet Hoca (ELT Master)",
-    examCategory: "YDT (YKS-Dil)",
-    bestScore: "68.75 Net",
+    questionsCount: code === "770192" ? 40 : code === "552011" ? 60 : 80,
+    durationMins: code === "770192" ? 210 : code === "552011" ? 165 : 120,
+    instructor: code === "770192" ? "Boğaziçi Yeterlik Komisyonu" : "Ahmet Hoca (ELT Master)",
+    examCategory: code === "770192" ? "Boğaziçi BUEPT (Hazırlık Atlama)" : code === "552011" ? "ODTÜ / İTÜ İYS (Hazırlık)" : "YDT (YKS-Dil)",
+    bestScore: code === "770192" ? "74.00 Puan" : "68.75 Net",
   };
 
   const handleShare = () => {
