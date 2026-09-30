@@ -21,7 +21,7 @@ export interface ExamSystemConfig {
   code: string;
   name: string;
   shortTitle: string;
-  category: "NATIONAL" | "INTERNATIONAL";
+  category: "NATIONAL" | "INTERNATIONAL" | "UNIVERSITY";
   scoringType: "RAW_NET" | "SCORE_100" | "BAND_9" | "SCORE_120" | "PTE_90" | "DET_160";
   scoringLabel: string;
   description: string;
@@ -198,6 +198,115 @@ export const EXAM_SYSTEMS: Record<string, ExamSystemConfig> = {
       { id: "pte-repeat-sentence", name: "PTE Repeat Sentence: Dinle ve Tekrar Et", domain: "SPEAKING", questionCount: 300, difficulty: "B2", description: "3 saniye dinle, duyduğun cümleyi aynen mikrofona söyle", isAudioRequired: true },
       { id: "pte-describe-image", name: "PTE Describe Image: Grafiği Sesli Anlat", domain: "SPEAKING", questionCount: 120, difficulty: "C1", description: "25 sn incele, 40 sn ses kaydıyla grafiğin trendlerini özetle", isAudioRequired: true },
       { id: "det-c-test", name: "DET C-Test: Harf Tamamlama Boşlukları", domain: "READING", questionCount: 400, difficulty: "B1 - C1", description: "Kelimelerin eksik harflerini hızlıca tamamlama" },
+    ],
+  },
+
+  PROFICIENCY: {
+    code: "PROFICIENCY",
+    name: "Üniversite Hazırlık Atlama (Genel Proficiency / İYS)",
+    shortTitle: "Hazırlık Atlama (İYS)",
+    category: "UNIVERSITY",
+    scoringType: "SCORE_100",
+    scoringLabel: "100 Puan Üzerinden (Geçme: 60-70)",
+    description: "Devlet ve vakıf üniversitelerinin İngilizce hazırlık muafiyet ve yeterlik sınavı formatı.",
+    badgeColor: "#0d9488",
+    durationMins: 150,
+    totalQuestions: 65,
+    supportedSkills: ["READING", "LISTENING", "WRITING", "SPEAKING", "GRAMMAR_VOCAB"],
+    skillDistribution: [
+      { domain: "READING", label: "Careful Reading & Pasaj Analizi", icon: "📖", percentage: 30 },
+      { domain: "WRITING", label: "Academic Essay (Opinion & Cause-Effect)", icon: "✍️", percentage: 25 },
+      { domain: "LISTENING", label: "Note-Taking & While-Listening", icon: "🎧", percentage: 20 },
+      { domain: "SPEAKING", label: "Mülakat & Ses Kayıtlı Sunum", icon: "🎙️", percentage: 15 },
+      { domain: "GRAMMAR_VOCAB", label: "Use of English & Restatement", icon: "🔤", percentage: 10 },
+    ],
+    categories: [
+      { id: "prof-restatement", name: "Use of English: Restatement (Eş Anlamlı Cümle)", domain: "GRAMMAR_VOCAB", questionCount: 280, difficulty: "B2 - C1", description: "Gramatikal yapıları koruyarak anlamca en yakın cümleyi seçme" },
+      { id: "prof-note-taking", name: "Listening: Note-Taking (Dinlerken Not Alma & Boşluk Doldurma)", domain: "LISTENING", questionCount: 160, difficulty: "B2 - C1", description: "Akademik konferansı dinleyip not alarak soruları yanıtlama" },
+      { id: "prof-while-listening", name: "Listening: While-Listening (Anlık Çoktan Seçmeli Dinleme)", domain: "LISTENING", questionCount: 190, difficulty: "B2", description: "Konuşma akarken doğrudan soruları eş zamanlı çözme" },
+      { id: "prof-careful-reading", name: "Reading: Careful Reading & Contextual Reference", domain: "READING", questionCount: 240, difficulty: "B2 - C1", description: "Detaylı metin inceleme, ana düşünce ve paragraf tamamlama" },
+      { id: "prof-academic-essay", name: "Writing: Academic Essay (Opinion / Problem-Solution)", domain: "WRITING", questionCount: 110, difficulty: "B2 - C1", description: "Min. 250 kelimelik argümantatif veya sebep-sonuç akademik deneme", isWritingRequired: true },
+      { id: "prof-speaking-response", name: "Speaking: Academic Oral Interview (Ses Kayıtlı)", domain: "SPEAKING", questionCount: 95, difficulty: "B2", description: "Hazırlık süresi sonrasında mikrofonla akıcı fikir savunma kaydı", isAudioRequired: true },
+    ],
+  },
+
+  BUEPT: {
+    code: "BUEPT",
+    name: "Boğaziçi Üniversitesi BÜYES / BUEPT Yeterlik Sınavı",
+    shortTitle: "Boğaziçi BUEPT",
+    category: "UNIVERSITY",
+    scoringType: "SCORE_100",
+    scoringLabel: "Harf Notu (A-B-C / Geçme: 60)",
+    description: "Boğaziçi Üniversitesi Hazırlık Atlama (BÜYES / BUEPT) Search Reading, Note-Taking ve 2 Essay formatı.",
+    badgeColor: "#0284c7",
+    durationMins: 210,
+    totalQuestions: 40,
+    supportedSkills: ["READING", "LISTENING", "WRITING"],
+    skillDistribution: [
+      { domain: "READING", label: "Search Reading & Reading Comprehension", icon: "📖", percentage: 35 },
+      { domain: "WRITING", label: "2 Ayrı Akademik Essay (Task 1 & 2)", icon: "✍️", percentage: 35 },
+      { domain: "LISTENING", label: "Note-Taking & While-Listening", icon: "🎧", percentage: 30 },
+    ],
+    categories: [
+      { id: "buept-search-reading", name: "Search Reading: Hızlı Tarama & Hedef Paragraf Eşleştirme", domain: "READING", questionCount: 150, difficulty: "C1", description: "Süre baskısı altında soruya yönelik spesifik paragrafı bulma" },
+      { id: "buept-careful-reading", name: "Reading Comprehension: İleri Düzey Akademik Metinler", domain: "READING", questionCount: 180, difficulty: "C1", description: "Boğaziçi formatında derin çıkarım, referans ve ana fikir soruları" },
+      { id: "buept-note-taking", name: "Listening: Note-Taking (15 Dk Akademik Ders Dinleme)", domain: "LISTENING", questionCount: 130, difficulty: "C1", description: "Ders kaydını dinlerken boş kağıda not alıp ardından soruları çözme" },
+      { id: "buept-while-listening", name: "Listening: While-Listening (Akademik Röportaj & Diyalog)", domain: "LISTENING", questionCount: 140, difficulty: "B2 - C1", description: "Dinleme anında soruları eş zamanlı işaretleme" },
+      { id: "buept-essay-1", name: "Writing: Argumentative Essay (Min 300 Kelime)", domain: "WRITING", questionCount: 85, difficulty: "C1", description: "Karşıt görüşleri çürüten yapılandırılmış akademik makale", isWritingRequired: true },
+      { id: "buept-essay-2", name: "Writing: Cause-Effect & Problem-Solution Essay", domain: "WRITING", questionCount: 75, difficulty: "C1", description: "Akademik problem analizi ve çözüm önerisi sunumu", isWritingRequired: true },
+    ],
+  },
+
+  ODTU_IYS: {
+    code: "ODTU_IYS",
+    name: "ODTÜ & İTÜ İngilizce Yeterlik Sınavı (İYS / EPE)",
+    shortTitle: "ODTÜ / İTÜ İYS",
+    category: "UNIVERSITY",
+    scoringType: "SCORE_100",
+    scoringLabel: "100 Puan Üzerinden (Geçme: 60)",
+    description: "ODTÜ EPE ve İTÜ İYS standartlarında Language Use, Note-Taking, Reading ve Expository Essay.",
+    badgeColor: "#b91c1c",
+    durationMins: 165,
+    totalQuestions: 60,
+    supportedSkills: ["READING", "LISTENING", "WRITING", "GRAMMAR_VOCAB"],
+    skillDistribution: [
+      { domain: "READING", label: "Academic Reading Comprehension", icon: "📖", percentage: 30 },
+      { domain: "LISTENING", label: "Note-Taking Lecture & Dialogues", icon: "🎧", percentage: 25 },
+      { domain: "WRITING", label: "Academic Expository / Opinion Essay", icon: "✍️", percentage: 25 },
+      { domain: "GRAMMAR_VOCAB", label: "Language Use, Cloze & Restatement", icon: "🔤", percentage: 20 },
+    ],
+    categories: [
+      { id: "odtu-restatement", name: "Language Use: Restatement (Anlamca En Yakın Cümle)", domain: "GRAMMAR_VOCAB", questionCount: 220, difficulty: "B2 - C1", description: "ODTÜ/İTÜ sınavlarının ayırt edici karmaşık restatement soruları" },
+      { id: "odtu-note-taking", name: "Listening: Note-Taking (Dinlerken Not Alma & Soru Yanıtlama)", domain: "LISTENING", questionCount: 140, difficulty: "B2 - C1", description: "Uzun akademik ders kaydını dinlerken not alıp cevaplama" },
+      { id: "odtu-reading", name: "Reading: Makale Okuma & Yazar Amacı Analizi", domain: "READING", questionCount: 210, difficulty: "B2 - C1", description: "Bilimsel ve felsefi metinlerde ana fikir, detay ve çıkarım" },
+      { id: "odtu-essay", name: "Writing: Academic Essay (Min 250 Kelime)", domain: "WRITING", questionCount: 90, difficulty: "B2 - C1", description: "Giriş-gelişme-sonuç formatında tutarlı akademik düşünce yazısı", isWritingRequired: true },
+    ],
+  },
+
+  BILKENT_PAE: {
+    code: "BILKENT_PAE",
+    name: "Bilkent PAE / Koç KUEPE / Sabancı ELAE Muafiyet",
+    shortTitle: "Bilkent / Koç PAE",
+    category: "UNIVERSITY",
+    scoringType: "SCORE_100",
+    scoringLabel: "100 Puan Skalası (Geçme: 60-65)",
+    description: "Vakıf üniversiteleri 2 aşamalı hazırlık atlama: Dilbilgisi, Dinleme, Essay ve Ses Kayıtlı Speaking mülakatı.",
+    badgeColor: "#4f46e5",
+    durationMins: 180,
+    totalQuestions: 55,
+    supportedSkills: ["READING", "LISTENING", "WRITING", "SPEAKING", "GRAMMAR_VOCAB"],
+    skillDistribution: [
+      { domain: "WRITING", label: "Academic Essay Writing", icon: "✍️", percentage: 25 },
+      { domain: "SPEAKING", label: "Speaking Interview (Ses Kayıtlı)", icon: "🎙️", percentage: 20 },
+      { domain: "READING", label: "Advanced Reading Texts", icon: "📖", percentage: 25 },
+      { domain: "LISTENING", label: "Lecture Comprehension", icon: "🎧", percentage: 15 },
+      { domain: "GRAMMAR_VOCAB", label: "Use of English & Structure", icon: "🔤", percentage: 15 },
+    ],
+    categories: [
+      { id: "bilkent-speaking", name: "Speaking: Academic Presentation & Debate (Ses Kayıtlı)", domain: "SPEAKING", questionCount: 110, difficulty: "B2 - C1", description: "Mülakat sorularına mikrofonla yapılandırılmış ses kaydı oluşturma", isAudioRequired: true },
+      { id: "bilkent-writing", name: "Writing: Comparison & Contrast / Cause-Effect Essay", domain: "WRITING", questionCount: 80, difficulty: "C1", description: "İleri düzey akademik organizasyon ve zengin kelime kullanımı", isWritingRequired: true },
+      { id: "bilkent-reading", name: "Reading: Text Synthesizing & Analysis", domain: "READING", questionCount: 175, difficulty: "B2 - C1", description: "Çoklu metin sentezi ve akademik argüman takibi" },
+      { id: "bilkent-listening", name: "Listening: Academic Seminar & Note-Taking", domain: "LISTENING", questionCount: 130, difficulty: "B2 - C1", description: "Konferans konuşmalarından not çıkarımı" },
     ],
   },
 };

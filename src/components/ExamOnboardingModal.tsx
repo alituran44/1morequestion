@@ -55,7 +55,22 @@ export function ExamOnboardingModal({
     onClose();
   };
 
-  const examsList = Object.values(EXAM_SYSTEMS);
+  const [activeCategoryTab, setActiveCategoryTab] = useState<"ALL" | "NATIONAL" | "UNIVERSITY" | "INTERNATIONAL">("ALL");
+
+  const getCategoryBadge = (category: string) => {
+    if (category === "NATIONAL") {
+      return { label: "ÖSYM / Ulusal", className: "bg-sky-50 text-sky-700 border-sky-200" };
+    }
+    if (category === "UNIVERSITY") {
+      return { label: "Üniversite Hazırlık", className: "bg-teal-50 text-teal-700 border-teal-200" };
+    }
+    return { label: "Uluslararası", className: "bg-purple-50 text-purple-700 border-purple-200" };
+  };
+
+  const examsList = Object.values(EXAM_SYSTEMS).filter((exam) => {
+    if (activeCategoryTab === "ALL") return true;
+    return exam.category === activeCategoryTab;
+  });
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-in fade-in duration-200">
@@ -73,6 +88,54 @@ export function ExamOnboardingModal({
             <p className="text-xs text-slate-500 max-w-xl">
               Platformdaki deneme sınavları, "1 Soru Daha" adaptif soru havuzları ve müfredat akışı seçtiğiniz sınavların beceri dağılımına (Okuma, Yazma, Konuşma, Dinleme) göre otomatik optimize edilir.
             </p>
+
+            {/* Category Filter Switcher Tabs */}
+            <div className="flex flex-wrap items-center gap-1.5 pt-3">
+              <button
+                type="button"
+                onClick={() => setActiveCategoryTab("ALL")}
+                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                  activeCategoryTab === "ALL"
+                    ? "bg-amber-500 text-slate-950 shadow-xs"
+                    : "bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200"
+                }`}
+              >
+                Tüm Sınavlar
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveCategoryTab("UNIVERSITY")}
+                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                  activeCategoryTab === "UNIVERSITY"
+                    ? "bg-amber-500 text-slate-950 shadow-xs"
+                    : "bg-teal-50 text-teal-800 hover:text-teal-950 border border-teal-200"
+                }`}
+              >
+                🎓 Üniversite Hazırlık Atlama (İYS / BUEPT)
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveCategoryTab("NATIONAL")}
+                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                  activeCategoryTab === "NATIONAL"
+                    ? "bg-amber-500 text-slate-950 shadow-xs"
+                    : "bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200"
+                }`}
+              >
+                ÖSYM / Ulusal (YDT / YDS)
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveCategoryTab("INTERNATIONAL")}
+                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                  activeCategoryTab === "INTERNATIONAL"
+                    ? "bg-amber-500 text-slate-950 shadow-xs"
+                    : "bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200"
+                }`}
+              >
+                Uluslararası (IELTS / TOEFL)
+              </button>
+            </div>
           </div>
 
           <button
@@ -88,6 +151,7 @@ export function ExamOnboardingModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
             {examsList.map((exam) => {
               const isSelected = selected.includes(exam.code);
+              const badge = getCategoryBadge(exam.category);
 
               return (
                 <div
@@ -105,12 +169,8 @@ export function ExamOnboardingModal({
                         <span className="text-sm font-extrabold text-slate-900">
                           {exam.shortTitle}
                         </span>
-                        <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${
-                          exam.category === "NATIONAL" 
-                            ? "bg-sky-50 text-sky-700 border border-sky-200" 
-                            : "bg-purple-50 text-purple-700 border border-purple-200"
-                        }`}>
-                          {exam.category === "NATIONAL" ? "ÖSYM / Ulusal" : "Uluslararası"}
+                        <span className={`text-[10px] px-2 py-0.5 rounded font-bold border ${badge.className}`}>
+                          {badge.label}
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">

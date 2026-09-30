@@ -51,23 +51,33 @@ export function TopicCurriculumSection({ initialExamCode = "IELTS" }: TopicCurri
         </div>
 
         {/* Exam Switcher Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-2xl border border-slate-200">
-          {Object.values(EXAM_SYSTEMS).map((exam) => (
-            <button
-              key={exam.code}
-              onClick={() => {
-                setSelectedExamCode(exam.code);
-                setSelectedSkillFilter("ALL");
-              }}
-              className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
-                selectedExamCode === exam.code
-                  ? "bg-white text-slate-900 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              {exam.shortTitle}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+          {Object.values(EXAM_SYSTEMS).map((exam) => {
+            const isSelected = selectedExamCode === exam.code;
+            return (
+              <button
+                key={exam.code}
+                onClick={() => {
+                  setSelectedExamCode(exam.code);
+                  setSelectedSkillFilter("ALL");
+                }}
+                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  isSelected
+                    ? "bg-white text-slate-900 shadow-xs border border-slate-200/80"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <span>{exam.shortTitle}</span>
+                {exam.category === "UNIVERSITY" && (
+                  <span className={`text-[9px] px-1.5 py-0.2 rounded font-extrabold ${
+                    isSelected ? "bg-teal-100 text-teal-800" : "bg-slate-200/80 text-teal-700"
+                  }`}>
+                    Hazırlık
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
 

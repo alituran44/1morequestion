@@ -33,7 +33,12 @@ export function MockExamCard({ exam, mock, onBuyClick }: MockExamCardProps) {
   const isFree = (data.price ?? 0) <= 0;
   const badgeColor = data.exam?.badgeColor || "#3b82f6";
   const examCode = data.exam?.code || "GENEL";
-  const examCategory = data.exam?.category === "NATIONAL" ? "ÖSYM / Ulusal" : "Uluslararası";
+  const examCategory = 
+    data.exam?.category === "NATIONAL" 
+      ? "ÖSYM / Ulusal" 
+      : data.exam?.category === "UNIVERSITY" 
+      ? "Üniversite Hazırlık" 
+      : "Uluslararası";
 
   return (
     <div className="bg-white border border-slate-200 hover:border-amber-400/80 rounded-2xl p-5 flex flex-col justify-between transition-all hover:shadow-lg shadow-xs group">

@@ -76,6 +76,38 @@ async function main() {
       description: "Hızlı, Adaptif ve Bilgisayar Tabanlı Sertifika Sınavı (10 - 160).",
       badgeColor: "#10b981",
     },
+    {
+      code: "PROFICIENCY",
+      name: "Üniversite Hazırlık Atlama (Proficiency / İYS)",
+      category: "UNIVERSITY",
+      scoringType: "SCORE_100",
+      description: "Devlet ve Vakıf Üniversiteleri Hazırlık Muafiyet Sınavı.",
+      badgeColor: "#0d9488",
+    },
+    {
+      code: "BUEPT",
+      name: "Boğaziçi Üniversitesi BUEPT / BÜYES",
+      category: "UNIVERSITY",
+      scoringType: "SCORE_100",
+      description: "Search Reading, Note-Taking ve 2 Essay Yeterlik Sınavı.",
+      badgeColor: "#0284c7",
+    },
+    {
+      code: "ODTU_IYS",
+      name: "ODTÜ & İTÜ İngilizce Yeterlik Sınavı (İYS / EPE)",
+      category: "UNIVERSITY",
+      scoringType: "SCORE_100",
+      description: "Language Use, Note-Taking ve Akademik Essay Yeterlik Sınavı.",
+      badgeColor: "#b91c1c",
+    },
+    {
+      code: "BILKENT_PAE",
+      name: "Bilkent PAE / Koç KUEPE / Sabancı ELAE",
+      category: "UNIVERSITY",
+      scoringType: "SCORE_100",
+      description: "Vakıf Üniversiteleri 2 Aşamalı Hazırlık Atlama ve Mülakat Sınavı.",
+      badgeColor: "#4f46e5",
+    },
   ];
 
   for (const ex of exams) {

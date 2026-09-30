@@ -38,7 +38,7 @@ export default function StudentPortalPage() {
   const [isPaynkolayOpen, setIsPaynkolayOpen] = useState(false);
 
   // Target exams personalization
-  const [targetExams, setTargetExams] = useState<string[]>(["YDT", "IELTS"]);
+  const [targetExams, setTargetExams] = useState<string[]>(["YDT", "PROFICIENCY", "IELTS"]);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
 
   const [mockExams, setMockExams] = useState<MockExamItem[]>([]);
@@ -146,11 +146,11 @@ export default function StudentPortalPage() {
                   return (
                     <span
                       key={code}
-                      className="text-xs font-black px-2.5 py-1 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 flex items-center gap-1 shadow-xs"
+                      className="text-xs font-black px-2.5 py-1 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 flex items-center gap-1.5 shadow-xs"
                     >
-                      <span>{code}</span>
+                      <span>{conf?.shortTitle || code}</span>
                       <span className="text-[10px] font-medium text-slate-500">
-                        ({conf?.supportedSkills.includes("SPEAKING") ? "🎙️ Speaking Dahil" : "Test"})
+                        ({conf?.category === "UNIVERSITY" ? "🎓 Hazırlık Atlama" : conf?.supportedSkills.includes("SPEAKING") ? "🎙️ Speaking Dahil" : "Test"})
                       </span>
                     </span>
                   );
@@ -316,6 +316,16 @@ export default function StudentPortalPage() {
                 }`}
               >
                 Ulusal (YDT / YDS / YÖKDİL)
+              </button>
+              <button
+                onClick={() => setSelectedCategory("UNIVERSITY")}
+                className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                  selectedCategory === "UNIVERSITY"
+                    ? "bg-amber-500 text-slate-950 shadow-xs"
+                    : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
+                }`}
+              >
+                🎓 Üniversite Hazırlık (İYS / BUEPT)
               </button>
               <button
                 onClick={() => setSelectedCategory("INTERNATIONAL")}
