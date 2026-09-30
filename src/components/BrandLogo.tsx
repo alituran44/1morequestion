@@ -29,12 +29,12 @@ export function BrandLogo({
 
   const content = (
     <div className={`inline-flex items-center gap-3 group select-none ${className}`}>
-      {/* High-res Render of Official 1Q MORE QUIZ Logo */}
+      {/* High-res Render of Official 1morequiz Logo */}
       <div className="relative flex items-center justify-center">
         <img
           src={logoSrc}
-          alt="1Q MORE QUIZ Logo"
-          className={`${currentSize.imgClass} object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_14px_rgba(245,158,11,0.3)]`}
+          alt="1morequiz Logo"
+          className={`${currentSize.imgClass} object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_14px_rgba(245,158,11,0.35)]`}
           onError={(e) => {
             (e.target as HTMLImageElement).src = "/logo.png";
           }}
@@ -45,11 +45,11 @@ export function BrandLogo({
         <div className="flex flex-col justify-center">
           <div className="flex items-center gap-1.5 leading-none">
             <span className="font-black text-slate-100 tracking-tight text-base group-hover:text-amber-300 transition-colors">
-              1Q MORE QUIZ
+              1morequiz
             </span>
           </div>
           <span className="text-[10px] font-bold tracking-widest text-amber-400 uppercase mt-0.5">
-            Sınav Arenası
+            Sınav & AI Arenası
           </span>
         </div>
       )}

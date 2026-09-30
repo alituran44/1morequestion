@@ -57,16 +57,11 @@ export function Sidebar({ activeRole, onRoleToggle }: SidebarProps) {
     <aside className="w-64 border-r border-slate-800 bg-[#080c14] flex flex-col justify-between shrink-0 h-screen sticky top-0">
       <div>
         {/* Brand Header */}
-        <div className="p-5 border-b border-slate-800/80 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
+        <div className="p-4 border-b border-slate-800/80 flex items-center justify-between">
+          <Link href="/" className="flex flex-col gap-1.5 group w-full">
             <BrandLogo size="md" showText={false} href="" />
-            <div>
-              <div className="font-black text-slate-100 tracking-tight text-sm leading-tight group-hover:text-amber-400 transition-colors">
-                1Q MORE QUIZ
-              </div>
-              <div className="text-[10px] font-bold tracking-wide mt-0.5 text-amber-400">
-                {activeRole === "INSTRUCTOR" ? "Eğitmen & Yazar Paneli" : "Öğrenci Sınav Arenası"}
-              </div>
+            <div className="text-[10px] font-bold tracking-wide text-amber-400">
+              {activeRole === "INSTRUCTOR" ? "Eğitmen & Yazar Paneli" : "Öğrenci Sınav Arenası"}
             </div>
           </Link>
         </div>
@@ -203,7 +198,7 @@ export function Sidebar({ activeRole, onRoleToggle }: SidebarProps) {
           <span>{activeRole === "INSTRUCTOR" ? "Paynkolay 3D Korumalı" : "Kişiselleştirilmiş Öğrenme"}</span>
         </div>
         <div className="text-[11px] text-slate-500 mt-1">
-          {activeRole === "INSTRUCTOR" ? "1Q MORE QUIZ • Eğitmen Modu" : "1Q MORE QUIZ • Öğrenci Arenası"}
+          {activeRole === "INSTRUCTOR" ? "1morequiz • Eğitmen Modu" : "1morequiz • Öğrenci Arenası"}
         </div>
       </div>
     </aside>

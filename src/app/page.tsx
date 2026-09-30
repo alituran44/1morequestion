@@ -43,7 +43,7 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 bg-[#080c14]/90 backdrop-blur-xl border-b border-slate-800/80 px-6 py-3.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo & Brand */}
-          <BrandLogo size="md" showText={true} href="/" />
+          <BrandLogo size="md" showText={false} href="/" />
 
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-300">
@@ -399,10 +399,10 @@ export default function LandingPage() {
       <footer className="border-t border-slate-800 bg-[#060910] py-10 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-500">
           <div className="flex items-center gap-4">
-            <BrandLogo size="sm" showText={true} />
+            <BrandLogo size="sm" showText={false} />
             <span className="text-slate-600 hidden sm:inline">|</span>
             <span className="text-slate-400 text-[11px]">
-              © 2026 1Q MORE QUIZ • Türkiye'nin AI Destekli İngilizce Sınav Arenası
+              © 2026 1morequiz • Türkiye'nin AI Destekli İngilizce Sınav Arenası
             </span>
           </div>
           <div className="flex items-center gap-6 text-slate-400 font-medium">
