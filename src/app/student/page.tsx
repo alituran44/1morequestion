@@ -7,6 +7,8 @@ import { MockExamCard, MockExamItem } from "@/components/MockExamCard";
 import { AdaptiveQuestionWidget, PoolQuestion } from "@/components/AdaptiveQuestionWidget";
 import { PaynkolayModal } from "@/components/PaynkolayModal";
 import { TopicCurriculumSection } from "@/components/TopicCurriculumSection";
+import { ExamOnboardingModal } from "@/components/ExamOnboardingModal";
+import { EXAM_SYSTEMS } from "@/lib/exam-systems";
 import { 
   Sparkles, 
   BookOpen, 
@@ -19,7 +21,10 @@ import {
   Flame,
   Coins,
   ShieldCheck,
-  Target
+  Target,
+  Mic,
+  PenTool,
+  Settings2
 } from "lucide-react";
 import Link from "next/link";
 
@@ -32,12 +37,30 @@ export default function StudentPortalPage() {
   const [selectedExamForBuy, setSelectedExamForBuy] = useState<MockExamItem | null>(null);
   const [isPaynkolayOpen, setIsPaynkolayOpen] = useState(false);
 
+  // Target exams personalization
+  const [targetExams, setTargetExams] = useState<string[]>(["YDT", "IELTS"]);
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+
   const [mockExams, setMockExams] = useState<MockExamItem[]>([]);
   const [poolQuestions, setPoolQuestions] = useState<PoolQuestion[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch initial data
+  // Fetch initial data & load saved target exams
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("1mq_target_exams");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setTargetExams(parsed);
+          }
+        } catch (e) {
+          console.error("Target exams parse error:", e);
+        }
+      }
+    }
+
     async function loadData() {
       try {
         const res = await fetch("/api/mocks");
@@ -55,7 +78,7 @@ export default function StudentPortalPage() {
     loadData();
   }, []);
 
-  // Filter logic
+  // Filter logic: search, category, exam code, and prioritize user's target exams
   const filteredExams = mockExams.filter((exam) => {
     const matchesSearch =
       exam.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -93,7 +116,7 @@ export default function StudentPortalPage() {
       }} />
 
       {/* 2. Main Workspace */}
-      <main className="flex-1 overflow-y-auto min-h-screen px-6 sm:px-10 py-6 max-w-7xl mx-auto space-y-10">
+      <main className="flex-1 overflow-y-auto min-h-screen px-6 sm:px-10 py-6 max-w-7xl mx-auto space-y-8">
         {/* Top Header & Student Action Cards */}
         <HeaderActions
           role="STUDENT"
@@ -101,6 +124,49 @@ export default function StudentPortalPage() {
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
         />
+
+        {/* Target Exams Personalized Goal Banner */}
+        <section className="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in">
+          <div className="flex items-start sm:items-center gap-3.5">
+            <div className="w-11 h-11 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black shadow-xs shrink-0">
+              <Target className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-extrabold text-slate-900">
+                  Hazırlandığınız Sınavlar & Kişiselleştirilmiş Akış
+                </h3>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
+                  Akıllı Eşleşme
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                {targetExams.map((code) => {
+                  const conf = EXAM_SYSTEMS[code];
+                  return (
+                    <span
+                      key={code}
+                      className="text-xs font-black px-2.5 py-1 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 flex items-center gap-1 shadow-xs"
+                    >
+                      <span>{code}</span>
+                      <span className="text-[10px] font-medium text-slate-500">
+                        ({conf?.supportedSkills.includes("SPEAKING") ? "🎙️ Speaking Dahil" : "Test"})
+                      </span>
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setIsOnboardingOpen(true)}
+            className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-extrabold transition-all border border-slate-200 shadow-xs flex items-center justify-center gap-2 cursor-pointer shrink-0"
+          >
+            <Settings2 className="w-4 h-4 text-slate-600" />
+            <span>Hedef Sınavları Düzenle</span>
+          </button>
+        </section>
 
         {/* Assigned Homework / Tasks */}
         <section className="p-5 rounded-3xl bg-white border border-slate-200 space-y-4 shadow-xs animate-in fade-in">
@@ -289,8 +355,16 @@ export default function StudentPortalPage() {
         </section>
 
         {/* Section 3: Topic Curriculum Tree */}
-        <TopicCurriculumSection />
+        <TopicCurriculumSection initialExamCode={targetExams[0] || "IELTS"} />
       </main>
+
+      {/* Target Exams Onboarding Modal */}
+      <ExamOnboardingModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+        selectedExamCodes={targetExams}
+        onSave={(exams) => setTargetExams(exams)}
+      />
 
       {/* Paynkolay Modal */}
       {selectedExamForBuy && (
