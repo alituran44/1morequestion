@@ -39,7 +39,6 @@ export function Sidebar({ activeRole, onRoleToggle }: SidebarProps) {
     { label: "Öğrenciler & Sınıflar", href: "/students", icon: Users },
     { label: "AI Deneme Stüdyosu", href: "/studio", icon: Sparkles, highlight: true },
     { label: "Paynkolay / Finans", href: "/billing", icon: CreditCard },
-    { label: "Admin Paneli", href: "/admin", icon: ShieldCheck, adminBadge: true },
   ];
 
   const studentNavItems = [
