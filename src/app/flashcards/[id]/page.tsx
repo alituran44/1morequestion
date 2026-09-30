@@ -132,24 +132,24 @@ export default function FlashcardsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0e0714] bg-gradient-to-b from-[#180a22] via-[#0f0516] to-[#07020a] text-slate-100 flex flex-col justify-between p-4 sm:p-8">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col justify-between p-4 sm:p-8">
       {/* Top Header */}
       <header className="max-w-3xl w-full mx-auto flex items-center justify-between z-10">
         <button
           onClick={() => router.back()}
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Geri Dön</span>
         </button>
 
         <div className="flex items-center gap-3">
-          <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">
+          <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
             Kart {currentIndex + 1} / {cards.length}
           </span>
-          <div className="w-32 h-2 rounded-full bg-slate-900 border border-slate-800 overflow-hidden">
+          <div className="w-32 h-2 rounded-full bg-slate-200 border border-slate-200 overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-purple-500 to-emerald-400 transition-all duration-300"
+              className="h-full bg-amber-500 transition-all duration-300"
               style={{ width: `${((currentIndex + (isCompleted ? 1 : 0)) / cards.length) * 100}%` }}
             />
           </div>
@@ -163,11 +163,11 @@ export default function FlashcardsPage() {
             {/* The 3D Flip Card */}
             <div
               onClick={() => setIsFlipped(!isFlipped)}
-              className="min-h-[360px] sm:min-h-[400px] w-full rounded-3xl bg-[#1a0e24] border-2 border-purple-500/30 hover:border-purple-500/60 p-8 flex flex-col justify-between cursor-pointer select-none shadow-2xl shadow-purple-950/40 transition-all hover:scale-[1.01] group relative"
+              className="min-h-[360px] sm:min-h-[400px] w-full rounded-3xl bg-white border-2 border-slate-200 hover:border-amber-400 p-8 flex flex-col justify-between cursor-pointer select-none shadow-xs hover:shadow-md transition-all hover:scale-[1.01] group relative"
             >
               {/* Top Row: CEFR & Audio */}
               <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold uppercase px-2.5 py-1 rounded-md bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                <span className="text-xs font-extrabold uppercase px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200">
                   {currentCard.cefrLevel} • {currentCard.subTopic.replace("_", " ")}
                 </span>
 
@@ -177,7 +177,7 @@ export default function FlashcardsPage() {
                     e.stopPropagation();
                     handleSpeak(currentCard.front);
                   }}
-                  className="p-2.5 rounded-xl bg-slate-900/80 hover:bg-purple-900/40 text-purple-400 hover:text-purple-200 transition-colors border border-purple-500/20"
+                  className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 transition-colors border border-slate-200 cursor-pointer shadow-xs"
                   title="Sesli Dinle"
                 >
                   <Volume2 className="w-4 h-4" />
@@ -189,14 +189,14 @@ export default function FlashcardsPage() {
                 {!isFlipped ? (
                   /* FRONT: Word / Pattern */
                   <div className="space-y-3 animate-in fade-in zoom-in-95">
-                    <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+                    <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
                       {currentCard.front}
                     </h2>
-                    <p className="text-xs text-purple-300/80 font-mono tracking-wide">
+                    <p className="text-xs text-amber-700 font-mono tracking-wide font-bold">
                       {currentCard.frontSub}
                     </p>
-                    <div className="pt-6 text-[11px] text-slate-500 font-medium flex items-center justify-center gap-1.5">
-                      <RotateCw className="w-3.5 h-3.5 text-purple-400" />
+                    <div className="pt-6 text-[11px] text-slate-400 font-medium flex items-center justify-center gap-1.5">
+                      <RotateCw className="w-3.5 h-3.5 text-amber-500" />
                       <span>Anlamını ve gramer tüyosunu görmek için tıkla</span>
                     </div>
                   </div>
@@ -204,19 +204,19 @@ export default function FlashcardsPage() {
                   /* BACK: Meaning, Example & Grammar Tip */
                   <div className="space-y-4 text-left animate-in fade-in zoom-in-95">
                     <div>
-                      <div className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">
+                      <div className="text-[10px] uppercase font-bold text-emerald-700 tracking-wider">
                         Türkçe Karşılığı
                       </div>
-                      <div className="text-xl sm:text-2xl font-black text-white mt-0.5">
+                      <div className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">
                         {currentCard.backMeaning}
                       </div>
                     </div>
 
-                    <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-purple-950 text-xs text-slate-300 leading-relaxed italic">
+                    <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed italic">
                       "{currentCard.backExample}"
                     </div>
 
-                    <div className="p-3 rounded-xl bg-purple-950/40 border border-purple-800/40 text-[11px] text-purple-200">
+                    <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900">
                       💡 <strong>Sınav Tüyosu:</strong> {currentCard.backGrammarTip}
                     </div>
                   </div>
@@ -224,7 +224,7 @@ export default function FlashcardsPage() {
               </div>
 
               {/* Bottom Card Footer */}
-              <div className="text-center text-[10px] text-slate-500 uppercase tracking-widest font-semibold">
+              <div className="text-center text-[10px] text-slate-400 uppercase tracking-widest font-semibold">
                 1morequestion Hafıza Kartı • {isFlipped ? "Arka Yüz (Çözüm)" : "Ön Yüz (Soru)"}
               </div>
             </div>
@@ -233,15 +233,15 @@ export default function FlashcardsPage() {
             <div className="grid grid-cols-2 gap-4">
               <button
                 onClick={handleNeedsReview}
-                className="py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-850 border border-rose-500/30 text-rose-300 font-bold text-xs tracking-wide transition-all shadow-md flex items-center justify-center gap-2 group"
+                className="py-3.5 rounded-2xl bg-white hover:bg-rose-50 border border-rose-200 text-rose-700 font-bold text-xs tracking-wide transition-all shadow-xs flex items-center justify-center gap-2 group cursor-pointer"
               >
-                <X className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform" />
+                <X className="w-4 h-4 text-rose-600 group-hover:scale-110 transition-transform" />
                 <span>Tekrar Etmeliyim</span>
               </button>
 
               <button
                 onClick={handleMastered}
-                className="py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs tracking-wide transition-all shadow-lg shadow-emerald-950 flex items-center justify-center gap-2 group"
+                className="py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs tracking-wide transition-all shadow-xs flex items-center justify-center gap-2 group cursor-pointer"
               >
                 <Check className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
                 <span>Biliyorum (Pekiştirildi)</span>
@@ -250,40 +250,40 @@ export default function FlashcardsPage() {
           </div>
         ) : (
           /* Completion Screen */
-          <div className="bg-[#1a0e24] border border-purple-500/40 rounded-3xl p-8 text-center space-y-6 shadow-2xl animate-in zoom-in-95">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-purple-600 to-emerald-400 flex items-center justify-center mx-auto text-white shadow-xl shadow-purple-950">
+          <div className="bg-white border border-slate-200 rounded-3xl p-8 text-center space-y-6 shadow-xs animate-in zoom-in-95">
+            <div className="w-16 h-16 rounded-full bg-amber-500 flex items-center justify-center mx-auto text-slate-950 shadow-xs">
               <Award className="w-8 h-8" />
             </div>
 
             <div>
-              <h2 className="text-2xl font-black text-white">Kart Destesi Tamamlandı!</h2>
-              <p className="text-xs text-slate-400 mt-1">
+              <h2 className="text-2xl font-black text-slate-900">Kart Destesi Tamamlandı!</h2>
+              <p className="text-xs text-slate-500 mt-1">
                 Sınavda en çok karıştırılan {cards.length} kritik gramer & kelime kalıbını taradınız.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 p-4 bg-slate-900 rounded-2xl border border-purple-950">
+            <div className="grid grid-cols-2 gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-200">
               <div>
                 <div className="text-xs text-slate-500 font-bold">Öğrenilen</div>
-                <div className="text-2xl font-black text-emerald-400">{masteredIds.length}</div>
+                <div className="text-2xl font-black text-emerald-700">{masteredIds.length}</div>
               </div>
               <div>
                 <div className="text-xs text-slate-500 font-bold">Tekrar Listesi</div>
-                <div className="text-2xl font-black text-rose-400">{reviewIds.length}</div>
+                <div className="text-2xl font-black text-rose-600">{reviewIds.length}</div>
               </div>
             </div>
 
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={handleRestart}
-                className="px-5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs font-bold text-slate-300 hover:text-white"
+                className="px-5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:text-slate-900 shadow-xs cursor-pointer"
               >
                 Tekrar Başlat
               </button>
 
               <Link
                 href="/join/904182"
-                className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-md shadow-purple-950 flex items-center gap-1.5"
+                className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black transition-all shadow-xs flex items-center gap-1.5"
               >
                 <span>Sınav Lobisine Dön</span>
                 <ChevronRight className="w-4 h-4" />
@@ -294,7 +294,7 @@ export default function FlashcardsPage() {
       </main>
 
       {/* Footer */}
-      <footer className="text-center text-xs text-slate-600 py-3 z-10">
+      <footer className="text-center text-xs text-slate-400 py-3 z-10">
         Spaced Repetition (Aralıklı Tekrar) Metodu ile İngilizce Sınav Kelime Havuzu
       </footer>
     </div>

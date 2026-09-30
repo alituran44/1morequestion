@@ -69,7 +69,7 @@ export default function InstructorPortalPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#0b0f17] flex text-slate-100 selection:bg-sky-500 selection:text-white">
+    <div className="min-h-screen bg-[#f8fafc] flex text-slate-900 selection:bg-amber-500 selection:text-slate-950">
       {/* 1. Left Sidebar */}
       <Sidebar activeRole="INSTRUCTOR" onRoleToggle={(r) => {
         if (r === "STUDENT") window.location.href = "/student";
@@ -89,24 +89,24 @@ export default function InstructorPortalPage() {
         {/* Educator Quick Management Tray */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-in fade-in">
           {/* Card 1: AI PDF Stüdyosu */}
-          <div className="p-5 rounded-3xl bg-[#111827] border border-slate-800 hover:border-emerald-500/40 transition-all shadow-xl space-y-3">
+          <div className="p-5 rounded-3xl bg-white border border-slate-200 hover:border-emerald-400 transition-all shadow-xs space-y-3">
             <div className="flex items-center justify-between">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center">
                 <Sparkles className="w-5 h-5" />
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                 OCR Aktif
               </span>
             </div>
             <div>
-              <h3 className="font-extrabold text-base text-slate-100">AI Deneme Stüdyosu</h3>
-              <p className="text-xs text-slate-400 mt-1">
+              <h3 className="font-extrabold text-base text-slate-900">AI Deneme Stüdyosu</h3>
+              <p className="text-xs text-slate-500 mt-1">
                 Herhangi bir sınav PDF'ini yükleyin, 60 saniyede interaktif denemeye dönüştürün.
               </p>
             </div>
             <Link
               href="/studio"
-              className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 pt-1"
+              className="inline-flex items-center gap-2 text-xs font-bold text-emerald-700 hover:text-emerald-800 pt-1"
             >
               <span>Stüdyoyu Başlat</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -114,24 +114,24 @@ export default function InstructorPortalPage() {
           </div>
 
           {/* Card 2: Sınıflar & Ödev Atama */}
-          <div className="p-5 rounded-3xl bg-[#111827] border border-slate-800 hover:border-sky-500/40 transition-all shadow-xl space-y-3">
+          <div className="p-5 rounded-3xl bg-white border border-slate-200 hover:border-sky-400 transition-all shadow-xs space-y-3">
             <div className="flex items-center justify-between">
-              <div className="w-10 h-10 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-2xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center">
                 <Users className="w-5 h-5" />
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-200">
                 3 Aktif Sınıf
               </span>
             </div>
             <div>
-              <h3 className="font-extrabold text-base text-slate-100">Sınıflarım & Ödevler</h3>
-              <p className="text-xs text-slate-400 mt-1">
+              <h3 className="font-extrabold text-base text-slate-900">Sınıflarım & Ödevler</h3>
+              <p className="text-xs text-slate-500 mt-1">
                 Öğrenci listelerini yönetin, en zayıf kazanımlara anında ödev atayın.
               </p>
             </div>
             <Link
               href="/students"
-              className="inline-flex items-center gap-2 text-xs font-bold text-sky-400 hover:text-sky-300 pt-1"
+              className="inline-flex items-center gap-2 text-xs font-bold text-sky-700 hover:text-sky-800 pt-1"
             >
               <span>Sınıfları Yönet</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -139,24 +139,24 @@ export default function InstructorPortalPage() {
           </div>
 
           {/* Card 3: Raporlar & Veli Karnesi */}
-          <div className="p-5 rounded-3xl bg-[#111827] border border-slate-800 hover:border-amber-500/40 transition-all shadow-xl space-y-3">
+          <div className="p-5 rounded-3xl bg-white border border-slate-200 hover:border-amber-400 transition-all shadow-xs space-y-3">
             <div className="flex items-center justify-between">
-              <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-2xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center">
                 <BarChart3 className="w-5 h-5" />
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
                 Madde Analizi
               </span>
             </div>
             <div>
-              <h3 className="font-extrabold text-base text-slate-100">Sınav Raporları & Analitik</h3>
-              <p className="text-xs text-slate-400 mt-1">
+              <h3 className="font-extrabold text-base text-slate-900">Sınav Raporları & Analitik</h3>
+              <p className="text-xs text-slate-500 mt-1">
                 Çözülen denemelerin soru bazlı doğru/yanlış oranlarını ve eksik kazanımları görün.
               </p>
             </div>
             <Link
               href="/reports"
-              className="inline-flex items-center gap-2 text-xs font-bold text-amber-400 hover:text-amber-300 pt-1"
+              className="inline-flex items-center gap-2 text-xs font-bold text-amber-700 hover:text-amber-800 pt-1"
             >
               <span>Raporları İncele</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -168,19 +168,19 @@ export default function InstructorPortalPage() {
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-emerald-500 flex items-center justify-center text-white font-bold text-xs">
+              <div className="w-8 h-8 rounded-xl bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xs shadow-xs">
                 1+
               </div>
               <div>
-                <h2 className="text-base sm:text-lg font-black tracking-tight text-slate-100">
+                <h2 className="text-base sm:text-lg font-black tracking-tight text-slate-900">
                   Adaptif "1 Soru Daha" Soru Havuzu Denetimi
                 </h2>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500">
                   Öğrencilerin öğrenme açığına yönelik IRT zorluk katsayılı anlık telafi soruları
                 </p>
               </div>
             </div>
-            <span className="hidden sm:inline-flex text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-sky-400">
+            <span className="hidden sm:inline-flex text-[11px] font-bold px-2.5 py-1 rounded-full bg-white border border-slate-200 text-sky-700 shadow-xs">
               IRT Motoru Aktif
             </span>
           </div>
@@ -194,18 +194,18 @@ export default function InstructorPortalPage() {
         </section>
 
         {/* Section 2: Mock Exams Manager */}
-        <section className="space-y-6 pt-4 border-t border-slate-800/80">
+        <section className="space-y-6 pt-4 border-t border-slate-200">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-black tracking-tight text-slate-100">
+                <h2 className="text-lg font-black tracking-tight text-slate-900">
                   Yayınlanan Sınav Denemeleri & Paketler
                 </h2>
-                <span className="text-xs px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 font-bold">
+                <span className="text-xs px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-bold">
                   {filteredExams.length} Deneme
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 mt-0.5">
                 Öğrencilerinize atayabileceğiniz veya satışa sunduğunuz lisanslı sınav denemeleri
               </p>
             </div>
@@ -213,7 +213,7 @@ export default function InstructorPortalPage() {
             <div className="flex items-center gap-3">
               <Link
                 href="/studio"
-                className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-sky-600 hover:opacity-95 text-white text-xs font-bold transition-all shadow-md shadow-emerald-950 flex items-center gap-2"
+                className="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black transition-all shadow-xs flex items-center gap-2 cursor-pointer"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span>+ Yeni Deneme Yükle</span>
@@ -225,7 +225,7 @@ export default function InstructorPortalPage() {
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3].map((n) => (
-                <div key={n} className="h-64 rounded-2xl bg-slate-900/50 border border-slate-800 animate-pulse" />
+                <div key={n} className="h-64 rounded-2xl bg-white border border-slate-200 animate-pulse" />
               ))}
             </div>
           ) : (

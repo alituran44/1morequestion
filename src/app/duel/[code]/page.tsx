@@ -304,67 +304,67 @@ export default function DuelArenaPage() {
   const isUserWinner = playerScore >= opponentScore;
 
   return (
-    <div className="min-h-screen bg-[#0d0714] text-slate-100 flex flex-col justify-between p-3 sm:p-6 selection:bg-fuchsia-600 selection:text-white">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col justify-between p-3 sm:p-6">
       {/* 1. LOBBY PHASE */}
       {phase === "LOBBY" && (
         <div className="max-w-2xl w-full mx-auto my-auto text-center space-y-8 py-10">
           <div className="flex items-center justify-between">
             <Link 
               href={`/join/${code}`} 
-              className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white"
+              className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Sınav Odasına Dön</span>
             </Link>
-            <div className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20">
+            <div className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
               Oda Kodu: {code}
             </div>
           </div>
 
           <div className="space-y-3">
-            <div className="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-tr from-fuchsia-600 to-rose-600 flex items-center justify-center shadow-2xl shadow-fuchsia-950/80 animate-pulse">
-              <Swords className="w-10 h-10 text-white" />
+            <div className="w-20 h-20 mx-auto rounded-3xl bg-amber-500 flex items-center justify-center shadow-xs animate-pulse">
+              <Swords className="w-10 h-10 text-slate-950" />
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
               1v1 Canlı İngilizce Düellosu
             </h1>
-            <p className="text-sm text-slate-400 max-w-md mx-auto">
+            <p className="text-sm text-slate-500 max-w-md mx-auto">
               5 Hızlı Soru • Anlık Puan Yarışı • Hız & Doğruluk Çarpanları
             </p>
           </div>
 
           {/* Player Match Card Preview */}
-          <div className="grid grid-cols-11 items-center bg-[#170e24] border border-fuchsia-950/80 rounded-3xl p-6 shadow-2xl">
+          <div className="grid grid-cols-11 items-center bg-white border border-slate-200 rounded-3xl p-6 shadow-xs">
             {/* Player 1 (You) */}
             <div className="col-span-5 text-center space-y-2">
-              <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center text-xl font-black text-emerald-400 shadow-lg">
+              <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-50 border-2 border-emerald-500 flex items-center justify-center text-xl font-black text-emerald-700 shadow-xs">
                 SEN
               </div>
-              <div className="font-extrabold text-sm text-white">Öğrenci (Sen)</div>
-              <div className="text-[11px] text-emerald-400 font-bold">12-DİL Hazırlık</div>
+              <div className="font-extrabold text-sm text-slate-900">Öğrenci (Sen)</div>
+              <div className="text-[11px] text-emerald-700 font-bold">12-DİL Hazırlık</div>
             </div>
 
             {/* VS Icon */}
-            <div className="col-span-1 text-center font-black text-2xl text-fuchsia-400 italic">
+            <div className="col-span-1 text-center font-black text-2xl text-amber-500 italic">
               VS
             </div>
 
             {/* Player 2 (Challenger) */}
             <div className="col-span-5 text-center space-y-2">
-              <div className="w-16 h-16 mx-auto rounded-2xl bg-rose-500/20 border-2 border-rose-500 flex items-center justify-center text-xl font-black text-rose-400 shadow-lg">
+              <div className="w-16 h-16 mx-auto rounded-2xl bg-rose-50 border-2 border-rose-500 flex items-center justify-center text-xl font-black text-rose-700 shadow-xs">
                 DK
               </div>
-              <div className="font-extrabold text-sm text-white">Deniz K.</div>
-              <div className="text-[11px] text-rose-400 font-bold">YDS Şampiyonlar</div>
+              <div className="font-extrabold text-sm text-slate-900">Deniz K.</div>
+              <div className="text-[11px] text-rose-700 font-bold">YDS Şampiyonlar</div>
             </div>
           </div>
 
           <div className="space-y-3 pt-4">
             <button
               onClick={handleStartMatchmaking}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-fuchsia-600 via-rose-600 to-amber-500 hover:opacity-95 text-white font-black text-base tracking-wide shadow-xl shadow-fuchsia-950/80 transition-all hover:scale-[1.01] flex items-center justify-center gap-3"
+              className="w-full py-4 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-base tracking-wide shadow-xs transition-all hover:scale-[1.01] flex items-center justify-center gap-3 cursor-pointer"
             >
-              <Swords className="w-5 h-5" />
+              <Swords className="w-5 h-5 text-slate-950" />
               <span>Düelloyu Başlat (Hemen Eşleş)</span>
             </button>
 
@@ -376,9 +376,9 @@ export default function DuelArenaPage() {
                   setTimeout(() => setIsLinkCopied(false), 2500);
                 }
               }}
-              className="w-full py-3 rounded-2xl bg-slate-900 border border-slate-700/80 text-slate-300 hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Share2 className="w-4 h-4 text-sky-400" />
+              <Share2 className="w-4 h-4 text-amber-500" />
               <span>{isLinkCopied ? "Bağlantı Panoya Kopyalandı!" : "Arkadaşını Odaya Çağır (Link Kopyala)"}</span>
             </button>
           </div>
@@ -388,13 +388,13 @@ export default function DuelArenaPage() {
       {/* 2. COUNTDOWN PHASE */}
       {phase === "COUNTDOWN" && (
         <div className="max-w-md w-full mx-auto my-auto text-center space-y-6 py-20">
-          <div className="text-base font-bold text-fuchsia-400 uppercase tracking-widest animate-pulse">
+          <div className="text-base font-bold text-amber-600 uppercase tracking-widest animate-pulse">
             Eşleşme Tamamlandı!
           </div>
-          <div className="text-8xl sm:text-9xl font-black text-white tracking-tighter animate-bounce">
+          <div className="text-8xl sm:text-9xl font-black text-slate-900 tracking-tighter animate-bounce">
             {countdown}
           </div>
-          <div className="text-sm font-semibold text-slate-400">
+          <div className="text-sm font-semibold text-slate-500">
             Kemerleri bağlayın, ilk soru geliyor...
           </div>
         </div>
@@ -404,23 +404,23 @@ export default function DuelArenaPage() {
       {phase === "BATTLE" && (
         <div className="max-w-4xl w-full mx-auto flex-1 flex flex-col justify-between py-2 space-y-4">
           {/* Top Real-time Battle HUD */}
-          <div className="grid grid-cols-12 items-center gap-3 bg-[#150c22] border border-fuchsia-950/80 rounded-2xl p-4 shadow-xl">
+          <div className="grid grid-cols-12 items-center gap-3 bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
             {/* Player 1 HUD */}
             <div className="col-span-5 flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center font-black text-emerald-400 text-sm shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-emerald-50 border-2 border-emerald-500 flex items-center justify-center font-black text-emerald-700 text-sm shrink-0">
                 SEN
               </div>
               <div className="overflow-hidden">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-extrabold text-white truncate">Öğrenci</span>
+                  <span className="text-xs font-extrabold text-slate-900 truncate">Öğrenci</span>
                   {playerStreak >= 2 && (
-                    <span className="inline-flex items-center gap-0.5 text-[10px] font-black text-amber-300 px-1.5 py-0.2 rounded-full bg-amber-500/20 border border-amber-500/30">
-                      <Flame className="w-3 h-3 text-amber-400 fill-amber-400" />
+                    <span className="inline-flex items-center gap-0.5 text-[10px] font-black text-amber-800 px-1.5 py-0.2 rounded-full bg-amber-50 border border-amber-200">
+                      <Flame className="w-3 h-3 text-amber-500 fill-amber-500" />
                       x{playerStreak >= 3 ? "2.0" : "1.5"}
                     </span>
                   )}
                 </div>
-                <div className="text-lg font-black text-emerald-400 tracking-tight">
+                <div className="text-lg font-black text-emerald-700 tracking-tight">
                   {playerScore.toLocaleString()} P
                 </div>
               </div>
@@ -428,10 +428,10 @@ export default function DuelArenaPage() {
 
             {/* Center: Timer & Round */}
             <div className="col-span-2 text-center">
-              <div className="text-[10px] font-bold text-slate-400 uppercase">
+              <div className="text-[10px] font-bold text-slate-500 uppercase">
                 {currentQuestionIndex + 1} / {totalQuestions}
               </div>
-              <div className={`text-2xl font-black tracking-tight ${timeLeft <= 5 ? "text-rose-500 animate-ping" : "text-white"}`}>
+              <div className={`text-2xl font-black tracking-tight ${timeLeft <= 5 ? "text-rose-600 animate-ping" : "text-slate-900"}`}>
                 {timeLeft}s
               </div>
             </div>
@@ -441,18 +441,18 @@ export default function DuelArenaPage() {
               <div className="overflow-hidden">
                 <div className="flex items-center justify-end gap-2">
                   {opponentStreak >= 2 && (
-                    <span className="inline-flex items-center gap-0.5 text-[10px] font-black text-amber-300 px-1.5 py-0.2 rounded-full bg-amber-500/20 border border-amber-500/30">
-                      <Flame className="w-3 h-3 text-amber-400 fill-amber-400" />
+                    <span className="inline-flex items-center gap-0.5 text-[10px] font-black text-amber-800 px-1.5 py-0.2 rounded-full bg-amber-50 border border-amber-200">
+                      <Flame className="w-3 h-3 text-amber-500 fill-amber-500" />
                       x{opponentStreak >= 3 ? "2.0" : "1.5"}
                     </span>
                   )}
-                  <span className="text-xs font-extrabold text-white truncate">Deniz K.</span>
+                  <span className="text-xs font-extrabold text-slate-900 truncate">Deniz K.</span>
                 </div>
-                <div className="text-lg font-black text-rose-400 tracking-tight">
+                <div className="text-lg font-black text-rose-700 tracking-tight">
                   {opponentScore.toLocaleString()} P
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-rose-500/20 border-2 border-rose-500 flex items-center justify-center font-black text-rose-400 text-sm shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-rose-50 border-2 border-rose-500 flex items-center justify-center font-black text-rose-700 text-sm shrink-0">
                 DK
               </div>
             </div>
@@ -460,10 +460,10 @@ export default function DuelArenaPage() {
 
           {/* Opponent Status Indicator Pill */}
           <div className="flex items-center justify-center gap-2">
-            <div className={`text-[11px] font-bold px-3 py-1 rounded-full border flex items-center gap-1.5 ${
+            <div className={`text-[11px] font-bold px-3 py-1 rounded-full border flex items-center gap-1.5 shadow-xs ${
               opponentStatus === "THINKING"
-                ? "bg-slate-900 border-slate-800 text-slate-400"
-                : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                ? "bg-white border-slate-200 text-slate-500"
+                : "bg-emerald-50 border-emerald-200 text-emerald-800"
             }`}>
               <Users className="w-3.5 h-3.5" />
               <span>{opponentStatus === "THINKING" ? "Deniz düşünüyor..." : "⚡ Deniz cevabını verdi!"}</span>
@@ -471,32 +471,32 @@ export default function DuelArenaPage() {
           </div>
 
           {/* Question Box */}
-          <div className="bg-[#170e24] border border-fuchsia-950/70 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 my-auto">
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs space-y-6 my-auto">
             {/* Topic & CEFR Tag */}
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-fuchsia-400 bg-fuchsia-950/60 px-3 py-1 rounded-lg border border-fuchsia-900/60">
+              <span className="text-xs font-bold text-amber-800 bg-amber-50 px-3 py-1 rounded-lg border border-amber-200">
                 {currentQ.subTopic}
               </span>
-              <span className="text-xs font-mono font-bold text-sky-400 bg-sky-950/60 px-2.5 py-1 rounded-lg border border-sky-900/60">
+              <span className="text-xs font-mono font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
                 CEFR {currentQ.cefrLevel}
               </span>
             </div>
 
             {/* Question Text */}
-            <div className="text-base sm:text-lg font-semibold text-slate-100 leading-relaxed">
+            <div className="text-base sm:text-lg font-semibold text-slate-900 leading-relaxed">
               {currentQ.question}
             </div>
 
             {/* Power-up Inventory Bar */}
-            <div className="flex items-center gap-2 pt-2 border-t border-slate-800/80">
-              <span className="text-[11px] font-bold text-slate-400 mr-2">Güçlendiriciler:</span>
+            <div className="flex items-center gap-2 pt-2 border-t border-slate-200">
+              <span className="text-[11px] font-bold text-slate-500 mr-2">Güçlendiriciler:</span>
               <button
                 disabled={powerupsUsed.fifty || roundLocked}
                 onClick={triggerFiftyFifty}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer ${
                   powerupsUsed.fifty
-                    ? "opacity-30 bg-slate-900 text-slate-500 cursor-not-allowed"
-                    : "bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30"
+                    ? "opacity-30 bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
+                    : "bg-white hover:bg-slate-50 text-slate-700 border border-slate-200"
                 }`}
               >
                 <span>50:50</span>
@@ -505,12 +505,12 @@ export default function DuelArenaPage() {
               <button
                 disabled={powerupsUsed.double || roundLocked}
                 onClick={triggerDoubleScore}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer ${
                   powerupsUsed.double
-                    ? "opacity-30 bg-slate-900 text-slate-500 cursor-not-allowed"
+                    ? "opacity-30 bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
                     : powerupDouble
                     ? "bg-amber-500 text-slate-950 font-black animate-pulse"
-                    : "bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30"
+                    : "bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300"
                 }`}
               >
                 <Zap className="w-3.5 h-3.5" />
@@ -520,10 +520,10 @@ export default function DuelArenaPage() {
               <button
                 disabled={powerupsUsed.freeze || roundLocked}
                 onClick={triggerTimeFreeze}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer ${
                   powerupsUsed.freeze
-                    ? "opacity-30 bg-slate-900 text-slate-500 cursor-not-allowed"
-                    : "bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/30"
+                    ? "opacity-30 bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
+                    : "bg-white hover:bg-slate-50 text-slate-700 border border-slate-200"
                 }`}
               >
                 <Clock className="w-3.5 h-3.5" />
@@ -538,18 +538,18 @@ export default function DuelArenaPage() {
                 const isSelected = selectedOption === opt.key;
                 const isCorrect = opt.key === currentQ.correctKey;
 
-                let btnStyle = "bg-[#201332] hover:bg-[#28183e] border-fuchsia-950/80 text-slate-200";
+                let btnStyle = "bg-white hover:bg-slate-50 border-slate-200 text-slate-800 shadow-xs cursor-pointer";
 
                 if (roundLocked) {
                   if (isCorrect) {
-                    btnStyle = "bg-emerald-600/30 border-emerald-500 text-emerald-200 font-bold";
+                    btnStyle = "bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
                   } else if (isSelected && !isCorrect) {
-                    btnStyle = "bg-rose-600/30 border-rose-500 text-rose-200";
+                    btnStyle = "bg-rose-50 border-rose-500 text-rose-800 font-bold";
                   } else {
-                    btnStyle = "opacity-40 bg-slate-900 border-slate-800 text-slate-500";
+                    btnStyle = "opacity-40 bg-slate-50 border-slate-200 text-slate-400";
                   }
                 } else if (isEliminated) {
-                  btnStyle = "opacity-20 line-through cursor-not-allowed bg-slate-900 border-slate-800 text-slate-600";
+                  btnStyle = "opacity-20 line-through cursor-not-allowed bg-slate-100 border-slate-200 text-slate-400";
                 }
 
                 return (
@@ -559,7 +559,7 @@ export default function DuelArenaPage() {
                     onClick={() => handleSelectOption(opt.key)}
                     className={`p-4 rounded-2xl border text-left flex items-start gap-3 transition-all ${btnStyle}`}
                   >
-                    <span className="w-7 h-7 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center font-bold text-xs shrink-0">
+                    <span className="w-7 h-7 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs shrink-0 text-slate-700">
                       {opt.key}
                     </span>
                     <span className="text-xs sm:text-sm font-medium pt-0.5 leading-snug">
@@ -572,12 +572,12 @@ export default function DuelArenaPage() {
 
             {/* Explanation box after round is locked */}
             {roundLocked && (
-              <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-xs space-y-1.5 animate-in fade-in">
-                <div className="font-bold text-slate-300 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-1.5 animate-in fade-in">
+                <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                   <span>Çözüm & Kural Açıklaması:</span>
                 </div>
-                <p className="text-slate-400 leading-relaxed">{currentQ.explanation}</p>
+                <p className="text-slate-600 leading-relaxed">{currentQ.explanation}</p>
               </div>
             )}
           </div>
@@ -589,18 +589,18 @@ export default function DuelArenaPage() {
         <div className="max-w-2xl w-full mx-auto my-auto text-center space-y-8 py-8">
           {/* Winner Banner */}
           <div className="space-y-3">
-            <div className={`w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-2xl ${
+            <div className={`w-24 h-24 mx-auto rounded-3xl flex items-center justify-center shadow-xs ${
               isUserWinner 
-                ? "bg-gradient-to-tr from-amber-500 to-emerald-500 shadow-amber-950/80" 
-                : "bg-gradient-to-tr from-slate-700 to-rose-600 shadow-rose-950/80"
+                ? "bg-amber-500 text-slate-950" 
+                : "bg-slate-200 text-slate-700"
             }`}>
-              <Trophy className="w-12 h-12 text-white" />
+              <Trophy className="w-12 h-12" />
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
               {isUserWinner ? "Tebrikler! Zafer Senin!" : "İyi Mücadele! Deniz Kazandı"}
             </h1>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               {isUserWinner 
                 ? "Rakibinden daha hızlı ve isabetli cevaplar vererek düelloyu kazandın."
                 : "Bir sonraki karşılaşmada rövanşı alabilirsin!"}
@@ -608,41 +608,41 @@ export default function DuelArenaPage() {
           </div>
 
           {/* Final Scoreboard Comparison */}
-          <div className="grid grid-cols-2 gap-4 bg-[#170e24] border border-fuchsia-950/80 rounded-3xl p-6 shadow-2xl">
+          <div className="grid grid-cols-2 gap-4 bg-white border border-slate-200 rounded-3xl p-6 shadow-xs">
             {/* Player 1 Card */}
-            <div className={`p-4 rounded-2xl border ${isUserWinner ? "bg-emerald-950/30 border-emerald-500/40" : "bg-slate-900/40 border-slate-800"}`}>
-              <div className="text-xs font-bold text-slate-400">SEN</div>
-              <div className="text-3xl font-black text-emerald-400 my-1">{playerScore.toLocaleString()} P</div>
-              <div className="text-[11px] text-slate-300">
+            <div className={`p-4 rounded-2xl border ${isUserWinner ? "bg-emerald-50 border-emerald-300" : "bg-slate-50 border-slate-200"}`}>
+              <div className="text-xs font-bold text-slate-500">SEN</div>
+              <div className="text-3xl font-black text-emerald-700 my-1">{playerScore.toLocaleString()} P</div>
+              <div className="text-[11px] text-slate-600">
                 {Object.values(playerAnswers).filter(a => a.correct).length} / {totalQuestions} Doğru
               </div>
             </div>
 
             {/* Player 2 Card */}
-            <div className={`p-4 rounded-2xl border ${!isUserWinner ? "bg-rose-950/30 border-rose-500/40" : "bg-slate-900/40 border-slate-800"}`}>
-              <div className="text-xs font-bold text-slate-400">DENİZ K.</div>
-              <div className="text-3xl font-black text-rose-400 my-1">{opponentScore.toLocaleString()} P</div>
-              <div className="text-[11px] text-slate-300">
+            <div className={`p-4 rounded-2xl border ${!isUserWinner ? "bg-rose-50 border-rose-300" : "bg-slate-50 border-slate-200"}`}>
+              <div className="text-xs font-bold text-slate-500">DENİZ K.</div>
+              <div className="text-3xl font-black text-rose-700 my-1">{opponentScore.toLocaleString()} P</div>
+              <div className="text-[11px] text-slate-600">
                 {Object.values(opponentAnswers).filter(a => a.correct).length} / {totalQuestions} Doğru
               </div>
             </div>
           </div>
 
           {/* Rewards & XP Card */}
-          <div className="bg-[#12081c] border border-slate-800/80 rounded-2xl p-4 flex items-center justify-around text-center">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-around text-center shadow-xs">
             <div>
-              <div className="text-[11px] font-bold text-slate-400 uppercase">Kazanılan XP</div>
-              <div className="text-lg font-black text-sky-400">+{isUserWinner ? "150" : "50"} XP</div>
+              <div className="text-[11px] font-bold text-slate-500 uppercase">Kazanılan XP</div>
+              <div className="text-lg font-black text-slate-900">+{isUserWinner ? "150" : "50"} XP</div>
             </div>
-            <div className="w-px h-8 bg-slate-800" />
+            <div className="w-px h-8 bg-slate-200" />
             <div>
-              <div className="text-[11px] font-bold text-slate-400 uppercase">Ödül Jetonu</div>
-              <div className="text-lg font-black text-amber-400">+{isUserWinner ? "50" : "15"} Jeton</div>
+              <div className="text-[11px] font-bold text-slate-500 uppercase">Ödül Jetonu</div>
+              <div className="text-lg font-black text-amber-600">+{isUserWinner ? "50" : "15"} Jeton</div>
             </div>
-            <div className="w-px h-8 bg-slate-800" />
+            <div className="w-px h-8 bg-slate-200" />
             <div>
-              <div className="text-[11px] font-bold text-slate-400 uppercase">Mastery Artışı</div>
-              <div className="text-lg font-black text-emerald-400">+{isUserWinner ? "%4.2" : "%1.5"}</div>
+              <div className="text-[11px] font-bold text-slate-500 uppercase">Mastery Artışı</div>
+              <div className="text-lg font-black text-emerald-600">+{isUserWinner ? "%4.2" : "%1.5"}</div>
             </div>
           </div>
 
@@ -659,15 +659,15 @@ export default function DuelArenaPage() {
                 setPowerupsUsed({ double: false, freeze: false, fifty: false });
                 handleStartMatchmaking();
               }}
-              className="flex-1 py-3.5 rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-extrabold text-xs tracking-wide transition-all shadow-lg shadow-fuchsia-950 flex items-center justify-center gap-2"
+              className="flex-1 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs tracking-wide transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-4 h-4 text-slate-950" />
               <span>Rövanş İste (Tekrar Oyna)</span>
             </button>
 
             <Link
               href={`/join/${code}`}
-              className="flex-1 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-850 border border-slate-700/80 text-slate-200 font-bold text-xs tracking-wide transition-all flex items-center justify-center gap-2"
+              className="flex-1 py-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 font-bold text-xs tracking-wide transition-all shadow-xs flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Oda Lobisine Dön</span>

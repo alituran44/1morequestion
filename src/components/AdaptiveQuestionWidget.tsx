@@ -107,38 +107,38 @@ export function AdaptiveQuestionWidget({
   const isCorrect = selectedKey === question.correctKey;
 
   return (
-    <div className="bg-[#111827] border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto shadow-2xl shadow-black/50 relative overflow-hidden">
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto shadow-md shadow-slate-200/50 relative overflow-hidden">
       {/* Top Bar: Subtopic, CEFR & Streak */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-800/80 mb-6">
+      <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20">
+          <span className="text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-md bg-sky-50 text-sky-700 border border-sky-200">
             {question.cefrLevel}
           </span>
-          <span className="text-xs font-semibold text-slate-300">
-            {question.skillDomain} • <span className="text-slate-400 font-normal">{question.subTopic.replace("_", " ")}</span>
+          <span className="text-xs font-semibold text-slate-800">
+            {question.skillDomain} • <span className="text-slate-500 font-normal">{question.subTopic.replace("_", " ")}</span>
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold">
-          <Flame className="w-3.5 h-3.5 fill-amber-400" />
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold">
+          <Flame className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
           <span>{streak} Streak</span>
         </div>
       </div>
 
       {/* Optional Passage */}
       {question.passage && (
-        <div className="p-4 mb-4 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 leading-relaxed italic">
+        <div className="p-4 mb-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed italic">
           {question.passage}
         </div>
       )}
 
       {/* Question Content */}
       <div className="mb-6">
-        <div className="text-[11px] uppercase tracking-wider font-bold text-sky-400 mb-2 flex items-center gap-1.5">
+        <div className="text-[11px] uppercase tracking-wider font-bold text-amber-600 mb-2 flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5" />
           <span>1 Soru Daha — Eksik Kazanım Telafisi</span>
         </div>
-        <p className="text-base sm:text-lg font-medium text-slate-100 leading-relaxed">
+        <p className="text-base sm:text-lg font-semibold text-slate-900 leading-relaxed">
           {question.content}
         </p>
       </div>
@@ -146,15 +146,15 @@ export function AdaptiveQuestionWidget({
       {/* Options */}
       <div className="space-y-2.5 mb-6">
         {question.options.map((opt) => {
-          let btnStyle = "bg-slate-900/60 hover:bg-slate-850 border-slate-800 text-slate-200";
+          let btnStyle = "bg-slate-50 hover:bg-slate-100/80 border-slate-200 text-slate-800";
 
           if (isAnswered) {
             if (opt.key === question.correctKey) {
-              btnStyle = "bg-emerald-950/70 border-emerald-500/70 text-emerald-200 ring-1 ring-emerald-500";
+              btnStyle = "bg-emerald-50 border-emerald-400 text-emerald-900 ring-1 ring-emerald-300";
             } else if (opt.key === selectedKey) {
-              btnStyle = "bg-rose-950/70 border-rose-500/70 text-rose-200 ring-1 ring-rose-500";
+              btnStyle = "bg-rose-50 border-rose-400 text-rose-900 ring-1 ring-rose-300";
             } else {
-              btnStyle = "bg-slate-950/40 border-slate-850 text-slate-500 opacity-60";
+              btnStyle = "bg-slate-50/50 border-slate-100 text-slate-400 opacity-60";
             }
           }
 
@@ -163,20 +163,20 @@ export function AdaptiveQuestionWidget({
               key={opt.key}
               onClick={() => handleSelectOption(opt.key)}
               disabled={isAnswered}
-              className={`w-full p-3.5 sm:p-4 rounded-2xl border text-left text-sm font-medium transition-all flex items-center justify-between ${btnStyle}`}
+              className={`w-full p-3.5 sm:p-4 rounded-2xl border text-left text-sm font-medium transition-all flex items-center justify-between cursor-pointer ${btnStyle}`}
             >
               <div className="flex items-center gap-3">
-                <span className="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-300 shrink-0">
+                <span className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-xs font-bold text-slate-700 shrink-0 shadow-xs">
                   {opt.key}
                 </span>
                 <span>{opt.text}</span>
               </div>
 
               {isAnswered && opt.key === question.correctKey && (
-                <Check className="w-5 h-5 text-emerald-400 shrink-0" />
+                <Check className="w-5 h-5 text-emerald-600 shrink-0" />
               )}
               {isAnswered && opt.key === selectedKey && opt.key !== question.correctKey && (
-                <X className="w-5 h-5 text-rose-400 shrink-0" />
+                <X className="w-5 h-5 text-rose-600 shrink-0" />
               )}
             </button>
           );
@@ -185,27 +185,27 @@ export function AdaptiveQuestionWidget({
 
       {/* Immediate Pedagogical Explanation & '1 More' Next Button */}
       {isAnswered && (
-        <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-4 animate-in fade-in duration-300">
-          <div className="flex items-start gap-2.5 text-xs text-slate-300 leading-relaxed">
-            <BookOpen className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 animate-in fade-in duration-300">
+          <div className="flex items-start gap-2.5 text-xs text-slate-700 leading-relaxed">
+            <BookOpen className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold text-slate-100">Çözüm & Analiz: </span>
+              <span className="font-bold text-slate-900">Çözüm & Analiz: </span>
               {question.explanation}
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-slate-800">
+          <div className="flex items-center justify-between pt-2 border-t border-slate-200">
             <div className="text-xs font-semibold">
               {isCorrect ? (
-                <span className="text-emerald-400 font-bold">Harika! Kazanım pekiştirildi.</span>
+                <span className="text-emerald-700 font-bold">Harika! Kazanım pekiştirildi.</span>
               ) : (
-                <span className="text-rose-400 font-bold">Akıllı Hata Defterine eklendi.</span>
+                <span className="text-rose-700 font-bold">Akıllı Hata Defterine eklendi.</span>
               )}
             </div>
 
             <button
               onClick={handleNext}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-emerald-600 hover:from-sky-500 hover:to-emerald-500 text-white text-xs font-extrabold shadow-lg shadow-sky-950 transition-all hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-extrabold shadow-xs transition-all hover:scale-[1.02] cursor-pointer"
             >
               <span>1 Soru Daha</span>
               <ArrowRight className="w-4 h-4" />

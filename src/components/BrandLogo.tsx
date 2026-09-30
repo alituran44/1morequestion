@@ -14,7 +14,7 @@ export function BrandLogo({
   size = "md",
   showText = false,
   href = "/",
-  variant = "dark",
+  variant = "light",
   className = "",
 }: BrandLogoProps) {
   const sizeMap = {

@@ -75,19 +75,19 @@ export function TopicCurriculumSection() {
   ];
 
   return (
-    <section className="space-y-4 pt-6 border-t border-slate-800/80">
+    <section className="space-y-4 pt-6 border-t border-slate-200">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-black tracking-tight text-slate-100">
+          <h2 className="text-lg font-black tracking-tight text-slate-900">
             Sınav Müfredatı & Konular
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-500 mt-0.5">
             ÖSYM ve Uluslararası sınav kazanım haritası (Wayground modüler konu ağacı)
           </p>
         </div>
         <Link
           href="/pool-search"
-          className="text-xs font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1"
+          className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1"
         >
           <span>Hepsini Gör</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -101,22 +101,22 @@ export function TopicCurriculumSection() {
           return (
             <div
               key={cat.id}
-              className="bg-[#111827] border border-slate-800 hover:border-slate-700/80 rounded-2xl overflow-hidden transition-all shadow-md group"
+              className="bg-white border border-slate-200 hover:border-slate-300 rounded-2xl overflow-hidden transition-all shadow-xs group"
             >
               {/* Category Header */}
               <div
                 onClick={() => setExpandedId(isExpanded ? "" : cat.id)}
-                className="p-5 flex items-center justify-between cursor-pointer select-none bg-slate-900/60 hover:bg-slate-850/80 transition-colors"
+                className="p-5 flex items-center justify-between cursor-pointer select-none bg-slate-50/70 hover:bg-slate-100/70 transition-colors"
               >
                 <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-base text-sky-400">
+                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center font-bold text-base text-amber-600 shadow-xs">
                     {cat.icon}
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-slate-100 text-sm group-hover:text-sky-300 transition-colors">
+                    <h3 className="font-extrabold text-slate-900 text-sm group-hover:text-amber-600 transition-colors">
                       {cat.title}
                     </h3>
-                    <div className="text-[11px] text-slate-400 mt-0.5">
+                    <div className="text-[11px] text-slate-500 mt-0.5">
                       {cat.topicCount} Temel Alt Konu
                     </div>
                   </div>
@@ -124,35 +124,35 @@ export function TopicCurriculumSection() {
 
                 <ChevronRight
                   className={`w-4 h-4 text-slate-400 transition-transform ${
-                    isExpanded ? "rotate-90 text-sky-400" : ""
+                    isExpanded ? "rotate-90 text-amber-600" : ""
                   }`}
                 />
               </div>
 
               {/* Sub-topics List */}
               {isExpanded && (
-                <div className="p-4 pt-2 divide-y divide-slate-800/80 bg-slate-950/40">
+                <div className="p-4 pt-2 divide-y divide-slate-100 bg-white">
                   {cat.subTopics.map((sub, idx) => (
                     <div
                       key={sub.id}
-                      className="py-2.5 flex items-center justify-between text-xs hover:bg-slate-900/40 px-2 rounded-lg transition-colors group/item"
+                      className="py-2.5 flex items-center justify-between text-xs hover:bg-slate-50 px-2 rounded-lg transition-colors group/item"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] text-slate-500 font-mono">
+                        <span className="text-[11px] text-slate-400 font-mono">
                           Topic {idx + 1}:
                         </span>
-                        <span className="font-medium text-slate-200 group-hover/item:text-sky-300">
+                        <span className="font-medium text-slate-800 group-hover/item:text-amber-600">
                           {sub.name}
                         </span>
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
                           {sub.difficulty}
                         </span>
                         <Link
                           href={`/exam/practice?topic=${sub.id}`}
-                          className="text-[11px] px-2.5 py-1 rounded-md bg-sky-600/10 text-sky-400 hover:bg-sky-600 hover:text-white font-bold transition-all border border-sky-500/20"
+                          className="text-[11px] px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 hover:bg-amber-500 hover:text-white font-bold transition-all border border-amber-200"
                         >
                           1 Soru Çöz
                         </Link>

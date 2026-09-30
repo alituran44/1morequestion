@@ -57,18 +57,18 @@ export default function ExamLobbyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#140b19] bg-gradient-to-b from-[#1c0d26] via-[#120818] to-[#0a040e] text-slate-100 flex flex-col justify-between p-4 sm:p-8">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col justify-between p-4 sm:p-8">
       {/* Top Bar */}
       <div className="max-w-4xl w-full mx-auto flex items-center justify-between">
         <Link
           href="/join"
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Farklı Kod Gir</span>
         </Link>
 
-        <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20">
+        <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
           Sınav Kodu: {code}
         </span>
       </div>
@@ -77,21 +77,21 @@ export default function ExamLobbyPage() {
       <main className="max-w-4xl w-full mx-auto my-auto py-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
         {/* Left Column: Exam Card & History (Screenshot 4 Left) */}
         <div className="md:col-span-5 space-y-4">
-          <div className="bg-[#1e1026] border border-fuchsia-950/60 rounded-3xl p-6 shadow-xl space-y-4">
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
             <div className="flex items-start gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-500 to-emerald-400 flex items-center justify-center font-black text-xl text-white shrink-0 shadow-lg">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500 flex items-center justify-center font-black text-xl text-slate-950 shrink-0 shadow-xs">
                 1+
               </div>
               <div>
-                <h2 className="font-extrabold text-base text-white leading-snug">
+                <h2 className="font-extrabold text-base text-slate-900 leading-snug">
                   {examDetails.title}
                 </h2>
-                <div className="text-xs text-slate-400 mt-1 flex items-center gap-2">
+                <div className="text-xs text-slate-500 mt-1 flex items-center gap-2">
                   <span>{examDetails.questionsCount} Soru</span>
                   <span>•</span>
                   <span>{examDetails.durationMins} Dk</span>
                 </div>
-                <div className="text-[11px] text-fuchsia-400 font-medium mt-1">
+                <div className="text-[11px] text-amber-700 font-bold mt-1">
                   Eğitmen: {examDetails.instructor}
                 </div>
               </div>
@@ -99,25 +99,25 @@ export default function ExamLobbyPage() {
 
             <button
               onClick={handleShare}
-              className="w-full py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-850 border border-slate-700/80 text-xs font-bold text-slate-300 hover:text-white transition-all flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 hover:text-slate-900 transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
             >
-              <Share2 className="w-4 h-4" />
+              <Share2 className="w-4 h-4 text-slate-500" />
               <span>{isCopied ? "Bağlantı Kopyalandı!" : "Sınav Linkini Paylaş"}</span>
             </button>
           </div>
 
           {/* Son Etkinlik (Previous Attempts) */}
-          <div className="bg-[#1e1026] border border-fuchsia-950/60 rounded-3xl p-6 shadow-xl space-y-3">
-            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-3">
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               Son Etkinlik Geçmişi
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-300">Yalnız İnceleme (En İyi)</span>
-                <span className="font-bold text-emerald-400">{examDetails.bestScore}</span>
+                <span className="text-slate-600 font-medium">Yalnız İnceleme (En İyi)</span>
+                <span className="font-bold text-emerald-600">{examDetails.bestScore}</span>
               </div>
-              <div className="w-full h-2 rounded-full bg-slate-900 overflow-hidden">
-                <div className="w-3/4 h-full bg-gradient-to-r from-sky-500 to-emerald-400 rounded-full" />
+              <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                <div className="w-3/4 h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full" />
               </div>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function ExamLobbyPage() {
           <div className="space-y-3">
             <button
               onClick={handleStartExam}
-              className="w-full py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm tracking-wide shadow-xl shadow-emerald-950/80 transition-all hover:scale-[1.01] flex items-center justify-center gap-2.5"
+              className="w-full py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm tracking-wide shadow-xs hover:shadow-md transition-all hover:scale-[1.01] flex items-center justify-center gap-2.5 cursor-pointer"
             >
               <Play className="w-5 h-5 fill-white" />
               <span>Sınava Başla / Yeniden Dene</span>
@@ -137,31 +137,31 @@ export default function ExamLobbyPage() {
 
             <button
               onClick={() => router.push(`/duel/${code}`)}
-              className="w-full py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-xs tracking-wide transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs tracking-wide transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Users className="w-4 h-4 text-fuchsia-600" />
+              <Users className="w-4 h-4 text-slate-950" />
               <span>Arkadaşlara Meydan Oku (1v1 Düello)</span>
             </button>
 
             <button
               onClick={() => router.push(`/flashcards/${code}`)}
-              className="w-full py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-850 border border-slate-700/80 text-slate-200 font-bold text-xs tracking-wide transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-bold text-xs tracking-wide transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Layers className="w-4 h-4 text-sky-400" />
+              <Layers className="w-4 h-4 text-amber-600" />
               <span>Bilgi Kartları (Flashcards)</span>
             </button>
           </div>
 
           {/* Ayarlar (Screenshot 4 Settings Toggles) */}
-          <div className="bg-[#1e1026] border border-fuchsia-950/60 rounded-3xl p-6 shadow-xl space-y-4">
-            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               Sınav Ayarları
             </div>
 
             <div className="space-y-3">
               {/* Metni Sesli Oku */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-200">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-700">
                   <Volume2 className="w-4 h-4 text-slate-400" />
                   <span>Metni sesli oku (AI Pronunciation)</span>
                 </div>
@@ -169,13 +169,13 @@ export default function ExamLobbyPage() {
                   type="checkbox"
                   checked={readAloud}
                   onChange={(e) => setReadAloud(e.target.checked)}
-                  className="w-5 h-5 rounded bg-slate-900 border-slate-700 text-emerald-600 focus:ring-0"
+                  className="w-5 h-5 rounded border-slate-300 text-amber-600 focus:ring-0 cursor-pointer"
                 />
               </div>
 
               {/* Zamanlayıcı */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-200">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-700">
                   <Clock className="w-4 h-4 text-slate-400" />
                   <span>Zamanlayıcı (Sınav Süresi Geri Sayımı)</span>
                 </div>
@@ -183,29 +183,29 @@ export default function ExamLobbyPage() {
                   type="checkbox"
                   checked={timerEnabled}
                   onChange={(e) => setTimerEnabled(e.target.checked)}
-                  className="w-5 h-5 rounded bg-slate-900 border-slate-700 text-emerald-600 focus:ring-0"
+                  className="w-5 h-5 rounded border-slate-300 text-amber-600 focus:ring-0 cursor-pointer"
                 />
               </div>
 
               {/* Güçlendirmeler */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-200">
-                  <Zap className="w-4 h-4 text-amber-400" />
+                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-700">
+                  <Zap className="w-4 h-4 text-amber-500" />
                   <span>Güçlendirmeler & Streak Çarpanı</span>
                 </div>
                 <input
                   type="checkbox"
                   checked={powerupsEnabled}
                   onChange={(e) => setPowerupsEnabled(e.target.checked)}
-                  className="w-5 h-5 rounded bg-slate-900 border-slate-700 text-emerald-600 focus:ring-0"
+                  className="w-5 h-5 rounded border-slate-300 text-amber-600 focus:ring-0 cursor-pointer"
                 />
               </div>
             </div>
 
             {/* Temalar (Screenshot 4 Theme Selector) */}
-            <div className="pt-3 border-t border-slate-800">
-              <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Palette className="w-3.5 h-3.5" />
+            <div className="pt-3 border-t border-slate-200">
+              <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <Palette className="w-3.5 h-3.5 text-slate-400" />
                 <span>Sınav Teması</span>
               </div>
               <div className="grid grid-cols-4 gap-2">
@@ -219,10 +219,10 @@ export default function ExamLobbyPage() {
                     key={th.id}
                     type="button"
                     onClick={() => setSelectedTheme(th.id)}
-                    className={`py-2 text-[11px] font-bold rounded-xl border transition-all ${
+                    className={`py-2 text-[11px] font-bold rounded-xl border transition-all cursor-pointer ${
                       selectedTheme === th.id
-                        ? "bg-white text-slate-900 border-white shadow-md"
-                        : "bg-slate-900 text-slate-400 border-slate-800 hover:text-slate-200"
+                        ? "bg-amber-500 text-slate-950 border-amber-500 shadow-xs font-black"
+                        : "bg-slate-50 text-slate-600 border-slate-200 hover:text-slate-900"
                     }`}
                   >
                     {th.label}
