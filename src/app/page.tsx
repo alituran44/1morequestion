@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { 
+  Search,
   KeyRound, 
   Sparkles, 
   Swords, 
@@ -22,13 +23,22 @@ import {
   Coins, 
   Check, 
   Star,
-  ChevronDown
+  ChevronDown,
+  Clock,
+  Mic,
+  PenTool,
+  FileText,
+  Volume2,
+  Bookmark,
+  Share2
 } from "lucide-react";
 
 export default function LandingPage() {
   const router = useRouter();
   const [quickPin, setQuickPin] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
+  const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
 
   const handlePinSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,381 +47,813 @@ export default function LandingPage() {
     router.push(`/join/${clean}`);
   };
 
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    router.push(`/student?q=${encodeURIComponent(searchQuery)}`);
+  };
+
+  // Quizlet-style Study Set discovery items
+  const popularStudySets = [
+    {
+      id: "mock-1",
+      title: "2026 YDT Şampiyonlar Özgün Deneme #1",
+      questionCount: "80 Soru",
+      duration: "120 Dk",
+      category: "YDT (YKS-Dil)",
+      author: "Ahmet Hoca (ELT)",
+      authorInitial: "A",
+      rating: "4.9",
+      href: "/exam/mock-1"
+    },
+    {
+      id: "mock-buept",
+      title: "Boğaziçi Üniversitesi BUEPT / BÜYES Hazırlık Atlama",
+      questionCount: "40 Soru",
+      duration: "210 Dk",
+      category: "Hazırlık Atlama",
+      author: "BÜ Yeterlik Komisyonu",
+      authorInitial: "B",
+      rating: "5.0",
+      href: "/exam/mock-1"
+    },
+    {
+      id: "mock-iys",
+      title: "ODTÜ & İTÜ İYS Seviye Muafiyet Denemesi #1",
+      questionCount: "60 Soru",
+      duration: "165 Dk",
+      category: "Hazırlık Atlama",
+      author: "Metu / ITU ELT Lab",
+      authorInitial: "M",
+      rating: "4.8",
+      href: "/exam/mock-1"
+    },
+    {
+      id: "mock-ielts",
+      title: "IELTS Academic Reading & Vocabulary Band 7.5+",
+      questionCount: "40 Soru",
+      duration: "60 Dk",
+      category: "IELTS Academic",
+      author: "Sarah Jenkins (IELTS Master)",
+      authorInitial: "S",
+      rating: "4.9",
+      href: "/exam/mock-1"
+    },
+    {
+      id: "mock-flash",
+      title: "YDS & YÖKDİL En Çok Çıkan 500 Akademik Kelime",
+      questionCount: "150 Kart",
+      duration: "Akıllı Tekrar",
+      category: "Kelime Kartları",
+      author: "Dr. Selin Demir",
+      authorInitial: "D",
+      rating: "5.0",
+      href: "/flashcards/set-1"
+    },
+    {
+      id: "mock-speaking",
+      title: "TOEFL iBT & IELTS Ses Kayıtlı Speaking Görevleri",
+      questionCount: "6 Görev",
+      duration: "Sesli Simülatör",
+      category: "Speaking Lab",
+      author: "ETS Akredite Eğitmenler",
+      authorInitial: "E",
+      rating: "4.9",
+      href: "/exam/mock-1"
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col justify-between selection:bg-amber-500 selection:text-slate-950">
-      {/* 1. TOP NAVBAR (Mirrors Wayground Header) */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-3.5 shadow-xs">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo & Brand */}
-          <BrandLogo size="md" showText={false} href="/" />
+    <div className="min-h-screen bg-[#f6f7fb] text-[#282e3e] flex flex-col justify-between selection:bg-[#4255ff] selection:text-white">
+      {/* 1. TOP NAVIGATION BAR (Exact Quizlet Spec: #ffffff, 56px, shadow-md, centered pill search bar) */}
+      <header className="sticky top-0 z-50 bg-[#ffffff] border-b border-[#d9dde8] shadow-[0_4px_16px_rgba(40,46,62,0.1)] px-4 sm:px-6">
+        <div className="max-w-[1200px] mx-auto h-16 flex items-center justify-between gap-4">
+          {/* Logo & Dropdown Menus */}
+          <div className="flex items-center gap-6 shrink-0">
+            <BrandLogo size="md" showText={false} href="/" />
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-600">
-            <a href="#portals" className="hover:text-amber-600 transition-colors">
-              Giriş Portalları
-            </a>
-            <a href="#features" className="hover:text-amber-600 transition-colors">
-              Özellikler
-            </a>
-            <a href="#exams" className="hover:text-amber-600 transition-colors">
-              Sınav Türleri
-            </a>
-            <Link href="/library" className="hover:text-amber-600 transition-colors">
-              İçerik Kütüphanesi
+            {/* Study Tools Dropdown */}
+            <div className="relative hidden lg:block">
+              <button
+                onClick={() => {
+                  setIsToolsDropdownOpen(!isToolsDropdownOpen);
+                  setIsLoginDropdownOpen(false);
+                }}
+                className="flex items-center gap-1 text-[14px] font-semibold text-[#282e3e] hover:text-[#4255ff] transition-colors rounded-[4px] px-2 py-1 cursor-pointer"
+              >
+                <span>Çalışma Araçları</span>
+                <ChevronDown className="w-3.5 h-3.5 text-[#586380]" />
+              </button>
+
+              {isToolsDropdownOpen && (
+                <div className="absolute left-0 top-full mt-2 w-64 bg-[#ffffff] border border-[#d9dde8] rounded-[8px] shadow-[0_4px_16px_rgba(40,46,62,0.1)] p-2 z-50 text-[14px] space-y-1">
+                  <Link
+                    href="/student"
+                    onClick={() => setIsToolsDropdownOpen(false)}
+                    className="flex items-center gap-3 p-2.5 rounded-[4px] hover:bg-[#f6f7fb] text-[#282e3e] transition-colors"
+                  >
+                    <BookOpen className="w-4 h-4 text-[#4255ff]" />
+                    <div>
+                      <div className="font-semibold text-[13px]">Deneme Sınavları</div>
+                      <div className="text-[11px] text-[#586380]">YDT, YDS, BUEPT, İYS, IELTS</div>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/flashcards/set-1"
+                    onClick={() => setIsToolsDropdownOpen(false)}
+                    className="flex items-center gap-3 p-2.5 rounded-[4px] hover:bg-[#f6f7fb] text-[#282e3e] transition-colors"
+                  >
+                    <Layers className="w-4 h-4 text-[#4255ff]" />
+                    <div>
+                      <div className="font-semibold text-[13px]">Akıllı Kelime Kartları</div>
+                      <div className="text-[11px] text-[#586380]">Spaced Repetition & Flashcards</div>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/duel/lobby"
+                    onClick={() => setIsToolsDropdownOpen(false)}
+                    className="flex items-center gap-3 p-2.5 rounded-[4px] hover:bg-[#f6f7fb] text-[#282e3e] transition-colors"
+                  >
+                    <Swords className="w-4 h-4 text-[#4255ff]" />
+                    <div>
+                      <div className="font-semibold text-[13px]">1v1 Canlı Sınav Düellosu</div>
+                      <div className="text-[11px] text-[#586380]">Arkadaşlarla kafa kafaya yarış</div>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/exam/mock-1"
+                    onClick={() => setIsToolsDropdownOpen(false)}
+                    className="flex items-center gap-3 p-2.5 rounded-[4px] hover:bg-[#f6f7fb] text-[#282e3e] transition-colors"
+                  >
+                    <Mic className="w-4 h-4 text-[#4255ff]" />
+                    <div>
+                      <div className="font-semibold text-[13px]">Speaking & Writing Lab</div>
+                      <div className="text-[11px] text-[#586380]">Ses kayıtlı konuşma & kompozisyon</div>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            <Link
+              href="/library"
+              className="hidden md:inline-block text-[14px] font-semibold text-[#282e3e] hover:text-[#4255ff] transition-colors"
+            >
+              Soru Havuzu
             </Link>
-          </nav>
+          </div>
 
-          {/* Right Action CTA Buttons */}
-          <div className="flex items-center gap-3">
-            {/* Quick PIN Button */}
+          {/* Centered Search Bar (Signature Quizlet Pill Search) */}
+          <form 
+            onSubmit={handleSearchSubmit} 
+            className="flex-1 max-w-[420px] mx-2 hidden sm:flex items-center bg-[#f6f7fb] rounded-[200px] px-4 py-2 hover:bg-[#edefff]/60 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#4255ff] focus-within:ring-offset-1 transition-all border border-transparent focus-within:border-[#4255ff]"
+          >
+            <Search className="w-4 h-4 text-[#939bb4] shrink-0 mr-2.5" />
+            <input
+              type="text"
+              placeholder="Sınav, kelime seti veya konu ara..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-transparent border-0 outline-none text-[14px] text-[#282e3e] placeholder-[#939bb4] w-full font-normal"
+            />
+          </form>
+
+          {/* Right Action Controls */}
+          <div className="flex items-center gap-3 shrink-0">
+            {/* Quick PIN Button (Ghost Link with key icon) */}
             <Link
               href="/join"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-fuchsia-50 border border-fuchsia-200 hover:bg-fuchsia-100 text-fuchsia-700 hover:text-fuchsia-900 text-xs font-extrabold transition-all shadow-xs group cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[200px] hover:bg-[#edefff] text-[#4255ff] text-[13px] font-semibold transition-colors"
             >
-              <KeyRound className="w-4 h-4 text-fuchsia-600 group-hover:scale-110 transition-transform" />
-              <span>#! Koda gir</span>
+              <KeyRound className="w-3.5 h-3.5" />
+              <span>Koda Gir</span>
             </Link>
 
-            {/* Giriş Yap Dropdown (Distinct Portals Selector) */}
+            {/* Login Dropdown (Portals) */}
             <div className="relative">
               <button
-                onClick={() => setIsLoginDropdownOpen(!isLoginDropdownOpen)}
-                className="px-4 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 hover:text-slate-950 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                onClick={() => {
+                  setIsLoginDropdownOpen(!isLoginDropdownOpen);
+                  setIsToolsDropdownOpen(false);
+                }}
+                className="px-3.5 py-1.5 rounded-[200px] border border-[#d9dde8] hover:border-[#4255ff] text-[13px] font-semibold text-[#282e3e] hover:text-[#4255ff] transition-all flex items-center gap-1.5 cursor-pointer bg-white"
               >
                 <span>Giriş Yap</span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+                <ChevronDown className="w-3.5 h-3.5 text-[#586380]" />
               </button>
 
               {isLoginDropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 z-50 text-xs animate-in fade-in zoom-in-95 space-y-1">
+                <div className="absolute right-0 top-full mt-2 w-56 bg-[#ffffff] border border-[#d9dde8] rounded-[8px] shadow-[0_4px_16px_rgba(40,46,62,0.1)] p-2 z-50 text-[13px] space-y-1">
                   <Link
                     href="/student"
                     onClick={() => setIsLoginDropdownOpen(false)}
-                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-amber-50 text-amber-950 font-bold transition-colors"
+                    className="flex items-center gap-2.5 p-2 rounded-[4px] hover:bg-[#edefff] text-[#282e3e] font-semibold transition-colors"
                   >
-                    <GraduationCap className="w-4 h-4 text-amber-600" />
+                    <GraduationCap className="w-4 h-4 text-[#4255ff]" />
                     <span>Öğrenci Girişi</span>
                   </Link>
 
                   <Link
                     href="/instructor"
                     onClick={() => setIsLoginDropdownOpen(false)}
-                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-slate-50 text-slate-800 font-bold transition-colors"
+                    className="flex items-center gap-2.5 p-2 rounded-[4px] hover:bg-[#f6f7fb] text-[#282e3e] font-semibold transition-colors"
                   >
-                    <Users className="w-4 h-4 text-sky-600" />
+                    <Users className="w-4 h-4 text-[#586380]" />
                     <span>Eğitmen Girişi</span>
                   </Link>
 
                   <Link
                     href="/admin"
                     onClick={() => setIsLoginDropdownOpen(false)}
-                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-amber-50 text-amber-950 font-bold transition-colors"
+                    className="flex items-center gap-2.5 p-2 rounded-[4px] hover:bg-[#f6f7fb] text-[#282e3e] font-semibold transition-colors border-t border-[#d9dde8] mt-1 pt-2"
                   >
-                    <ShieldCheck className="w-4 h-4 text-amber-600" />
-                    <span>Yönetici (Admin) Girişi</span>
+                    <ShieldCheck className="w-4 h-4 text-[#586380]" />
+                    <span>Admin Paneli</span>
                   </Link>
                 </div>
               )}
             </div>
 
-            {/* Primary CTA */}
+            {/* Signature Filled Pill Button: #4255ff, 200px radius, 14px font-semibold */}
             <Link
               href="/student"
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs transition-all shadow-xs cursor-pointer"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-[200px] bg-[#4255ff] hover:bg-[#3444e5] text-[#ffffff] font-semibold text-[14px] shadow-[0_2px_4px_rgba(40,46,62,0.1)] transition-all cursor-pointer"
             >
-              <span>Hemen Başla</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Ücretsiz Kaydol</span>
             </Link>
           </div>
         </div>
       </header>
 
-      {/* 2. HERO SECTION */}
-      <section className="relative overflow-hidden pt-12 pb-20 px-6 max-w-7xl mx-auto w-full text-center space-y-8">
-        {/* Subtle Background Glows */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-amber-200/40 via-yellow-200/30 to-amber-100/30 blur-[130px] rounded-full pointer-events-none" />
-
-        <div className="space-y-4 max-w-4xl mx-auto relative z-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+      {/* 2. HERO SECTION (Centered text stack on calm #f6f7fb canvas) */}
+      <section className="pt-12 sm:pt-16 pb-16 px-4 sm:px-6 max-w-[1200px] mx-auto w-full text-center space-y-8">
+        <div className="space-y-4 max-w-[800px] mx-auto">
+          {/* Eyebrow Pill */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-[200px] bg-[#edefff] border border-[#d9dde8] text-[#4255ff] text-[12px] font-semibold">
+            <Sparkles className="w-3.5 h-3.5" />
             <span>TÜRKİYE'NİN İLK VE TEK AI DESTEKLİ İNGİLİZCE SINAV EKOSİSTEMİ</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-black text-slate-950 tracking-tight leading-[1.15]">
-            Öğrenmeyi ve Öğretmeyi <br className="hidden sm:block" />
-            <span className="bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-600 bg-clip-text text-transparent drop-shadow-xs">
-              Herkes İçin Güçlü Kılın.
-            </span>
+          {/* Display Headline (Weight 600-700, 44px display) */}
+          <h1 className="text-[34px] sm:text-[44px] leading-[1.2] font-semibold text-[#282e3e] tracking-tight">
+            Sınavlara Hazırlanmanın ve <br className="hidden sm:inline" />
+            <span className="text-[#4255ff]">Uzmanlaşmanın En Akıllı Yolu.</span>
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            YDT, YDS, YÖKDİL, Üniversite Hazırlık Atlama (Proficiency / BUEPT / İYS) ve IELTS/TOEFL sınavlarında; ses kayıtlı Speaking simülatörü, yapay zeka ile deneme üretimi ve adaptif "1 Soru Daha" telafi motoru.
+          {/* Subhead (Weight 400, 16px, #586380) */}
+          <p className="text-[15px] sm:text-[16px] leading-[24px] text-[#586380] max-w-[680px] mx-auto font-normal">
+            YDT, YDS, YÖKDİL, Boğaziçi BUEPT, ODTÜ/İTÜ İYS, IELTS ve TOEFL sınavlarında; 
+            yapay zeka deneme stüdyosu, ses kayıtlı Speaking simülatörü ve adaptif "1 Soru Daha" telafi motoru.
           </p>
         </div>
 
-        {/* Quick PIN Input Bar on Hero */}
-        <div className="max-w-md mx-auto relative z-10">
-          <form onSubmit={handlePinSubmit} className="flex items-center p-1.5 rounded-2xl bg-white border-2 border-amber-400 shadow-xl shadow-amber-500/10">
+        {/* Hero Interactive Search / PIN Join Pill (Signature Quizlet 200px Pill Input) */}
+        <div className="max-w-[480px] mx-auto">
+          <form 
+            onSubmit={handlePinSubmit} 
+            className="flex items-center p-1.5 rounded-[200px] bg-[#ffffff] border border-[#d9dde8] shadow-[0_4px_16px_rgba(40,46,62,0.08)] hover:border-[#4255ff] transition-all"
+          >
+            <div className="pl-3.5 pr-2 text-[#939bb4]">
+              <KeyRound className="w-4 h-4" />
+            </div>
             <input
               type="text"
-              placeholder="Öğretmeninizin 6 haneli kodunu girin (örn: 904182)"
+              placeholder="Öğretmeninizin 6 haneli sınav kodunu girin (örn: 904182)"
               value={quickPin}
               onChange={(e) => setQuickPin(e.target.value)}
-              className="flex-1 px-4 py-2.5 text-xs sm:text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none"
+              className="flex-1 px-2 py-2 text-[14px] font-normal text-[#282e3e] placeholder-[#939bb4] outline-none bg-transparent"
             />
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs tracking-wide transition-all shadow-xs flex items-center gap-1.5 shrink-0 cursor-pointer"
+              className="px-5 py-2.5 rounded-[200px] bg-[#4255ff] hover:bg-[#3444e5] text-white font-semibold text-[14px] transition-all shadow-[0_2px_4px_rgba(40,46,62,0.1)] flex items-center gap-1.5 shrink-0 cursor-pointer"
             >
-              <span>Katıl</span>
+              <span>Sınava Gir</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </form>
+
+          {/* Ghost Text Link below Hero CTA */}
+          <div className="pt-3">
+            <Link
+              href="/instructor"
+              className="text-[#4255ff] hover:underline text-[14px] font-normal inline-flex items-center gap-1 transition-colors"
+            >
+              <span>Öğretmen misiniz? Eğitmen ve okul çözümlerine göz atın</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
 
-        {/* 3 DISTINCT PORTAL ENTRANCES */}
-        <div id="portals" className="pt-8 relative z-10">
-          <div className="text-xs font-bold uppercase tracking-wider text-amber-800 mb-6">
-            Kullanıcı Rolünüze Göre Doğrudan Giriş Yapın
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-6xl mx-auto">
-            {/* PORTAL 1: ÖĞRENCİ GİRİŞİ */}
-            <div className="p-6 rounded-3xl bg-white border-2 border-amber-400/80 hover:border-amber-500 transition-all shadow-md hover:shadow-xl flex flex-col justify-between space-y-6 group">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shadow-xs">
-                  <GraduationCap className="w-6 h-6" />
-                </div>
+        {/* 3. FOUR FEATURE CATEGORY CARDS (Pastel Hero Showcase at 24px radius, white inner panel with 8px radius) */}
+        <div className="pt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 text-left">
+            {/* Card 1: Cyan Pastel */}
+            <div className="rounded-[24px] bg-[#e0f7fa] p-4.5 border border-[#b2ebf2] flex flex-col justify-between transition-all hover:shadow-[0_4px_16px_rgba(40,46,62,0.1)] group">
+              <div className="rounded-[8px] bg-white p-5 shadow-[0_2px_4px_rgba(40,46,62,0.06)] space-y-2.5 flex-1 flex flex-col justify-between">
                 <div>
-                  <div className="inline-block text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200 mb-1">
-                    Öğrenci Portalı
+                  <div className="w-10 h-10 rounded-[8px] bg-[#e0f7fa] flex items-center justify-center text-[#00838f] mb-3">
+                    <Layers className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xl font-black text-slate-950 group-hover:text-amber-600 transition-colors">
-                    Öğrenci Arenası
+                  <h3 className="text-[18px] font-bold text-[#282e3e] group-hover:text-[#4255ff] transition-colors">
+                    Akıllı Kelime Kartları
                   </h3>
-                  <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                    Sınavlara gir, 1v1 düelloda arkadaşlarınla yarış, bilgi kartları ile akademik kelimeleri ezberle ve netlerini anında gör.
+                  <p className="text-[14px] leading-[20px] text-[#586380] font-normal mt-1.5">
+                    Aralıklı tekrar (Spaced Repetition) ve CEFR C1/B2 akademik kelime setleriyle kalıcı ezber.
                   </p>
                 </div>
+                <div className="pt-4 border-t border-[#d9dde8]/60 flex items-center justify-between">
+                  <span className="text-[12px] font-semibold text-[#00838f]">Flashcard Modu</span>
+                  <Link href="/flashcards/set-1" className="text-[#4255ff] text-[13px] font-semibold hover:underline flex items-center gap-1">
+                    <span>Çalış</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              </div>
+            </div>
 
-                <div className="space-y-2 pt-2 border-t border-slate-100">
-                  <div className="flex items-center gap-2 text-[11px] text-slate-700">
-                    <Check className="w-3.5 h-3.5 text-amber-600" />
-                    <span>500 Jeton Başlangıç Bakiyesi</span>
+            {/* Card 2: Magenta Pastel */}
+            <div className="rounded-[24px] bg-[#fce4ec] p-4.5 border border-[#f8bbd0] flex flex-col justify-between transition-all hover:shadow-[0_4px_16px_rgba(40,46,62,0.1)] group">
+              <div className="rounded-[8px] bg-white p-5 shadow-[0_2px_4px_rgba(40,46,62,0.06)] space-y-2.5 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="w-10 h-10 rounded-[8px] bg-[#fce4ec] flex items-center justify-center text-[#c2185b] mb-3">
+                    <Swords className="w-5 h-5" />
                   </div>
-                  <div className="flex items-center gap-2 text-[11px] text-slate-700">
-                    <Check className="w-3.5 h-3.5 text-amber-600" />
-                    <span>Adaptif "1 Soru Daha" Telafisi</span>
+                  <h3 className="text-[18px] font-bold text-[#282e3e] group-hover:text-[#4255ff] transition-colors">
+                    1v1 Canlı Sınav Arenası
+                  </h3>
+                  <p className="text-[14px] leading-[20px] text-[#586380] font-normal mt-1.5">
+                    15 saniyelik sorularla arkadaşlarınla kafa kafaya yarış, streak puanları kazan ve liderlikte yüksel.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-[#d9dde8]/60 flex items-center justify-between">
+                  <span className="text-[12px] font-semibold text-[#c2185b]">Canlı Yarış</span>
+                  <Link href="/duel/lobby" className="text-[#4255ff] text-[13px] font-semibold hover:underline flex items-center gap-1">
+                    <span>Meydan Oku</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Violet Pastel (Brand Tint) */}
+            <div className="rounded-[24px] bg-[#dbdfff] p-4.5 border border-[#c5cae9] flex flex-col justify-between transition-all hover:shadow-[0_4px_16px_rgba(40,46,62,0.1)] group">
+              <div className="rounded-[8px] bg-white p-5 shadow-[0_2px_4px_rgba(40,46,62,0.06)] space-y-2.5 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="w-10 h-10 rounded-[8px] bg-[#edefff] flex items-center justify-center text-[#4255ff] mb-3">
+                    <Sparkles className="w-5 h-5" />
                   </div>
-                  <div className="flex items-center gap-2 text-[11px] text-slate-700">
-                    <Check className="w-3.5 h-3.5 text-amber-600" />
-                    <span>Arkadaşlarla Canlı 1v1 Düello</span>
+                  <h3 className="text-[18px] font-bold text-[#282e3e] group-hover:text-[#4255ff] transition-colors">
+                    AI Sınav & Telafi Motoru
+                  </h3>
+                  <p className="text-[14px] leading-[20px] text-[#586380] font-normal mt-1.5">
+                    PDF'ten anında optik deneme oluşturun; yanlışlara IRT tabanlı adaptif "1 Soru Daha" telafisi alın.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-[#d9dde8]/60 flex items-center justify-between">
+                  <span className="text-[12px] font-semibold text-[#4255ff]">Adaptif IRT</span>
+                  <Link href="/student" className="text-[#4255ff] text-[13px] font-semibold hover:underline flex items-center gap-1">
+                    <span>Keşfet</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 4: Peach Pastel */}
+            <div className="rounded-[24px] bg-[#fff3e0] p-4.5 border border-[#ffe0b2] flex flex-col justify-between transition-all hover:shadow-[0_4px_16px_rgba(40,46,62,0.1)] group">
+              <div className="rounded-[8px] bg-white p-5 shadow-[0_2px_4px_rgba(40,46,62,0.06)] space-y-2.5 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="w-10 h-10 rounded-[8px] bg-[#fff3e0] flex items-center justify-center text-[#e65100] mb-3">
+                    <Mic className="w-5 h-5" />
                   </div>
+                  <h3 className="text-[18px] font-bold text-[#282e3e] group-hover:text-[#4255ff] transition-colors">
+                    Speaking & Writing Lab
+                  </h3>
+                  <p className="text-[14px] leading-[20px] text-[#586380] font-normal mt-1.5">
+                    IELTS & TOEFL için ses kaydıyla konuşma provası ve rubrik analizli akademik essay yazımı.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-[#d9dde8]/60 flex items-center justify-between">
+                  <span className="text-[12px] font-semibold text-[#e65100]">Sesli Simülatör</span>
+                  <Link href="/exam/mock-1" className="text-[#4255ff] text-[13px] font-semibold hover:underline flex items-center gap-1">
+                    <span>Dene</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. THREE DISTINCT ROLE ENTRANCE PORTALS (Quizlet 8px Cards with 200px Pill Buttons) */}
+      <section id="portals" className="py-16 px-4 sm:px-6 max-w-[1200px] mx-auto w-full space-y-8">
+        <div className="text-center space-y-2">
+          <div className="text-[12px] font-semibold uppercase tracking-wider text-[#4255ff]">
+            Doğrudan Rol Giriş Portalları
+          </div>
+          <h2 className="text-[28px] sm:text-[32px] font-semibold text-[#282e3e] tracking-tight">
+            İhtiyacınıza Uygun Çalışma Alanını Seçin
+          </h2>
+          <p className="text-[14px] text-[#586380] font-normal">
+            Öğrenciler için eğlenceli pratik, öğretmenler için güçlü sınıf araçları, yöneticiler için merkezi denetim.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+          {/* Portal 1: Öğrenci Arenası */}
+          <div className="p-6 rounded-[8px] bg-white border border-[#d9dde8] shadow-[0_4px_16px_rgba(40,46,62,0.06)] hover:border-[#4255ff] transition-all flex flex-col justify-between space-y-6">
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-[8px] bg-[#edefff] flex items-center justify-center text-[#4255ff]">
+                <GraduationCap className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="text-[11px] font-semibold uppercase text-[#4255ff] mb-1">
+                  Öğrenci Portalı
+                </div>
+                <h3 className="text-[20px] font-semibold text-[#282e3e]">
+                  Öğrenci Arenası
+                </h3>
+                <p className="text-[14px] text-[#586380] font-normal mt-2 leading-[20px]">
+                  Sınavlara gir, 1v1 düelloda arkadaşlarınla yarış, bilgi kartları ile akademik kelimeleri ezberle ve netlerini anında gör.
+                </p>
+              </div>
+
+              <div className="space-y-2 pt-3 border-t border-[#d9dde8]">
+                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
+                  <Check className="w-4 h-4 text-[#4255ff]" />
+                  <span>500 Jeton Başlangıç Bakiyesi</span>
+                </div>
+                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
+                  <Check className="w-4 h-4 text-[#4255ff]" />
+                  <span>Adaptif "1 Soru Daha" Telafi Motoru</span>
+                </div>
+                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
+                  <Check className="w-4 h-4 text-[#4255ff]" />
+                  <span>Arkadaşlarla Canlı 1v1 Düello</span>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/student"
+              className="w-full py-2.5 rounded-[200px] bg-[#4255ff] hover:bg-[#3444e5] text-white font-semibold text-[14px] shadow-[0_2px_4px_rgba(40,46,62,0.1)] text-center transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Öğrenci Olarak Başla</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* Portal 2: Eğitmen & Okul Portalı */}
+          <div className="p-6 rounded-[8px] bg-white border border-[#d9dde8] shadow-[0_4px_16px_rgba(40,46,62,0.06)] hover:border-[#282e3e] transition-all flex flex-col justify-between space-y-6">
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-[8px] bg-[#f6f7fb] flex items-center justify-center text-[#282e3e]">
+                <Users className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="text-[11px] font-semibold uppercase text-[#586380] mb-1">
+                  Eğitmen & Okul Portalı
+                </div>
+                <h3 className="text-[20px] font-semibold text-[#282e3e]">
+                  Öğretmen Paneli
+                </h3>
+                <p className="text-[14px] text-[#586380] font-normal mt-2 leading-[20px]">
+                  PDF soru yükle, yapay zeka ile saniyeler içinde optik deneme üret, sınıflarına ödev ata ve otomatik veli karnesi al.
+                </p>
+              </div>
+
+              <div className="space-y-2 pt-3 border-t border-[#d9dde8]">
+                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
+                  <Check className="w-4 h-4 text-[#282e3e]" />
+                  <span>AI PDF Deneme Stüdyosu (OCR)</span>
+                </div>
+                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
+                  <Check className="w-4 h-4 text-[#282e3e]" />
+                  <span>Sınıflar & Zayıf Kazanım Ödevi</span>
+                </div>
+                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
+                  <Check className="w-4 h-4 text-[#282e3e]" />
+                  <span>Öğrenci & Veli Rapor Karnesi</span>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/instructor"
+              className="w-full py-2.5 rounded-[200px] bg-[#282e3e] hover:bg-[#1f2430] text-white font-semibold text-[14px] shadow-[0_2px_4px_rgba(40,46,62,0.1)] text-center transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Eğitmen Olarak Başla</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* Portal 3: Merkezi Yönetim (Admin) */}
+          <div className="p-6 rounded-[8px] bg-white border border-[#d9dde8] shadow-[0_4px_16px_rgba(40,46,62,0.06)] hover:border-[#4255ff] transition-all flex flex-col justify-between space-y-6">
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-[8px] bg-[#edefff] flex items-center justify-center text-[#4255ff]">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="text-[11px] font-semibold uppercase text-[#586380] mb-1">
+                  Merkezi Yönetim
+                </div>
+                <h3 className="text-[20px] font-semibold text-[#282e3e]">
+                  Admin Kontrol Paneli
+                </h3>
+                <p className="text-[14px] text-[#586380] font-normal mt-2 leading-[20px]">
+                  Tüm platformu, soru havuzunu, onay bekleyen sınavları, kullanıcı yetkilerini ve Paynkolay Sanal POS muhasebesini denetle.
+                </p>
+              </div>
+
+              <div className="space-y-2 pt-3 border-t border-[#d9dde8]">
+                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
+                  <Check className="w-4 h-4 text-[#4255ff]" />
+                  <span>Paynkolay Ciro & Hakediş Takibi</span>
+                </div>
+                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
+                  <Check className="w-4 h-4 text-[#4255ff]" />
+                  <span>Deneme Onay Masası (Moderasyon)</span>
+                </div>
+                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
+                  <Check className="w-4 h-4 text-[#4255ff]" />
+                  <span>IRT Motoru & Sistem Sağlığı</span>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/admin"
+              className="w-full py-2.5 rounded-[200px] bg-transparent border border-[#4255ff] hover:bg-[#edefff] text-[#4255ff] font-semibold text-[14px] shadow-[0_2px_4px_rgba(40,46,62,0.04)] text-center transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Yönetici Paneline Git</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. POPULAR STUDY SETS (Exact Quizlet Study Set Card Spec) */}
+      <section className="py-16 px-4 sm:px-6 max-w-[1200px] mx-auto w-full space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div className="text-[12px] font-semibold uppercase tracking-wider text-[#4255ff]">
+              Popüler Çalışma & Deneme Setleri
+            </div>
+            <h2 className="text-[28px] sm:text-[32px] font-semibold text-[#282e3e] tracking-tight mt-1">
+              Hemen Başlayabileceğiniz Setler
+            </h2>
+          </div>
+
+          <Link
+            href="/student"
+            className="text-[#4255ff] hover:underline text-[14px] font-semibold inline-flex items-center gap-1 shrink-0"
+          >
+            <span>Tüm Setleri ve Denemeleri Gör</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        {/* Study Set Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {popularStudySets.map((set) => (
+            <Link
+              key={set.id}
+              href={set.href}
+              className="p-4 rounded-[8px] bg-white border border-[#d9dde8] hover:border-[#4255ff] transition-all hover:shadow-[0_4px_16px_rgba(40,46,62,0.1)] flex flex-col justify-between space-y-4 group cursor-pointer"
+            >
+              <div className="space-y-2.5">
+                {/* Title */}
+                <h4 className="text-[16px] font-semibold text-[#282e3e] group-hover:text-[#4255ff] transition-colors leading-[22px]">
+                  {set.title}
+                </h4>
+
+                {/* Term Count Badge & Duration */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[12px] font-normal text-[#586380] bg-[#f6f7fb] px-2.5 py-0.5 rounded-[200px] border border-[#d9dde8]/60">
+                    {set.questionCount}
+                  </span>
+                  <span className="text-[12px] font-normal text-[#586380]">
+                    • {set.duration}
+                  </span>
+                  <span className="text-[11px] font-medium text-[#4255ff] bg-[#edefff] px-2 py-0.5 rounded-[200px]">
+                    {set.category}
+                  </span>
                 </div>
               </div>
 
+              {/* Creator row with circular avatar & username */}
+              <div className="pt-3 border-t border-[#d9dde8]/60 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-[#edefff] text-[#4255ff] flex items-center justify-center text-[11px] font-bold">
+                    {set.authorInitial}
+                  </div>
+                  <span className="text-[12px] font-normal text-[#586380] truncate max-w-[180px]">
+                    {set.author}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1 text-[12px] font-semibold text-[#282e3e]">
+                  <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                  <span>{set.rating}</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 6. PROMOTIONAL SECTION PANEL (Exact Quizlet Lilac Wash #edefff Two-Column Split) */}
+      <section className="bg-[#edefff] py-16 px-4 sm:px-6 w-full border-y border-[#d9dde8]">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column: Interactive Product Card Mockup on White Surface */}
+          <div className="p-6 rounded-[8px] bg-white border border-[#d9dde8] shadow-[0_4px_16px_rgba(40,46,62,0.1)] space-y-4">
+            <div className="flex items-center justify-between border-b border-[#d9dde8] pb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#4255ff] bg-[#edefff] px-2.5 py-0.5 rounded-[200px]">
+                  Adaptif "1 Soru Daha"
+                </span>
+                <span className="text-[12px] text-[#586380]">IRT Zorluk Seviyesi: B2+</span>
+              </div>
+              <span className="text-[12px] font-semibold text-[#00838f] bg-[#e0f7fa] px-2.5 py-0.5 rounded-[200px]">
+                Kazanım Telafisi Aktif
+              </span>
+            </div>
+
+            <div className="space-y-3 pt-1">
+              <p className="text-[14px] font-semibold text-[#282e3e] leading-[20px]">
+                "If the government ______ stricter regulations earlier, the environmental crisis could have been mitigated significantly."
+              </p>
+
+              <div className="space-y-2 text-[13px]">
+                <div className="p-2.5 rounded-[4px] bg-[#f6f7fb] border border-[#d9dde8] flex items-center justify-between text-[#282e3e]">
+                  <span>A) had implemented</span>
+                  <CheckCircle2 className="w-4 h-4 text-[#4255ff]" />
+                </div>
+                <div className="p-2.5 rounded-[4px] bg-white border border-[#d9dde8] text-[#586380]">
+                  <span>B) implements</span>
+                </div>
+                <div className="p-2.5 rounded-[4px] bg-white border border-[#d9dde8] text-[#586380]">
+                  <span>C) would implement</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-[4px] bg-[#f6f7fb] border-l-2 border-[#4255ff] text-[12px] text-[#586380] leading-[18px]">
+                <strong className="text-[#282e3e]">IRT Çözüm Analizi:</strong> Type 3 Conditionals kuralı: Geçmişte gerçekleşmemiş şart cümlelerinde temel formül had + V3'tür.
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Promotional Text & CTA Button */}
+          <div className="space-y-5 text-left">
+            <div className="text-[12px] font-semibold uppercase tracking-wider text-[#4255ff]">
+              Akıllı Telafi Teknolojisi
+            </div>
+            <h2 className="text-[30px] sm:text-[36px] font-bold text-[#282e3e] tracking-tight leading-[1.2]">
+              Hata yaptığınız an öğrenmeye başlayın. Boşa vakit kaybetmeyin.
+            </h2>
+            <p className="text-[15px] leading-[24px] text-[#586380] font-normal">
+              IRT (Item Response Theory) motorumuz, çözülen her sorunun zorluk derecesini ve öğrencinin anlık yetenek düzeyini hesaplar.
+              Bir soruyu yanlış yaptığınızda sistem otomatik olarak o kazanımı tespit eder ve hafızanıza yerleşene kadar "1 Soru Daha" yönlendirir.
+            </p>
+            <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Link
                 href="/student"
-                className="w-full py-3 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs tracking-wide shadow-xs text-center transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="px-6 py-3 rounded-[200px] bg-[#4255ff] hover:bg-[#3444e5] text-white font-semibold text-[15px] shadow-[0_2px_4px_rgba(40,46,62,0.1)] transition-all flex items-center gap-2 cursor-pointer"
               >
-                <span>Öğrenci Olarak Başla</span>
+                <span>Hemen Denemeye Başla</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
-            </div>
-
-            {/* PORTAL 2: EĞİTMEN GİRİŞİ */}
-            <div className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-sky-400 transition-all shadow-sm hover:shadow-xl flex flex-col justify-between space-y-6 group">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 shadow-xs">
-                  <Users className="w-6 h-6" />
-                </div>
-                <div>
-                  <div className="inline-block text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-sky-100 text-sky-800 border border-sky-200 mb-1">
-                    Eğitmen & Okul Portalı
-                  </div>
-                  <h3 className="text-xl font-black text-slate-950 group-hover:text-sky-600 transition-colors">
-                    Öğretmen Paneli
-                  </h3>
-                  <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                    PDF yükle, AI ile 1 dakikada deneme üret, sınıflarına ödev ata, madde analitiği ve otomatik veli bildirimleri al.
-                  </p>
-                </div>
-
-                <div className="space-y-2 pt-2 border-t border-slate-100">
-                  <div className="flex items-center gap-2 text-[11px] text-slate-700">
-                    <Check className="w-3.5 h-3.5 text-sky-600" />
-                    <span>AI PDF Deneme Stüdyosu (OCR)</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-[11px] text-slate-700">
-                    <Check className="w-3.5 h-3.5 text-sky-600" />
-                    <span>Sınıflar & Zayıf Kazanım Ödevi</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-[11px] text-slate-700">
-                    <Check className="w-3.5 h-3.5 text-sky-600" />
-                    <span>Öğrenci & Veli Rapor Karnesi</span>
-                  </div>
-                </div>
-              </div>
-
               <Link
-                href="/instructor"
-                className="w-full py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-white font-black text-xs tracking-wide shadow-xs text-center transition-all flex items-center justify-center gap-2 cursor-pointer"
+                href="/library"
+                className="text-[#4255ff] hover:underline text-[15px] font-normal inline-flex items-center gap-1"
               >
-                <span>Eğitmen Olarak Başla</span>
-                <ArrowRight className="w-4 h-4 text-amber-400" />
-              </Link>
-            </div>
-
-            {/* PORTAL 3: YÖNETİCİ (ADMIN) GİRİŞİ */}
-            <div className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-amber-400 transition-all shadow-sm hover:shadow-xl flex flex-col justify-between space-y-6 group">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shadow-xs">
-                  <ShieldCheck className="w-6 h-6" />
-                </div>
-                <div>
-                  <div className="inline-block text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200 mb-1">
-                    Merkezi Yönetim
-                  </div>
-                  <h3 className="text-xl font-black text-slate-950 group-hover:text-amber-600 transition-colors">
-                    Admin Kontrol Paneli
-                  </h3>
-                  <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                    Tüm platformu, soru havuzunu, onay bekleyen sınavları, kullanıcı yetkilerini ve Paynkolay Sanal POS muhasebesini denetle.
-                  </p>
-                </div>
-
-                <div className="space-y-2 pt-2 border-t border-slate-100">
-                  <div className="flex items-center gap-2 text-[11px] text-slate-700">
-                    <Check className="w-3.5 h-3.5 text-amber-600" />
-                    <span>Paynkolay Ciro & Hakediş Takibi</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-[11px] text-slate-700">
-                    <Check className="w-3.5 h-3.5 text-amber-600" />
-                    <span>Deneme Onay Masası (Moderasyon)</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-[11px] text-slate-700">
-                    <Check className="w-3.5 h-3.5 text-amber-600" />
-                    <span>IRT Motoru & Sistem Sağlığı</span>
-                  </div>
-                </div>
-              </div>
-
-              <Link
-                href="/admin"
-                className="w-full py-3 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 font-extrabold text-xs tracking-wide shadow-xs text-center transition-all flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>Yönetici Paneline Git</span>
-                <ArrowRight className="w-4 h-4 text-amber-700" />
+                <span>Müfredat kazanımlarını incele →</span>
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. FEATURES BENTO GRID (Wayground Style) */}
-      <section id="features" className="py-16 px-6 max-w-7xl mx-auto w-full space-y-10 border-t border-slate-200">
-        <div className="text-center space-y-2 max-w-2xl mx-auto">
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
-            Geleneksel Sınav Hazırlığını Unutun.
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500">
-            Wayground ve Quizizz dinamiklerini sınav hazırlığına taşıyan yeni nesil özellikler
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Feature 1 */}
-          <div className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-amber-300 transition-all space-y-3 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <h4 className="font-extrabold text-base text-slate-900">AI Deneme Stüdyosu</h4>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Mevcut soru PDF'inizi yükleyin; OCR ve yapay zeka saniyeler içinde şıkları, doğru cevapları ve optik formu otomatik oluştursun.
-            </p>
-          </div>
-
-          {/* Feature 2 */}
-          <div className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-amber-300 transition-all space-y-3 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center">
-              <Zap className="w-5 h-5" />
-            </div>
-            <h4 className="font-extrabold text-base text-slate-900">Adaptif "1 Soru Daha"</h4>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              IRT (Item Response Theory) modeli, öğrencinin hata yaptığı kazanımı anında tespit eder ve telafi sorusu yönlendirir.
-            </p>
-          </div>
-
-          {/* Feature 3 */}
-          <div className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-amber-300 transition-all space-y-3 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center">
-              <Swords className="w-5 h-5" />
-            </div>
-            <h4 className="font-extrabold text-base text-slate-900">1v1 Canlı Düello</h4>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Arkadaşlarla kafa kafaya yarış, 15 saniyelik turlar, streak puanları ve oyun içi 50:50 güçlendiricileri ile eğlenceli ezber.
-            </p>
-          </div>
-
-          {/* Feature 4 */}
-          <div className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-amber-300 transition-all space-y-3 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center">
-              <BarChart3 className="w-5 h-5" />
-            </div>
-            <h4 className="font-extrabold text-base text-slate-900">Madde Analizi & Karne</h4>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Öğretmenler için sınıfın en zayıf kazanım tespiti, tek tıkla pekiştirme ödevi atama ve veliye anlık ilerleme raporu.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. SUPPORTED EXAMS SHOWCASE */}
-      <section id="exams" className="py-16 px-6 max-w-7xl mx-auto w-full space-y-8 border-t border-slate-200">
+      {/* 7. SUPPORTED EXAMS SHOWCASE (Quizlet 8px Cards on #ffffff) */}
+      <section id="exams" className="py-16 px-4 sm:px-6 max-w-[1200px] mx-auto w-full space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
-            Hedefiniz Hangi Sınav Olursa Olsun Yanınızdayız
+          <div className="text-[12px] font-semibold uppercase tracking-wider text-[#4255ff]">
+            Hedef Sınav Standartları
+          </div>
+          <h2 className="text-[28px] sm:text-[32px] font-semibold text-[#282e3e] tracking-tight">
+            Tüm Dil Sınavlarına Tek Platformdan Hazırlanın
           </h2>
-          <p className="text-xs text-slate-500">
-            Tüm sınav türleri için tam uyumlu soru formatları ve süre simülatörleri
+          <p className="text-[14px] text-[#586380] font-normal">
+            ÖSYM, Üniversite Muafiyet ve Uluslararası sınav formatlarının her birine özel süre, soru tipi ve rubrik simülasyonu.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3.5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { code: "YDT", name: "YKS-Dil Hazırlık", tag: "ÖSYM / Ulusal", color: "border-amber-200 text-amber-700 bg-amber-50/50" },
-            { code: "YDS & YÖKDİL", name: "Akademik Dil Sınavları", tag: "ÖSYM / Ulusal", color: "border-amber-200 text-amber-700 bg-amber-50/50" },
-            { code: "BUEPT", name: "Boğaziçi BÜYES Yeterlik", tag: "Hazırlık Atlama", color: "border-teal-200 text-teal-800 bg-teal-50/60" },
-            { code: "ODTÜ / İTÜ İYS", name: "İngilizce Yeterlik (EPE/İYS)", tag: "Hazırlık Atlama", color: "border-teal-200 text-teal-800 bg-teal-50/60" },
-            { code: "PROFICIENCY", name: "Genel Üniversite Muafiyet", tag: "Hazırlık Atlama", color: "border-teal-200 text-teal-800 bg-teal-50/60" },
-            { code: "BİLKENT & KOÇ", name: "PAE / KUEPE Muafiyet", tag: "Hazırlık Atlama", color: "border-teal-200 text-teal-800 bg-teal-50/60" },
-            { code: "IELTS Academic", name: "Band 7.5+ 4 Beceri", tag: "Uluslararası", color: "border-purple-200 text-purple-800 bg-purple-50/50" },
-            { code: "TOEFL iBT & PTE", name: "Yeni Nesil Entegre Sınav", tag: "Uluslararası", color: "border-purple-200 text-purple-800 bg-purple-50/50" },
+            { code: "YDT", name: "YKS-Dil Hazırlık", tag: "ÖSYM / Ulusal" },
+            { code: "YDS & YÖKDİL", name: "Akademik Dil Sınavları", tag: "ÖSYM / Ulusal" },
+            { code: "BUEPT", name: "Boğaziçi BÜYES Yeterlik", tag: "Hazırlık Atlama" },
+            { code: "ODTÜ / İTÜ İYS", name: "İngilizce Yeterlik (EPE/İYS)", tag: "Hazırlık Atlama" },
+            { code: "PROFICIENCY", name: "Genel Üniversite Muafiyet", tag: "Hazırlık Atlama" },
+            { code: "BİLKENT & KOÇ", name: "PAE / KUEPE Muafiyet", tag: "Hazırlık Atlama" },
+            { code: "IELTS Academic", name: "Band 7.5+ 4 Beceri", tag: "Uluslararası" },
+            { code: "TOEFL iBT & PTE", name: "Yeni Nesil Entegre Sınav", tag: "Uluslararası" },
           ].map((item, idx) => (
-            <div key={idx} className={`p-4 rounded-2xl border ${item.color} text-center space-y-1 shadow-xs hover:shadow-md transition-shadow`}>
-              <div className="text-[10px] font-bold text-slate-500 uppercase">{item.tag}</div>
-              <div className="text-base sm:text-lg font-black text-slate-900">{item.code}</div>
-              <div className="text-[11px] text-slate-600 font-medium">{item.name}</div>
+            <div 
+              key={idx} 
+              className="p-5 rounded-[8px] bg-white border border-[#d9dde8] text-center space-y-1.5 shadow-[0_2px_4px_rgba(40,46,62,0.04)] hover:border-[#4255ff] hover:shadow-[0_4px_16px_rgba(40,46,62,0.1)] transition-all cursor-pointer"
+            >
+              <div className="text-[10px] font-bold text-[#586380] uppercase tracking-wider">{item.tag}</div>
+              <div className="text-[18px] font-bold text-[#282e3e]">{item.code}</div>
+              <div className="text-[12px] text-[#586380] font-normal">{item.name}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 5. FOOTER */}
-      <footer className="border-t border-slate-200 bg-white py-10 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-500">
-          <div className="flex items-center gap-4">
-            <BrandLogo size="sm" showText={false} />
-            <span className="text-slate-300 hidden sm:inline">|</span>
-            <span className="text-slate-500 text-[11px]">
-              © 2026 1morequiz • Türkiye'nin AI Destekli İngilizce Sınav Arenası
-            </span>
+      {/* 8. FIVE-COLUMN SITE FOOTER (Exact Quizlet 5-Column Grid on #f6f7fb) */}
+      <footer className="border-t border-[#d9dde8] bg-[#f6f7fb] pt-12 pb-10 px-4 sm:px-6">
+        <div className="max-w-[1200px] mx-auto space-y-10">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 text-[14px]">
+            {/* Column 1: Hakkımızda */}
+            <div className="space-y-3">
+              <h5 className="font-semibold text-[#282e3e] text-[14px]">Hakkımızda</h5>
+              <ul className="space-y-2 text-[#586380] text-[14px] font-normal">
+                <li><Link href="/" className="hover:text-[#4255ff] transition-colors">Şirketimiz</Link></li>
+                <li><Link href="/library" className="hover:text-[#4255ff] transition-colors">Nasıl Çalışır?</Link></li>
+                <li><Link href="/" className="hover:text-[#4255ff] transition-colors">Kariyer</Link></li>
+                <li><Link href="/" className="hover:text-[#4255ff] transition-colors">Basın & Medya</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 2: Öğrenciler İçin */}
+            <div className="space-y-3">
+              <h5 className="font-semibold text-[#282e3e] text-[14px]">Öğrenciler İçin</h5>
+              <ul className="space-y-2 text-[#586380] text-[14px] font-normal">
+                <li><Link href="/student" className="hover:text-[#4255ff] transition-colors">Deneme Sınavları</Link></li>
+                <li><Link href="/flashcards/set-1" className="hover:text-[#4255ff] transition-colors">Kelime Kartları</Link></li>
+                <li><Link href="/duel/lobby" className="hover:text-[#4255ff] transition-colors">1v1 Canlı Düello</Link></li>
+                <li><Link href="/exam/mock-1" className="hover:text-[#4255ff] transition-colors">Speaking & Writing Lab</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 3: Öğretmenler İçin */}
+            <div className="space-y-3">
+              <h5 className="font-semibold text-[#282e3e] text-[14px]">Öğretmenler İçin</h5>
+              <ul className="space-y-2 text-[#586380] text-[14px] font-normal">
+                <li><Link href="/instructor" className="hover:text-[#4255ff] transition-colors">AI Sınav Stüdyosu</Link></li>
+                <li><Link href="/students" className="hover:text-[#4255ff] transition-colors">Sınıf Yönetimi</Link></li>
+                <li><Link href="/reports" className="hover:text-[#4255ff] transition-colors">Madde Analizi & Raporlar</Link></li>
+                <li><Link href="/billing" className="hover:text-[#4255ff] transition-colors">Hakediş & Satış</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 4: Sınav Türleri */}
+            <div className="space-y-3">
+              <h5 className="font-semibold text-[#282e3e] text-[14px]">Sınav Türleri</h5>
+              <ul className="space-y-2 text-[#586380] text-[14px] font-normal">
+                <li><Link href="/student?category=YDT" className="hover:text-[#4255ff] transition-colors">YDT (YKS-Dil)</Link></li>
+                <li><Link href="/student?category=YDS" className="hover:text-[#4255ff] transition-colors">YDS & YÖKDİL</Link></li>
+                <li><Link href="/student?category=UNIVERSITY" className="hover:text-[#4255ff] transition-colors">Boğaziçi BUEPT</Link></li>
+                <li><Link href="/student?category=UNIVERSITY" className="hover:text-[#4255ff] transition-colors">ODTÜ / İTÜ İYS</Link></li>
+                <li><Link href="/student?category=IELTS" className="hover:text-[#4255ff] transition-colors">IELTS & TOEFL iBT</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 5: Yasal & Dil */}
+            <div className="space-y-3">
+              <h5 className="font-semibold text-[#282e3e] text-[14px]">Yasal & Dil</h5>
+              <ul className="space-y-2 text-[#586380] text-[14px] font-normal">
+                <li><Link href="/" className="hover:text-[#4255ff] transition-colors">Gizlilik Politikası</Link></li>
+                <li><Link href="/" className="hover:text-[#4255ff] transition-colors">Kullanım Koşulları</Link></li>
+                <li><Link href="/" className="hover:text-[#4255ff] transition-colors">KVKK Aydınlatma Metni</Link></li>
+                <li className="pt-2">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-white border border-[#d9dde8] text-[12px] font-semibold text-[#282e3e]">
+                    🇹🇷 Türkçe (TR)
+                  </span>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div className="flex items-center gap-6 text-slate-600 font-medium">
-            <Link href="/student" className="hover:text-amber-600 transition-colors">Öğrenci Arenası</Link>
-            <Link href="/instructor" className="hover:text-amber-600 transition-colors">Öğretmen Paneli</Link>
-            <Link href="/admin" className="hover:text-amber-600 transition-colors">Admin Paneli</Link>
-            <Link href="/join" className="hover:text-amber-600 transition-colors">Koda Gir</Link>
+
+          {/* Bottom Bar: Copyright & Brand */}
+          <div className="pt-8 border-t border-[#d9dde8] flex flex-col sm:flex-row items-center justify-between gap-4 text-[12px] text-[#586380]">
+            <div className="flex items-center gap-3">
+              <BrandLogo size="sm" showText={false} />
+              <span>© 2026 1morequiz • Türkiye'nin AI Destekli İngilizce Sınav Arenası</span>
+            </div>
+            <div className="flex items-center gap-4 text-[#586380]">
+              <Link href="/student" className="hover:text-[#4255ff] transition-colors">Öğrenci</Link>
+              <span>•</span>
+              <Link href="/instructor" className="hover:text-[#4255ff] transition-colors">Eğitmen</Link>
+              <span>•</span>
+              <Link href="/admin" className="hover:text-[#4255ff] transition-colors">Yönetim</Link>
+              <span>•</span>
+              <Link href="/join" className="hover:text-[#4255ff] transition-colors">Koda Gir</Link>
+            </div>
           </div>
         </div>
       </footer>
