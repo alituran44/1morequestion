@@ -27,8 +27,21 @@ import {
   ChevronRight,
   Check,
   Building2,
-  Activity
+  Activity,
+  Mic,
+  Headphones,
+  FileBarChart,
+  Eye,
+  Award,
+  Volume2
 } from "lucide-react";
+import { AudioSubmissionsManager } from "@/components/AudioSubmissionsManager";
+import { ExamReportInspectionModal } from "@/components/ExamReportInspectionModal";
+import { 
+  INITIAL_DETAILED_REPORTS, 
+  INITIAL_AUDIO_SUBMISSIONS, 
+  ExamDetailedReport 
+} from "@/lib/audio-and-reports";
 
 interface AdminExamItem {
   id: string;
@@ -72,9 +85,13 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState("");
 
   // 2. Admin Dashboard State
-  const [activeTab, setActiveTab] = useState<"OVERVIEW" | "EXAMS" | "USERS" | "FINANCE" | "SYSTEM">("OVERVIEW");
+  const [activeTab, setActiveTab] = useState<"OVERVIEW" | "EXAMS" | "AUDIO" | "REPORTS" | "USERS" | "FINANCE" | "SYSTEM">("OVERVIEW");
   const [searchTerm, setSearchTerm] = useState("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Audio & Detailed Exam Reports Inspection State
+  const [selectedReportForInspection, setSelectedReportForInspection] = useState<ExamDetailedReport | null>(null);
+  const [detailedReports, setDetailedReports] = useState<ExamDetailedReport[]>(INITIAL_DETAILED_REPORTS);
 
   // Mock Data
   const [exams, setExams] = useState<AdminExamItem[]>([
@@ -102,7 +119,7 @@ export default function AdminPage() {
     },
     {
       id: "ex-3",
-      title: "IELTS Academic Reading Band 7.5+ Master",
+      title: "IELTS Academic Reading & Speaking Band 7.5+ Master",
       examCode: "IELTS_ACAD",
       author: "İngilizce Dil Vakfı",
       price: 119.0,
@@ -132,6 +149,61 @@ export default function AdminPage() {
       status: "APPROVED",
       submittedDate: "1 Ekim 2026",
       salesCount: 64,
+    },
+    {
+      id: "ex-6",
+      title: "ODTÜ EPE İngilizce Yeterlilik Denemesi (Note-Taking & Reading)",
+      examCode: "METU_EPE",
+      author: "ODTÜ Hazırlık Zümresi",
+      price: 79.0,
+      questionCount: 45,
+      status: "APPROVED",
+      submittedDate: "30 Eylül 2026",
+      salesCount: 53,
+    },
+    {
+      id: "ex-7",
+      title: "İTÜ İYS İngilizce Yeterlilik Sınavı Tam Deneme #1",
+      examCode: "ITU_IYS",
+      author: "İTÜ Yabancı Diller Zümresi",
+      price: 79.0,
+      questionCount: 60,
+      status: "APPROVED",
+      submittedDate: "29 Eylül 2026",
+      salesCount: 38,
+    },
+    {
+      id: "ex-8",
+      title: "Bilkent PAE Stage 2 Hazırlık Atlama Deneme Sınavı",
+      examCode: "BILKENT_PAE",
+      author: "Bilkent ELU Mentor Ekibi",
+      price: 89.0,
+      questionCount: 50,
+      status: "PENDING",
+      submittedDate: "1 Ekim 2026",
+      salesCount: 0,
+    },
+    {
+      id: "ex-9",
+      title: "Koç KUEPE Speaking & Reading Tam Deneme Seti",
+      examCode: "KOC_KUEPE",
+      author: "Koç ELC Danışmanlığı",
+      price: 99.0,
+      questionCount: 45,
+      status: "APPROVED",
+      submittedDate: "28 Eylül 2026",
+      salesCount: 42,
+    },
+    {
+      id: "ex-10",
+      title: "Sabancı ELAE Hazırlık Muafiyet Deneme Sınavı",
+      examCode: "SABANCI_ELAE",
+      author: "Sabancı SL Hazırlık Ekibi",
+      price: 89.0,
+      questionCount: 45,
+      status: "APPROVED",
+      submittedDate: "27 Eylül 2026",
+      salesCount: 31,
     },
   ]);
 
@@ -436,6 +508,40 @@ export default function AdminPage() {
             </button>
 
             <button
+              onClick={() => setActiveTab("AUDIO")}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold transition-all text-left cursor-pointer ${
+                activeTab === "AUDIO"
+                  ? "bg-amber-50 text-amber-800 border border-amber-200 shadow-xs"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <Mic className="w-4 h-4 text-indigo-600" />
+                <span>Ses & Speaking</span>
+              </div>
+              <span className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 text-[10px] font-black flex items-center justify-center">
+                5
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("REPORTS")}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold transition-all text-left cursor-pointer ${
+                activeTab === "REPORTS"
+                  ? "bg-amber-50 text-amber-800 border border-amber-200 shadow-xs"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <FileBarChart className="w-4 h-4 text-emerald-600" />
+                <span>Sınav Raporları</span>
+              </div>
+              <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-black flex items-center justify-center">
+                {detailedReports.length}
+              </span>
+            </button>
+
+            <button
               onClick={() => setActiveTab("USERS")}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold transition-all text-left cursor-pointer ${
                 activeTab === "USERS"
@@ -677,6 +783,83 @@ export default function AdminPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* 2 Dedicated Quick Audit Cards for Audio & Reports */}
+                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Card 1: Audio Submissions Quick Audit */}
+                  <div className="p-6 rounded-2xl bg-gradient-to-br from-indigo-50/70 to-white border border-indigo-200/80 shadow-sm space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-xs">
+                          <Mic className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="font-black text-slate-900 text-sm">Yüklenen Öğrenci Sesleri & Speaking</h4>
+                          <p className="text-slate-500 text-xs">Hazırlık atlama mülakat ve telaffuz kayıtları</p>
+                        </div>
+                      </div>
+                      <span className="text-xs font-bold text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded-full">
+                        5 Kayıt (2 Bekliyor)
+                      </span>
+                    </div>
+
+                    <div className="space-y-2 text-xs">
+                      <div className="p-3 rounded-xl bg-white border border-indigo-100 flex items-center justify-between">
+                        <span className="font-bold text-slate-800">Boğaziçi BUEPT • Ece Tunç</span>
+                        <span className="text-emerald-600 font-bold">Puan: 84 / 100</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-white border border-indigo-100 flex items-center justify-between">
+                        <span className="font-bold text-slate-800">ODTÜ EPE • Kaan Erdem</span>
+                        <span className="text-amber-600 font-bold">İnceleme Bekliyor</span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setActiveTab("AUDIO")}
+                      className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                    >
+                      <Headphones className="w-4 h-4" />
+                      <span>Tüm Ses Kayıtlarını Masada Aç ({INITIAL_AUDIO_SUBMISSIONS.length})</span>
+                    </button>
+                  </div>
+
+                  {/* Card 2: Exam Reports Quick Audit */}
+                  <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-50/70 to-white border border-emerald-200/80 shadow-sm space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                          <FileBarChart className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="font-black text-slate-900 text-sm">Sınav Raporları & Madde Analizi</h4>
+                          <p className="text-slate-500 text-xs">Karneler, soru zorlukları ve telafi havuzu</p>
+                        </div>
+                      </div>
+                      <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
+                        {detailedReports.length} Oturum Raporu
+                      </span>
+                    </div>
+
+                    <div className="space-y-2 text-xs">
+                      <div className="p-3 rounded-xl bg-white border border-emerald-100 flex items-center justify-between">
+                        <span className="font-bold text-slate-800">BUEPT Hazırlık Atlama #1</span>
+                        <span className="text-slate-600 font-bold">42 Öğrenci • Ort: 29.4 Net</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-white border border-emerald-100 flex items-center justify-between">
+                        <span className="font-bold text-slate-800">ODTÜ EPE Yeterlilik Denemesi</span>
+                        <span className="text-slate-600 font-bold">38 Öğrenci • Ort: 31.8 Net</span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setActiveTab("REPORTS")}
+                      className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                    >
+                      <Eye className="w-4 h-4" />
+                      <span>Sınav Raporlarını & Karneleri İncele ({detailedReports.length})</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -762,6 +945,142 @@ export default function AdminPage() {
                               </button>
                             )}
                           </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: AUDIO & SPEAKING SUBMISSIONS */}
+          {activeTab === "AUDIO" && (
+            <div className="space-y-6 animate-in fade-in">
+              <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-between text-xs">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-amber-500 text-slate-950 font-black flex items-center justify-center shrink-0">
+                    <Shield className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="font-black text-amber-900 text-sm">Master Admin - Ses & Speaking Moderasyon Masası</span>
+                    <p className="text-amber-800 text-xs">Eğitmenlerin ve öğrencilerin tüm speaking / ses yüklemelerini inceleyebilir, yapay zeka puanlamasını denetleyebilir veya onaylayabilirsiniz.</p>
+                  </div>
+                </div>
+              </div>
+
+              <AudioSubmissionsManager 
+                role="ADMIN"
+                title="Master Admin - Yüklenen Ses & Speaking Kayıtları Masası"
+                subtitle="Tüm üniversite hazırlık ve uluslararası sınav oturumlarına ait öğrenci ses yüklemeleri, telaffuz/akıcılık analizleri ve yapay zeka transkriptleri."
+              />
+            </div>
+          )}
+
+          {/* TAB: DETAILED EXAM REPORTS & ITEM ANALYSIS */}
+          {activeTab === "REPORTS" && (
+            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden animate-in fade-in space-y-6 p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="font-black text-lg text-slate-900">Sınav Oturum Raporları & Madde Analizleri</h3>
+                  <p className="text-xs text-slate-500">
+                    Tüm sınav oturumlarına ait öğrenci karnelerini, ses kayıtlarını ve soru başarı oranlarını inceleyin.
+                  </p>
+                </div>
+                <div className="relative w-64">
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Sınav veya üniversite ara..."
+                    className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 outline-none focus:bg-white focus:border-amber-500"
+                  />
+                </div>
+              </div>
+
+              {/* Reports Summary KPI Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                  <div className="text-xs font-bold text-slate-500">Toplam Oturum</div>
+                  <div className="text-2xl font-black text-slate-900 mt-1">{detailedReports.length} Sınav</div>
+                </div>
+                <div className="p-4 rounded-xl bg-indigo-50 border border-indigo-200">
+                  <div className="text-xs font-bold text-indigo-700">Toplam Katılımcı</div>
+                  <div className="text-2xl font-black text-indigo-950 mt-1">
+                    {detailedReports.reduce((acc, r) => acc + r.participantsCount, 0)} Öğrenci
+                  </div>
+                </div>
+                <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <div className="text-xs font-bold text-emerald-700">Ortalama Başarı Puanı</div>
+                  <div className="text-2xl font-black text-emerald-950 mt-1">
+                    {(detailedReports.reduce((acc, r) => acc + parseFloat(r.averageScore || "0"), 0) / (detailedReports.length || 1)).toFixed(1)} / 100
+                  </div>
+                </div>
+                <div className="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                  <div className="text-xs font-bold text-amber-700">Ses Kaydı Alan Sınavlar</div>
+                  <div className="text-2xl font-black text-amber-950 mt-1">
+                    {detailedReports.filter(r => r.audioCount > 0).length} Sınav
+                  </div>
+                </div>
+              </div>
+
+              {/* Reports Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 border-y border-slate-200 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
+                    <tr>
+                      <th className="py-3 px-4">Sınav Başlığı</th>
+                      <th className="py-3 px-4">Hedef Kurum / Kod</th>
+                      <th className="py-3 px-4">Tarih</th>
+                      <th className="py-3 px-4">Katılımcı</th>
+                      <th className="py-3 px-4">Ortalama Net / Puan</th>
+                      <th className="py-3 px-4">Ses Kaydı</th>
+                      <th className="py-3 px-4 text-right">Rapor Detayı</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {detailedReports.map((report) => (
+                      <tr key={report.id} className="hover:bg-slate-50/60 transition-colors">
+                        <td className="py-3.5 px-4 font-bold text-slate-900">
+                          <div>{report.title}</div>
+                          <div className="text-[11px] text-slate-500 font-normal mt-0.5">
+                            {report.targetClass} • {report.questionAnalysis?.length || 40} Soru
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-800 font-bold text-[10px]">
+                            {report.examCode}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4 text-slate-600">{report.hostedDate}</td>
+                        <td className="py-3.5 px-4 font-bold text-slate-800">
+                          {report.participantsCount} Öğrenci
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <span className="font-black text-slate-900">
+                            {report.studentResults && report.studentResults.length > 0
+                              ? (report.studentResults.reduce((acc, s) => acc + s.netScore, 0) / report.studentResults.length).toFixed(1)
+                              : "0"} Net
+                          </span>
+                          <span className="text-[11px] text-slate-500 ml-1.5">({report.averageScore} Puan)</span>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          {report.audioCount > 0 ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold text-[10px]">
+                              <Mic className="w-3 h-3" />
+                              <span>{report.audioCount} Ses Kayıtlı</span>
+                            </span>
+                          ) : (
+                            <span className="text-slate-400 text-[10px]">Yalnızca Test</span>
+                          )}
+                        </td>
+                        <td className="py-3.5 px-4 text-right">
+                          <button
+                            onClick={() => setSelectedReportForInspection(report)}
+                            className="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-colors inline-flex items-center gap-1.5 cursor-pointer shadow-xs"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>Raporu & Karneleri İncele</span>
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -950,6 +1269,14 @@ export default function AdminPage() {
           )}
         </main>
       </div>
+
+      {/* Detailed Exam Report Inspection Modal */}
+      <ExamReportInspectionModal
+        isOpen={Boolean(selectedReportForInspection)}
+        onClose={() => setSelectedReportForInspection(null)}
+        report={selectedReportForInspection}
+        audioSubmissions={INITIAL_AUDIO_SUBMISSIONS}
+      />
     </div>
   );
 }

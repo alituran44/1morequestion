@@ -7,6 +7,7 @@ import { MockExamCard, MockExamItem } from "@/components/MockExamCard";
 import { AdaptiveQuestionWidget, PoolQuestion } from "@/components/AdaptiveQuestionWidget";
 import { PdfStudioModal } from "@/components/PdfStudioModal";
 import { TopicCurriculumSection } from "@/components/TopicCurriculumSection";
+import { AudioSubmissionsManager } from "@/components/AudioSubmissionsManager";
 import { 
   Sparkles, 
   BookOpen, 
@@ -18,7 +19,9 @@ import {
   BarChart3,
   Send,
   PlusCircle,
-  FileText
+  FileText,
+  Volume2,
+  Mic
 } from "lucide-react";
 import Link from "next/link";
 
@@ -86,8 +89,8 @@ export default function InstructorPortalPage() {
           onOpenUploadModal={() => setIsPdfModalOpen(true)}
         />
 
-        {/* Educator Quick Management Tray */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-in fade-in">
+        {/* Educator Quick Management Tray (4 Cards) */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-in fade-in">
           {/* Card 1: AI PDF Stüdyosu */}
           <div className="p-5 rounded-3xl bg-white border border-slate-200 hover:border-emerald-400 transition-all shadow-xs space-y-3">
             <div className="flex items-center justify-between">
@@ -99,9 +102,9 @@ export default function InstructorPortalPage() {
               </span>
             </div>
             <div>
-              <h3 className="font-extrabold text-base text-slate-900">AI Deneme Stüdyosu</h3>
-              <p className="text-xs text-slate-500 mt-1">
-                Herhangi bir sınav PDF'ini yükleyin, 60 saniyede interaktif denemeye dönüştürün.
+              <h3 className="font-extrabold text-sm sm:text-base text-slate-900">AI Deneme Stüdyosu</h3>
+              <p className="text-xs text-slate-500 mt-1 line-clamp-2">
+                PDF yükleyin, 60 saniyede interaktif denemeye dönüştürün.
               </p>
             </div>
             <Link
@@ -113,7 +116,32 @@ export default function InstructorPortalPage() {
             </Link>
           </div>
 
-          {/* Card 2: Sınıflar & Ödev Atama */}
+          {/* Card 2: Yüklenen Ses & Speaking */}
+          <div className="p-5 rounded-3xl bg-white border border-slate-200 hover:border-[#4255ff] transition-all shadow-xs space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="w-10 h-10 rounded-2xl bg-[#edefff] border border-[#d9dde8] text-[#4255ff] flex items-center justify-center">
+                <Volume2 className="w-5 h-5" />
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#edefff] text-[#4255ff] border border-[#d9dde8]">
+                5 Yeni Kayıt
+              </span>
+            </div>
+            <div>
+              <h3 className="font-extrabold text-sm sm:text-base text-slate-900">Ses & Mülakatlar</h3>
+              <p className="text-xs text-slate-500 mt-1 line-clamp-2">
+                Öğrencilerin yüklediği speaking yanıtlarını dinleyin ve onaylayın.
+              </p>
+            </div>
+            <a
+              href="#audio-review-section"
+              className="inline-flex items-center gap-2 text-xs font-bold text-[#4255ff] hover:text-[#3346e0] pt-1"
+            >
+              <span>Sesleri Dinle</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* Card 3: Sınıflar & Ödev Atama */}
           <div className="p-5 rounded-3xl bg-white border border-slate-200 hover:border-sky-400 transition-all shadow-xs space-y-3">
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-2xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center">
@@ -124,9 +152,9 @@ export default function InstructorPortalPage() {
               </span>
             </div>
             <div>
-              <h3 className="font-extrabold text-base text-slate-900">Sınıflarım & Ödevler</h3>
-              <p className="text-xs text-slate-500 mt-1">
-                Öğrenci listelerini yönetin, en zayıf kazanımlara anında ödev atayın.
+              <h3 className="font-extrabold text-sm sm:text-base text-slate-900">Sınıflarım & Ödevler</h3>
+              <p className="text-xs text-slate-500 mt-1 line-clamp-2">
+                Öğrenci listelerini yönetin, zayıf kazanımlara anında ödev atayın.
               </p>
             </div>
             <Link
@@ -138,7 +166,7 @@ export default function InstructorPortalPage() {
             </Link>
           </div>
 
-          {/* Card 3: Raporlar & Veli Karnesi */}
+          {/* Card 4: Raporlar & Veli Karnesi */}
           <div className="p-5 rounded-3xl bg-white border border-slate-200 hover:border-amber-400 transition-all shadow-xs space-y-3">
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-2xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center">
@@ -149,9 +177,9 @@ export default function InstructorPortalPage() {
               </span>
             </div>
             <div>
-              <h3 className="font-extrabold text-base text-slate-900">Sınav Raporları & Analitik</h3>
-              <p className="text-xs text-slate-500 mt-1">
-                Çözülen denemelerin soru bazlı doğru/yanlış oranlarını ve eksik kazanımları görün.
+              <h3 className="font-extrabold text-sm sm:text-base text-slate-900">Sınav Raporları</h3>
+              <p className="text-xs text-slate-500 mt-1 line-clamp-2">
+                Soru bazlı başarı oranlarını, optik karneleri ve madde analizini görün.
               </p>
             </div>
             <Link
@@ -164,32 +192,12 @@ export default function InstructorPortalPage() {
           </div>
         </section>
 
-        {/* Section 1: "1 Soru Daha" Signature Adaptive Practice Feature */}
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xs shadow-xs">
-                1+
-              </div>
-              <div>
-                <h2 className="text-base sm:text-lg font-black tracking-tight text-slate-900">
-                  Adaptif "1 Soru Daha" Soru Havuzu Denetimi
-                </h2>
-                <p className="text-xs text-slate-500">
-                  Öğrencilerin öğrenme açığına yönelik IRT zorluk katsayılı anlık telafi soruları
-                </p>
-              </div>
-            </div>
-            <span className="hidden sm:inline-flex text-[11px] font-bold px-2.5 py-1 rounded-full bg-white border border-slate-200 text-sky-700 shadow-xs">
-              IRT Motoru Aktif
-            </span>
-          </div>
-
-          <AdaptiveQuestionWidget
-            initialQuestion={poolQuestions[0]}
-            onQuestionCompleted={(qId, isCorrect) => {
-              console.log(`Question ${qId} answered: ${isCorrect}`);
-            }}
+        {/* Section 1: Uploaded Audio & Speaking Submissions Review */}
+        <section id="audio-review-section" className="space-y-4 pt-4 border-t border-slate-200">
+          <AudioSubmissionsManager
+            title="🎙️ Yüklenen Ses & Speaking Yanıtları Denetim Masası"
+            subtitle="Öğrencilerinizin hazırlık atlama (BUEPT, EPE, PAE, KUEPE) ve uluslararası mülakat sorularına yükledikleri ses yanıtlarını dinleyin, telaffuz ve akıcılık puanlarını onaylayın."
+            role="INSTRUCTOR"
           />
         </section>
 
@@ -241,7 +249,36 @@ export default function InstructorPortalPage() {
           )}
         </section>
 
-        {/* Section 3: Topic Curriculum Tree */}
+        {/* Section 3: "1 Soru Daha" Signature Adaptive Practice Feature */}
+        <section className="space-y-4 pt-4 border-t border-slate-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xs shadow-xs">
+                1+
+              </div>
+              <div>
+                <h2 className="text-base sm:text-lg font-black tracking-tight text-slate-900">
+                  Adaptif "1 Soru Daha" Soru Havuzu Denetimi
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Öğrencilerin öğrenme açığına yönelik IRT zorluk katsayılı anlık telafi soruları
+                </p>
+              </div>
+            </div>
+            <span className="hidden sm:inline-flex text-[11px] font-bold px-2.5 py-1 rounded-full bg-white border border-slate-200 text-sky-700 shadow-xs">
+              IRT Motoru Aktif
+            </span>
+          </div>
+
+          <AdaptiveQuestionWidget
+            initialQuestion={poolQuestions[0]}
+            onQuestionCompleted={(qId, isCorrect) => {
+              console.log(`Question ${qId} answered: ${isCorrect}`);
+            }}
+          />
+        </section>
+
+        {/* Section 4: Topic Curriculum Tree */}
         <TopicCurriculumSection />
       </main>
 
