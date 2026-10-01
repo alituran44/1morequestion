@@ -449,7 +449,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 4. THREE DISTINCT ROLE ENTRANCE PORTALS (Quizlet 8px Cards with 200px Pill Buttons) */}
+      {/* 4. TWO DISTINCT ROLE ENTRANCE PORTALS (Quizlet 8px Cards with 200px Pill Buttons) */}
       <section id="portals" className="py-16 px-4 sm:px-6 max-w-[1200px] mx-auto w-full space-y-8">
         <div className="text-center space-y-2">
           <div className="text-[12px] font-semibold uppercase tracking-wider text-[#4255ff]">
@@ -459,11 +459,11 @@ export default function LandingPage() {
             İhtiyacınıza Uygun Çalışma Alanını Seçin
           </h2>
           <p className="text-[14px] text-[#586380] font-normal">
-            Öğrenciler için eğlenceli pratik, öğretmenler için güçlü sınıf araçları, yöneticiler için merkezi denetim.
+            Öğrenciler için eğlenceli pratik ve adaptif telafi, öğretmenler için güçlü yapay zeka ve sınıf araçları.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+        <div className="grid grid-cols-1 md:grid-cols-2 max-w-[960px] mx-auto gap-6 text-left">
           {/* Portal 1: Öğrenci Arenası */}
           <div className="p-6 rounded-[8px] bg-white border border-[#d9dde8] shadow-[0_4px_16px_rgba(40,46,62,0.06)] hover:border-[#4255ff] transition-all flex flex-col justify-between space-y-6">
             <div className="space-y-4">
@@ -546,49 +546,6 @@ export default function LandingPage() {
               className="w-full py-2.5 rounded-[200px] bg-[#282e3e] hover:bg-[#1f2430] text-white font-semibold text-[14px] shadow-[0_2px_4px_rgba(40,46,62,0.1)] text-center transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>Eğitmen Olarak Başla</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          {/* Portal 3: Merkezi Yönetim (Admin) */}
-          <div className="p-6 rounded-[8px] bg-white border border-[#d9dde8] shadow-[0_4px_16px_rgba(40,46,62,0.06)] hover:border-[#4255ff] transition-all flex flex-col justify-between space-y-6">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-[8px] bg-[#edefff] flex items-center justify-center text-[#4255ff]">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <div>
-                <div className="text-[11px] font-semibold uppercase text-[#586380] mb-1">
-                  Merkezi Yönetim
-                </div>
-                <h3 className="text-[20px] font-semibold text-[#282e3e]">
-                  Admin Kontrol Paneli
-                </h3>
-                <p className="text-[14px] text-[#586380] font-normal mt-2 leading-[20px]">
-                  Tüm platformu, soru havuzunu, onay bekleyen sınavları, kullanıcı yetkilerini ve Paynkolay Sanal POS muhasebesini denetle.
-                </p>
-              </div>
-
-              <div className="space-y-2 pt-3 border-t border-[#d9dde8]">
-                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
-                  <Check className="w-4 h-4 text-[#4255ff]" />
-                  <span>Paynkolay Ciro & Hakediş Takibi</span>
-                </div>
-                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
-                  <Check className="w-4 h-4 text-[#4255ff]" />
-                  <span>Deneme Onay Masası (Moderasyon)</span>
-                </div>
-                <div className="flex items-center gap-2 text-[13px] text-[#2e3856]">
-                  <Check className="w-4 h-4 text-[#4255ff]" />
-                  <span>IRT Motoru & Sistem Sağlığı</span>
-                </div>
-              </div>
-            </div>
-
-            <Link
-              href="/admin"
-              className="w-full py-2.5 rounded-[200px] bg-transparent border border-[#4255ff] hover:bg-[#edefff] text-[#4255ff] font-semibold text-[14px] shadow-[0_2px_4px_rgba(40,46,62,0.04)] text-center transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <span>Yönetici Paneline Git</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
