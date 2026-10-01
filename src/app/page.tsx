@@ -7,6 +7,7 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { 
   Search,
   KeyRound, 
+  Lock,
   Sparkles, 
   Swords, 
   BookOpen, 
@@ -33,12 +34,23 @@ import {
   Share2
 } from "lucide-react";
 
+import { AuthModal } from "@/components/AuthModal";
+import { PricingSection } from "@/components/PricingSection";
+
 export default function LandingPage() {
   const router = useRouter();
   const [quickPin, setQuickPin] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
   const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<"login" | "register">("login");
+
+  const openAuth = (mode: "login" | "register") => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+    setIsLoginDropdownOpen(false);
+  };
 
   const handlePinSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -198,6 +210,13 @@ export default function LandingPage() {
               )}
             </div>
 
+            <a
+              href="#pricing"
+              className="hidden md:inline-block text-[14px] font-semibold text-[#282e3e] hover:text-[#4255ff] transition-colors"
+            >
+              Paketler & Fiyatlar
+            </a>
+
             <Link
               href="/library"
               className="hidden md:inline-block text-[14px] font-semibold text-[#282e3e] hover:text-[#4255ff] transition-colors"
@@ -209,12 +228,12 @@ export default function LandingPage() {
           {/* Centered Search Bar (Signature Quizlet Pill Search) */}
           <form 
             onSubmit={handleSearchSubmit} 
-            className="flex-1 max-w-[420px] mx-2 hidden sm:flex items-center bg-[#f6f7fb] rounded-[200px] px-4 py-2 hover:bg-[#edefff]/60 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#4255ff] focus-within:ring-offset-1 transition-all border border-transparent focus-within:border-[#4255ff]"
+            className="flex-1 max-w-[360px] mx-2 hidden sm:flex items-center bg-[#f6f7fb] rounded-[200px] px-4 py-2 hover:bg-[#edefff]/60 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#4255ff] focus-within:ring-offset-1 transition-all border border-transparent focus-within:border-[#4255ff]"
           >
             <Search className="w-4 h-4 text-[#939bb4] shrink-0 mr-2.5" />
             <input
               type="text"
-              placeholder="Sınav, kelime seti veya konu ara..."
+              placeholder="Sınav, paket veya konu ara..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="bg-transparent border-0 outline-none text-[14px] text-[#282e3e] placeholder-[#939bb4] w-full font-normal"
@@ -232,7 +251,7 @@ export default function LandingPage() {
               <span>Koda Gir</span>
             </Link>
 
-            {/* Login Dropdown (Portals) */}
+            {/* Login Dropdown & Direct Auth trigger */}
             <div className="relative">
               <button
                 onClick={() => {
@@ -247,13 +266,21 @@ export default function LandingPage() {
 
               {isLoginDropdownOpen && (
                 <div className="absolute right-0 top-full mt-2 w-56 bg-[#ffffff] border border-[#d9dde8] rounded-[8px] shadow-[0_4px_16px_rgba(40,46,62,0.1)] p-2 z-50 text-[13px] space-y-1">
+                  <button
+                    onClick={() => openAuth("login")}
+                    className="w-full text-left flex items-center gap-2.5 p-2 rounded-[4px] bg-[#edefff] text-[#4255ff] font-semibold transition-colors cursor-pointer"
+                  >
+                    <Lock className="w-4 h-4 text-[#4255ff]" />
+                    <span>Hesaba Giriş Yap</span>
+                  </button>
+
                   <Link
                     href="/student"
                     onClick={() => setIsLoginDropdownOpen(false)}
-                    className="flex items-center gap-2.5 p-2 rounded-[4px] hover:bg-[#edefff] text-[#282e3e] font-semibold transition-colors"
+                    className="flex items-center gap-2.5 p-2 rounded-[4px] hover:bg-[#f6f7fb] text-[#282e3e] font-semibold transition-colors"
                   >
-                    <GraduationCap className="w-4 h-4 text-[#4255ff]" />
-                    <span>Öğrenci Girişi</span>
+                    <GraduationCap className="w-4 h-4 text-[#586380]" />
+                    <span>Öğrenci Arenası</span>
                   </Link>
 
                   <Link
@@ -277,13 +304,13 @@ export default function LandingPage() {
               )}
             </div>
 
-            {/* Signature Filled Pill Button: #4255ff, 200px radius, 14px font-semibold */}
-            <Link
-              href="/student"
+            {/* Signature Filled Pill Button: Open Register Modal */}
+            <button
+              onClick={() => openAuth("register")}
               className="inline-flex items-center justify-center px-4 py-2 rounded-[200px] bg-[#4255ff] hover:bg-[#3444e5] text-[#ffffff] font-semibold text-[14px] shadow-[0_2px_4px_rgba(40,46,62,0.1)] transition-all cursor-pointer"
             >
               <span>Ücretsiz Kaydol</span>
-            </Link>
+            </button>
           </div>
         </div>
       </header>
@@ -731,6 +758,9 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* PRICING & PAYMENT SECTION (5, 10, 15, 20 Deneme Seçenekleri ve Paynkolay Güvenli Ödeme) */}
+      <PricingSection />
+
       {/* 8. FIVE-COLUMN SITE FOOTER (Exact Quizlet 5-Column Grid on #f6f7fb) */}
       <footer className="border-t border-[#d9dde8] bg-[#f6f7fb] pt-12 pb-10 px-4 sm:px-6">
         <div className="max-w-[1200px] mx-auto space-y-10">
@@ -741,6 +771,7 @@ export default function LandingPage() {
               <ul className="space-y-2 text-[#586380] text-[14px] font-normal">
                 <li><Link href="/" className="hover:text-[#4255ff] transition-colors">Şirketimiz</Link></li>
                 <li><Link href="/library" className="hover:text-[#4255ff] transition-colors">Nasıl Çalışır?</Link></li>
+                <li><Link href="/pricing" className="hover:text-[#4255ff] transition-colors">Fiyatlandırma & Paketler</Link></li>
                 <li><Link href="/" className="hover:text-[#4255ff] transition-colors">Kariyer</Link></li>
                 <li><Link href="/" className="hover:text-[#4255ff] transition-colors">Basın & Medya</Link></li>
               </ul>
@@ -750,6 +781,7 @@ export default function LandingPage() {
             <div className="space-y-3">
               <h5 className="font-semibold text-[#282e3e] text-[14px]">Öğrenciler İçin</h5>
               <ul className="space-y-2 text-[#586380] text-[14px] font-normal">
+                <li><Link href="/pricing" className="hover:text-[#4255ff] transition-colors font-medium text-[#4255ff]">Paketler & Fiyatlar (5-20 Deneme)</Link></li>
                 <li><Link href="/student" className="hover:text-[#4255ff] transition-colors">Deneme Sınavları</Link></li>
                 <li><Link href="/flashcards/set-1" className="hover:text-[#4255ff] transition-colors">Kelime Kartları</Link></li>
                 <li><Link href="/duel/lobby" className="hover:text-[#4255ff] transition-colors">1v1 Canlı Düello</Link></li>
@@ -803,6 +835,8 @@ export default function LandingPage() {
               <span>© 2026 1morequiz • Türkiye'nin AI Destekli İngilizce Sınav Arenası</span>
             </div>
             <div className="flex items-center gap-4 text-[#586380]">
+              <Link href="/pricing" className="hover:text-[#4255ff] transition-colors">Fiyatlandırma</Link>
+              <span>•</span>
               <Link href="/student" className="hover:text-[#4255ff] transition-colors">Öğrenci</Link>
               <span>•</span>
               <Link href="/instructor" className="hover:text-[#4255ff] transition-colors">Eğitmen</Link>
@@ -814,6 +848,13 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Quizlet-Styled Login & Register Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+        defaultMode={authModalMode} 
+      />
     </div>
   );
 }
