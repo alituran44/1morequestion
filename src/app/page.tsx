@@ -81,23 +81,23 @@ export default function LandingPage() {
     },
     {
       id: "mock-buept",
-      title: "Boğaziçi Üniversitesi BUEPT / BÜYES Hazırlık Atlama",
+      title: "BUEPT / BÜYES Hazırlık Atlama Denemesi #1",
       questionCount: "40 Soru",
       duration: "210 Dk",
       category: "Hazırlık Atlama",
-      author: "BÜ Yeterlik Komisyonu",
+      author: "BÜYES Komisyonu",
       authorInitial: "B",
       rating: "5.0",
       href: "/exam/mock-1"
     },
     {
       id: "mock-iys",
-      title: "ODTÜ & İTÜ İYS Seviye Muafiyet Denemesi #1",
+      title: "EPE & İYS Seviye Muafiyet Denemesi #1",
       questionCount: "60 Soru",
       duration: "165 Dk",
       category: "Hazırlık Atlama",
-      author: "Metu / ITU ELT Lab",
-      authorInitial: "M",
+      author: "ELT Hazırlık Zümresi",
+      authorInitial: "E",
       rating: "4.8",
       href: "/exam/mock-1"
     },
@@ -333,7 +333,7 @@ export default function LandingPage() {
 
           {/* Subhead (Weight 400, 16px, #586380) */}
           <p className="text-[15px] sm:text-[16px] leading-[24px] text-[#586380] max-w-[680px] mx-auto font-normal">
-            YDT, YDS, YÖKDİL, Boğaziçi BUEPT, ODTÜ/İTÜ İYS, IELTS ve TOEFL sınavlarında; 
+            YDT, YDS, YÖKDİL, BUEPT, EPE, İYS, PAE, KUEPE, IELTS ve TOEFL sınavlarında; 
             yapay zeka deneme stüdyosu, ses kayıtlı Speaking simülatörü ve adaptif "1 Soru Daha" telafi motoru.
           </p>
         </div>
@@ -732,7 +732,7 @@ export default function LandingPage() {
             Tüm Dil Sınavlarına Tek Platformdan Hazırlanın
           </h2>
           <p className="text-[14px] text-[#586380] font-normal">
-            ÖSYM, Üniversite Muafiyet ve Uluslararası sınav formatlarının her birine özel süre, soru tipi ve rubrik simülasyonu.
+            ÖSYM, Hazırlık Muafiyet ve Uluslararası sınav formatlarının her birine özel süre, soru tipi ve rubrik simülasyonu.
           </p>
         </div>
 
@@ -740,10 +740,10 @@ export default function LandingPage() {
           {[
             { code: "YDT", name: "YKS-Dil Hazırlık", tag: "ÖSYM / Ulusal" },
             { code: "YDS & YÖKDİL", name: "Akademik Dil Sınavları", tag: "ÖSYM / Ulusal" },
-            { code: "BUEPT", name: "Boğaziçi BÜYES Yeterlik", tag: "Hazırlık Atlama" },
-            { code: "ODTÜ & İTÜ", name: "EPE & İYS İngilizce Yeterlik", tag: "Hazırlık Atlama" },
-            { code: "PROFICIENCY", name: "Genel Üniversite Muafiyet", tag: "Hazırlık Atlama" },
-            { code: "BİLKENT & KOÇ", name: "PAE / KUEPE / ELAE Muafiyet", tag: "Hazırlık Atlama" },
+            { code: "BUEPT", name: "BÜYES İngilizce Yeterlik", tag: "Hazırlık Atlama" },
+            { code: "EPE & İYS", name: "İngilizce Yeterlik & Muafiyet", tag: "Hazırlık Atlama" },
+            { code: "PAE", name: "İngilizce Yeterlik Sınavı", tag: "Hazırlık Atlama" },
+            { code: "KUEPE & ELAE", name: "İngilizce Muafiyet Sınavları", tag: "Hazırlık Atlama" },
             { code: "IELTS Academic", name: "Band 7.5+ 4 Beceri", tag: "Uluslararası" },
             { code: "TOEFL iBT & PTE", name: "Yeni Nesil Entegre Sınav", tag: "Uluslararası" },
           ].map((item, idx) => (
@@ -810,8 +810,9 @@ export default function LandingPage() {
               <ul className="space-y-2 text-[#586380] text-[14px] font-normal">
                 <li><Link href="/student?category=YDT" className="hover:text-[#4255ff] transition-colors">YDT (YKS-Dil)</Link></li>
                 <li><Link href="/student?category=YDS" className="hover:text-[#4255ff] transition-colors">YDS & YÖKDİL</Link></li>
-                <li><Link href="/student?category=UNIVERSITY" className="hover:text-[#4255ff] transition-colors">Boğaziçi BUEPT</Link></li>
-                <li><Link href="/student?category=UNIVERSITY" className="hover:text-[#4255ff] transition-colors">ODTÜ & İTÜ İYS</Link></li>
+                <li><Link href="/student?category=UNIVERSITY" className="hover:text-[#4255ff] transition-colors">BUEPT / BÜYES</Link></li>
+                <li><Link href="/student?category=UNIVERSITY" className="hover:text-[#4255ff] transition-colors">EPE & İYS Yeterlik</Link></li>
+                <li><Link href="/student?category=UNIVERSITY" className="hover:text-[#4255ff] transition-colors">PAE, KUEPE & ELAE</Link></li>
                 <li><Link href="/student?category=IELTS" className="hover:text-[#4255ff] transition-colors">IELTS & TOEFL iBT</Link></li>
               </ul>
             </div>

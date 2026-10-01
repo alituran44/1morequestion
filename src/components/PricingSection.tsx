@@ -50,15 +50,15 @@ export const EXAM_OPTIONS: PricingExamOption[] = [
   },
   { 
     id: "BUEPT", 
-    name: "Boğaziçi BUEPT", 
+    name: "BUEPT / BÜYES", 
     tag: "Hazırlık Atlama", 
-    poolDescription: "BÜYES Dinleme, Okuma & TWE Essay Kompozisyon soru havuzu",
-    marketNote: "Piyasada ₺10.000+ olan BUEPT kurslarına alternatif: Note-Taking ve Yapay Zeka TWE Essay puanlaması dahil.",
+    poolDescription: "BUEPT & BÜYES Dinleme, Okuma & TWE Essay Kompozisyon soru havuzu",
+    marketNote: "Piyasada ₺10.000+ olan hazırlık atlama kurslarına alternatif: Note-Taking ve Yapay Zeka TWE Essay puanlaması dahil.",
     badgeColor: "#0284c7"
   },
   { 
     id: "ODTU_IYS", 
-    name: "ODTÜ (EPE) & İTÜ (İYS)", 
+    name: "EPE & İYS", 
     tag: "Hazırlık Atlama", 
     poolDescription: "EPE & İYS Seviye Muafiyet tam deneme havuzu",
     marketNote: "Restatement, Reading for Academic Purposes ve Dinleyerek Not Alma simülasyonu.",
@@ -66,10 +66,10 @@ export const EXAM_OPTIONS: PricingExamOption[] = [
   },
   { 
     id: "PROFICIENCY", 
-    name: "Bilkent & Vakıf PAE / KUEPE", 
+    name: "PAE / KUEPE / ELAE", 
     tag: "Hazırlık Atlama", 
     poolDescription: "PAE / KUEPE / ELAE dil yeterlik sınav havuzu",
-    marketNote: "Vakıf üniversiteleri hazırlık atlama formatında Writing & Speaking değerlendirme rubriği.",
+    marketNote: "Hazırlık atlama formatında Writing & Speaking değerlendirme rubriği.",
     badgeColor: "#4f46e5"
   },
   { 
@@ -240,7 +240,7 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
         "15 dk ses kayıtlı gerçek Note-Taking dersi",
         "Yapay zeka TWE Academic Essay puanlaması",
         "60 gün havuz erişim süresi",
-        "Boğaziçi YADYOK standartlarında rubrik"
+        "BÜYES standartlarında rubrik"
       ]
     },
     {
@@ -265,7 +265,7 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
       perExamPrice: 47.9,
       discountBadge: "%20 Tasarruf",
       features: [
-        "15 adet tam kapsamlı Boğaziçi hazırlık atlama denemesi",
+        "15 adet tam kapsamlı BUEPT hazırlık atlama denemesi",
         "Detaylı hata düzeltmeli Essay rubrik karnesi",
         "Akademik Reading kelime ve argüman modülü",
         "180 gün havuz erişim süresi",
@@ -282,7 +282,7 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
         "20 adet eksiksiz BUEPT sınav arşivi",
         "1 yıl boyunca sınav dönemlerine kadar sınırsız erişim",
         "Öncelikli AI Essay geri bildirim sırası",
-        "Boğaziçi hazırlık sınıfını tek seferde atlama garantisi yaklaşımı",
+        "Hazırlık sınıfını tek seferde atlama odaklı çalışma planı",
         "500 Jeton VIP Kredisi"
       ]
     }
@@ -291,7 +291,7 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
   ODTU_IYS: [
     {
       count: 5,
-      title: "5 ODTÜ/İTÜ İYS Paketi",
+      title: "5 EPE & İYS Paketi",
       price: 279,
       perExamPrice: 55.8,
       features: [
@@ -304,13 +304,13 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
     },
     {
       count: 10,
-      title: "10 ODTÜ/İTÜ İYS Paketi",
+      title: "10 EPE & İYS Paketi",
       price: 499,
       perExamPrice: 49.9,
       discountBadge: "%11 Tasarruf",
       isPopular: true,
       features: [
-        "10 adet özgün ODTÜ EPE & İTÜ İYS denemesi",
+        "10 adet özgün EPE & İYS denemesi",
         "Yapay zeka Academic Essay geri bildirimi",
         "İYS kelime dağarcığı ve bağlaç testleri",
         "120 gün havuz erişim süresi",
@@ -319,7 +319,7 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
     },
     {
       count: 15,
-      title: "15 ODTÜ/İTÜ İYS Paketi",
+      title: "15 EPE & İYS Paketi",
       price: 669,
       perExamPrice: 44.6,
       discountBadge: "%20 Tasarruf",
@@ -333,15 +333,15 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
     },
     {
       count: 20,
-      title: "20 İYS Muafiyet Şampiyonu",
+      title: "20 EPE & İYS Şampiyon Paketi",
       price: 849,
       perExamPrice: 42.4,
       discountBadge: "%24 Tasarruf",
       features: [
-        "20 adet eksiksiz ODTÜ & İTÜ İYS denemesi",
+        "20 adet eksiksiz EPE & İYS denemesi",
         "365 gün tam havuz erişimi",
         "Sınırsız Writing kompozisyon değerlendirmesi",
-        "Üniversite muafiyet başarı karnesi",
+        "Hazırlık muafiyet başarı karnesi",
         "500 Jeton VIP Kredisi"
       ]
     }
@@ -350,7 +350,7 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
   PROFICIENCY: [
     {
       count: 5,
-      title: "5 Muafiyet (PAE) Paketi",
+      title: "5 PAE & KUEPE Paketi",
       price: 289,
       perExamPrice: 57.8,
       features: [
@@ -358,12 +358,12 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
         "Writing Task ve Speaking mülakat rubriği",
         "Akademik dinleme ve not alma alıştırması",
         "60 gün havuz erişim süresi",
-        "Üniversiteye özel baraj puan simülasyonu"
+        "Sınav türüne özel baraj puan simülasyonu"
       ]
     },
     {
       count: 10,
-      title: "10 Muafiyet (PAE) Paketi",
+      title: "10 PAE & KUEPE Paketi",
       price: 519,
       perExamPrice: 51.9,
       discountBadge: "%10 Tasarruf",
@@ -378,7 +378,7 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
     },
     {
       count: 15,
-      title: "15 Muafiyet (PAE) Paketi",
+      title: "15 PAE & KUEPE Paketi",
       price: 699,
       perExamPrice: 46.6,
       discountBadge: "%20 Tasarruf",
@@ -392,7 +392,7 @@ export const EXAM_PRICING_MAP: Record<string, ExamPackage[]> = {
     },
     {
       count: 20,
-      title: "20 PAE Şampiyon Paketi",
+      title: "20 PAE & KUEPE Şampiyon Paketi",
       price: 879,
       perExamPrice: 43.9,
       discountBadge: "%24 Tasarruf",
@@ -584,7 +584,7 @@ export const EXAM_MOCKS_PREVIEW: Record<string, ExamMockPreview[]> = {
   BUEPT: [
     {
       id: "mock-buept-1",
-      title: "2026 Boğaziçi Üniversitesi BUEPT Hazırlık Atlama Özgün Deneme #1",
+      title: "2026 BUEPT Hazırlık Atlama Özgün Deneme #1",
       questions: "40 Soru + 2 Essay",
       duration: "210 Dk",
       focus: "Search Reading, 15 dk Note-Taking & TWE Essay",
@@ -592,15 +592,15 @@ export const EXAM_MOCKS_PREVIEW: Record<string, ExamMockPreview[]> = {
     },
     {
       id: "mock-buept-2",
-      title: "2026 Boğaziçi BÜYES Reading & TWE Writing Tam Simülasyonu #2",
+      title: "2026 BÜYES Reading & TWE Writing Tam Simülasyonu #2",
       questions: "40 Soru + Writing",
       duration: "210 Dk",
       focus: "Careful Reading, Search Reading ve Argüman Essay",
-      badge: "YADYOK Rubriği"
+      badge: "TWE Rubriği"
     },
     {
       id: "mock-buept-3",
-      title: "2026 Boğaziçi BUEPT Dinleme (While-Listening) & Muafiyet Denemesi #3",
+      title: "2026 BUEPT Dinleme (While-Listening) & Muafiyet Denemesi #3",
       questions: "Note-Taking & Test",
       duration: "180 Dk",
       focus: "Akademik Ders Dinleme, Not Alma ve Soru Çözümü",
@@ -611,7 +611,7 @@ export const EXAM_MOCKS_PREVIEW: Record<string, ExamMockPreview[]> = {
   ODTU_IYS: [
     {
       id: "mock-odtu-1",
-      title: "2026 ODTÜ & İTÜ Seviye İYS Hazırlık Muafiyet Tam Deneme #1",
+      title: "2026 EPE & İYS Hazırlık Muafiyet Tam Deneme #1",
       questions: "60 Soru + Essay",
       duration: "165 Dk",
       focus: "Restatement, Note-Taking Dinleme & Düşünce Yazısı",
@@ -619,38 +619,38 @@ export const EXAM_MOCKS_PREVIEW: Record<string, ExamMockPreview[]> = {
     },
     {
       id: "mock-odtu-2",
-      title: "2026 ODTÜ EPE Restatement & Academic Reading Denemesi #2",
+      title: "2026 EPE Restatement & Academic Reading Denemesi #2",
       questions: "60 Soru",
       duration: "150 Dk",
       focus: "Cümle Anlam Eşleştirme ve Paragraf Analizi",
-      badge: "ODTÜ EPE"
+      badge: "EPE Formatı"
     },
     {
       id: "mock-odtu-3",
-      title: "2026 İTÜ İYS Note-Taking & Düşünce Yazısı Simülasyonu #3",
+      title: "2026 İYS Note-Taking & Düşünce Yazısı Simülasyonu #3",
       questions: "55 Soru + Writing",
       duration: "165 Dk",
-      focus: "İTÜ Yabancı Diller Note-Taking ve Akademik Kompozisyon",
-      badge: "İTÜ İYS"
+      focus: "Note-Taking Dinleme ve Akademik Kompozisyon",
+      badge: "İYS Formatı"
     }
   ],
 
   PROFICIENCY: [
     {
       id: "mock-prof-1",
-      title: "2026 Genel Üniversite Hazırlık Atlama (Proficiency) Karma Deneme #1",
+      title: "2026 Hazırlık Atlama (Proficiency) Karma Deneme #1",
       questions: "65 Soru + Essay",
       duration: "150 Dk",
       focus: "Akademik Okuma, Dinleme ve Düşünce Yazısı",
       badge: "Karma Muafiyet"
     },
     {
-      id: "mock-bilkent-1",
-      title: "2026 Bilkent & Koç Seviye PAE / KUEPE İngilizce Yeterlik Denemesi #1",
+      id: "mock-pae-1",
+      title: "2026 PAE / KUEPE / ELAE İngilizce Yeterlik Denemesi #1",
       questions: "55 Soru + Speaking",
       duration: "180 Dk",
       focus: "İleri Okuma, Mülakat ve Karşılaştırmalı Essay",
-      badge: "Bilkent PAE"
+      badge: "PAE & KUEPE"
     }
   ],
 
@@ -830,7 +830,7 @@ export function PricingSection() {
         </h2>
         <p className="text-[15px] sm:text-[16px] text-[#586380] leading-[24px] font-normal">
           Her sınavın soru sayısı, hazırlık maliyeti ve beceri gereksinimleri farklıdır. 
-          YDT'den Boğaziçi BUEPT ve IELTS'e kadar her sınav için piyasa şartlarına göre optimize edilmiş 
+          YDT'den BUEPT, EPE, İYS ve IELTS'e kadar her sınav için piyasa şartlarına göre optimize edilmiş 
           <strong> 5, 10, 15 ve 20 denemelik </strong> paketler.
         </p>
       </div>
