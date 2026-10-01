@@ -65,7 +65,7 @@ export function PaynkolayModal({ exam, isOpen, onClose, onSuccess }: PaynkolayMo
                 3D Secure
               </span>
             </div>
-            <p className="text-xs text-slate-500">Aktif Bank Güvenli Ödeme Altyapısı</p>
+            <p className="text-xs text-slate-500">Aktif Bank Güvenli Ödeme Altyapısı • Üye İşyeri: #189064897</p>
           </div>
         </div>
 
@@ -208,6 +208,21 @@ export function PaynkolayModal({ exam, isOpen, onClose, onSuccess }: PaynkolayMo
             </button>
           </div>
         )}
+
+        {/* Micro Bank Security Strip */}
+        <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
+          <div className="flex items-center gap-1.5 font-bold text-slate-700">
+            <span>Mastercard</span>
+            <span>•</span>
+            <span>VISA</span>
+            <span>•</span>
+            <span className="text-[#006699]">TROY</span>
+          </div>
+          <div className="flex items-center gap-1 text-emerald-700 font-semibold">
+            <ShieldCheck className="w-3 h-3" />
+            <span>256-Bit SSL Koruması</span>
+          </div>
+        </div>
       </div>
     </div>
   );

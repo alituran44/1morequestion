@@ -723,6 +723,12 @@ export function PricingSection() {
   const [installment, setInstallment] = useState("1");
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [transactionInfo, setTransactionInfo] = useState<{
+    orderId?: string;
+    transactionId?: string;
+    authCode?: string;
+  } | null>(null);
 
   const currentExam = EXAM_OPTIONS.find((e) => e.id === selectedExamId) || EXAM_OPTIONS[0];
   const currentPackages = EXAM_PRICING_MAP[selectedExamId] || EXAM_PRICING_MAP.YDT;
@@ -739,6 +745,8 @@ export function PricingSection() {
     setSelectedPackage(pkg);
     setIsCheckoutOpen(true);
     setPaymentSuccess(false);
+    setErrorMessage("");
+    setTransactionInfo(null);
   };
 
   const handleNavigateToStudent = () => {
@@ -749,12 +757,39 @@ export function PricingSection() {
     router.push(`/student?exam=${selectedExamId}`);
   };
 
-  const handlePaySubmit = (e: React.FormEvent) => {
+  const handlePaySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
+    setErrorMessage("");
 
-    setTimeout(() => {
-      setIsProcessing(false);
+    try {
+      const response = await fetch("/api/payment/paynkolay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: selectedPackage?.price,
+          examId: selectedExamId,
+          examName: currentExam.name,
+          packageCount: selectedPackage?.count,
+          cardHolder,
+          cardNumber,
+          cardExpiry,
+          cardCvv,
+          installment,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Ödeme onaylanamadı. Lütfen kart bilgilerinizi kontrol ediniz.");
+      }
+
+      setTransactionInfo({
+        orderId: data.result.orderId,
+        transactionId: data.result.transactionId,
+        authCode: data.result.authCode,
+      });
       setPaymentSuccess(true);
 
       // Save purchased package and active exam pool to localStorage
@@ -765,6 +800,8 @@ export function PricingSection() {
           examName: currentExam.name,
           mockCount: selectedPackage?.count,
           amountPaid: selectedPackage?.price,
+          orderId: data.result.orderId,
+          transactionId: data.result.transactionId,
           purchasedAt: new Date().toISOString(),
         };
         existingData.tokens = (existingData.tokens || 500) + (selectedPackage?.count || 5) * 50;
@@ -772,7 +809,11 @@ export function PricingSection() {
         localStorage.setItem("1mq_active_exam_pool", selectedExamId);
         localStorage.setItem("1mq_target_exams", JSON.stringify([selectedExamId]));
       }
-    }, 1200);
+    } catch (err: any) {
+      setErrorMessage(err.message || "Ödeme işlemi sırasında bir hata oluştu.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -1030,11 +1071,20 @@ export function PricingSection() {
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-[#d9dde8]">
-              <div className="flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-[#4255ff]" />
-                <h3 className="text-[16px] font-bold text-[#282e3e]">
-                  Paynkolay Güvenli Ödeme
-                </h3>
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#edefff] text-[#4255ff] flex items-center justify-center">
+                  <CreditCard className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-[15px] font-bold text-[#282e3e]">
+                    Paynkolay Güvenli Ödeme
+                  </h3>
+                  <div className="text-[10px] text-[#586380] font-medium flex items-center gap-1.5">
+                    <span>Aktif Bank Sanal POS</span>
+                    <span>•</span>
+                    <span>Üye İşyeri: <strong>#189064897</strong></span>
+                  </div>
+                </div>
               </div>
               <button
                 onClick={() => setIsCheckoutOpen(false)}
@@ -1047,16 +1097,38 @@ export function PricingSection() {
             {/* Modal Body */}
             {paymentSuccess ? (
               <div className="p-8 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
+                <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto shadow-xs">
                   <CheckCircle2 className="w-10 h-10" />
                 </div>
                 <h3 className="text-[22px] font-bold text-[#282e3e]">
-                  Ödemeniz Başarıyla Alındı!
+                  Ödemeniz Başarıyla Onaylandı!
                 </h3>
                 <p className="text-[14px] text-[#586380] leading-[22px]">
                   <strong>{currentExam.name}</strong> sınav havuzunuz için <strong>{selectedPackage.title}</strong> hesabınıza tanımlandı.
-                  Artık sadece {currentExam.name} denemeleri listelenecek.
                 </p>
+
+                {/* Transaction receipt receipt summary */}
+                {transactionInfo && (
+                  <div className="p-3.5 rounded-[8px] bg-[#f6f7fb] border border-[#d9dde8] text-[12px] space-y-1.5 text-left font-mono">
+                    <div className="flex justify-between text-[#586380]">
+                      <span>Sipariş No:</span>
+                      <strong className="text-[#282e3e]">{transactionInfo.orderId}</strong>
+                    </div>
+                    <div className="flex justify-between text-[#586380]">
+                      <span>İşlem Referansı:</span>
+                      <strong className="text-[#282e3e]">{transactionInfo.transactionId}</strong>
+                    </div>
+                    <div className="flex justify-between text-[#586380]">
+                      <span>Banka Onay Kodu:</span>
+                      <strong className="text-emerald-700">{transactionInfo.authCode}</strong>
+                    </div>
+                    <div className="flex justify-between text-[#586380] pt-1 border-t border-[#d9dde8]">
+                      <span>Yetkili POS:</span>
+                      <span className="text-[#4255ff]">Paynkolay / Aktif Bank (#189064897)</span>
+                    </div>
+                  </div>
+                )}
+
                 <div className="pt-3">
                   <button
                     onClick={() => {
@@ -1071,7 +1143,7 @@ export function PricingSection() {
                 </div>
               </div>
             ) : (
-              <div className="p-6 space-y-5">
+              <div className="p-6 space-y-4">
                 {/* Order Summary Box */}
                 <div className="p-3.5 rounded-[6px] bg-[#f6f7fb] border border-[#d9dde8] space-y-1.5 text-[13px]">
                   <div className="flex items-center justify-between text-[#282e3e] font-semibold">
@@ -1087,8 +1159,16 @@ export function PricingSection() {
                   </div>
                 </div>
 
+                {/* Error Banner if any */}
+                {errorMessage && (
+                  <div className="p-3 rounded-[6px] bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2">
+                    <X className="w-4 h-4 shrink-0" />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
+
                 {/* Credit Card Form */}
-                <form onSubmit={handlePaySubmit} className="space-y-3.5">
+                <form onSubmit={handlePaySubmit} className="space-y-3">
                   <div className="space-y-1">
                     <label className="text-[12px] font-semibold text-[#282e3e]">
                       Kart Üzerindeki İsim
@@ -1170,7 +1250,7 @@ export function PricingSection() {
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full mt-3 py-3 rounded-[200px] bg-[#4255ff] hover:bg-[#3444e5] text-white font-semibold text-[14px] shadow-[0_2px_4px_rgba(40,46,62,0.1)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+                    className="w-full mt-2 py-3 rounded-[200px] bg-[#4255ff] hover:bg-[#3444e5] text-white font-semibold text-[14px] shadow-[0_2px_4px_rgba(40,46,62,0.1)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
                   >
                     {isProcessing ? (
                       <span className="flex items-center gap-2">
@@ -1186,9 +1266,19 @@ export function PricingSection() {
                   </button>
                 </form>
 
-                <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#586380] text-center">
-                  <Lock className="w-3 h-3 text-emerald-600" />
-                  <span>256-bit SSL Güvenli Paynkolay / Aktif Bank Sanal POS Altyapısı</span>
+                {/* Bank Security Badges Inside Modal */}
+                <div className="pt-2 border-t border-[#d9dde8] flex items-center justify-between gap-2 text-[10px] text-[#586380]">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>256-Bit SSL & 3D Secure 2.0</span>
+                  </div>
+                  <div className="flex items-center gap-2 font-bold text-[#282e3e]">
+                    <span>Mastercard</span>
+                    <span>•</span>
+                    <span>VISA</span>
+                    <span>•</span>
+                    <span className="text-[#006699]">TROY</span>
+                  </div>
                 </div>
               </div>
             )}

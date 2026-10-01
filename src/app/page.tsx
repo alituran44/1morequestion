@@ -36,6 +36,7 @@ import {
 
 import { AuthModal } from "@/components/AuthModal";
 import { PricingSection } from "@/components/PricingSection";
+import { BankSecurityStrip } from "@/components/BankSecurityStrip";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -760,6 +761,9 @@ export default function LandingPage() {
 
       {/* PRICING & PAYMENT SECTION (5, 10, 15, 20 Deneme Seçenekleri ve Paynkolay Güvenli Ödeme) */}
       <PricingSection />
+
+      {/* BANKA GÜVENLİK ŞERİDİ (Paynkolay 256-Bit SSL, 3D Secure, Mastercard, Visa, Troy) */}
+      <BankSecurityStrip />
 
       {/* 8. FIVE-COLUMN SITE FOOTER (Exact Quizlet 5-Column Grid on #f6f7fb) */}
       <footer className="border-t border-[#d9dde8] bg-[#f6f7fb] pt-12 pb-10 px-4 sm:px-6">

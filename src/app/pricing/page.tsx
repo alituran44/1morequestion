@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { PricingSection } from "@/components/PricingSection";
 import { AuthModal } from "@/components/AuthModal";
+import { BankSecurityStrip } from "@/components/BankSecurityStrip";
 import { ArrowLeft, KeyRound, Search, ChevronDown } from "lucide-react";
 
 export default function PricingPage() {
@@ -62,6 +63,9 @@ export default function PricingPage() {
       <main className="flex-1">
         <PricingSection />
       </main>
+
+      {/* Bank Security Strip */}
+      <BankSecurityStrip />
 
       {/* Footer */}
       <footer className="border-t border-[#d9dde8] bg-[#ffffff] py-8 px-6 text-center text-[12px] text-[#586380]">
