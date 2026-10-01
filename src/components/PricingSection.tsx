@@ -58,7 +58,7 @@ export const EXAM_OPTIONS: PricingExamOption[] = [
   },
   { 
     id: "ODTU_IYS", 
-    name: "ODTÜ / İTÜ İYS", 
+    name: "ODTÜ (EPE) & İTÜ (İYS)", 
     tag: "Hazırlık Atlama", 
     poolDescription: "EPE & İYS Seviye Muafiyet tam deneme havuzu",
     marketNote: "Restatement, Reading for Academic Purposes ve Dinleyerek Not Alma simülasyonu.",
@@ -66,9 +66,9 @@ export const EXAM_OPTIONS: PricingExamOption[] = [
   },
   { 
     id: "PROFICIENCY", 
-    name: "Bilkent & Koç PAE", 
+    name: "Bilkent & Vakıf PAE / KUEPE", 
     tag: "Hazırlık Atlama", 
-    poolDescription: "PAE / KUEPE dil yeterlik sınav havuzu",
+    poolDescription: "PAE / KUEPE / ELAE dil yeterlik sınav havuzu",
     marketNote: "Vakıf üniversiteleri hazırlık atlama formatında Writing & Speaking değerlendirme rubriği.",
     badgeColor: "#4f46e5"
   },

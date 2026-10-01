@@ -17,6 +17,29 @@ export interface SkillCategory {
   isWritingRequired?: boolean;
 }
 
+export interface WeeklyRoadmapPhase {
+  phase: string;
+  weekRange: string;
+  focus: string;
+  tasks: string[];
+}
+
+export interface UniversityStudyPlan {
+  targetUniversity: string;
+  examName: string;
+  passingScore: string;
+  examStructureSummary: string;
+  recommendedDurationWeeks: number;
+  criticalFocus: string[];
+  weeklyRoadmap: WeeklyRoadmapPhase[];
+  dailyRoutine: {
+    targetQuestions: number;
+    listeningMins: number;
+    essaysPerWeek: number;
+    strategyTip: string;
+  };
+}
+
 export interface ExamSystemConfig {
   code: string;
   name: string;
@@ -36,6 +59,7 @@ export interface ExamSystemConfig {
     percentage: number;
   }[];
   categories: SkillCategory[];
+  studyPlan?: UniversityStudyPlan;
 }
 
 export const EXAM_SYSTEMS: Record<string, ExamSystemConfig> = {
@@ -203,8 +227,8 @@ export const EXAM_SYSTEMS: Record<string, ExamSystemConfig> = {
 
   PROFICIENCY: {
     code: "PROFICIENCY",
-    name: "Üniversite Hazırlık Atlama (Genel Proficiency / İYS)",
-    shortTitle: "Hazırlık Atlama (İYS)",
+    name: "Genel Üniversite Hazırlık Muafiyet & Yeterlik (Tüm Üniversiteler)",
+    shortTitle: "Genel Üniversite Muafiyet",
     category: "UNIVERSITY",
     scoringType: "SCORE_100",
     scoringLabel: "100 Puan Üzerinden (Geçme: 60-70)",
@@ -228,12 +252,32 @@ export const EXAM_SYSTEMS: Record<string, ExamSystemConfig> = {
       { id: "prof-academic-essay", name: "Writing: Academic Essay (Opinion / Problem-Solution)", domain: "WRITING", questionCount: 110, difficulty: "B2 - C1", description: "Min. 250 kelimelik argümantatif veya sebep-sonuç akademik deneme", isWritingRequired: true },
       { id: "prof-speaking-response", name: "Speaking: Academic Oral Interview (Ses Kayıtlı)", domain: "SPEAKING", questionCount: 95, difficulty: "B2", description: "Hazırlık süresi sonrasında mikrofonla akıcı fikir savunma kaydı", isAudioRequired: true },
     ],
+    studyPlan: {
+      targetUniversity: "Devlet & Vakıf Üniversiteleri",
+      examName: "Üniversite İngilizce Yeterlik Sınavı",
+      passingScore: "60 - 70 / 100 (B2 Seviyesi)",
+      examStructureSummary: "Reading pasajları, Use of English gramer yapıları, dinleme not alma ve 250 kelimelik akademik kompozisyon.",
+      recommendedDurationWeeks: 8,
+      criticalFocus: ["B2 Seviyesi Gramer ve Cümle Tamamlama", "Akademik Paragraf Okuma ve Çıkarım", "Argümantatif Essay Organizasyonu"],
+      weeklyRoadmap: [
+        { phase: "1. Aşama", weekRange: "1 - 2. Hafta", focus: "Temel Dil & Kelime", tasks: ["B2 seviyesi bağlaçlar, zaman uyumları ve cümle kurma", "Akademik kelime listeleri (AWL) taraması"] },
+        { phase: "2. Aşama", weekRange: "3 - 4. Hafta", focus: "Okuma & Dinleme", tasks: ["Paragraf ana fikri çıkarma ve referans soru çözümleri", "Ders dinleme ve ana noktaları not alma alıştırmaları"] },
+        { phase: "3. Aşama", weekRange: "5 - 6. Hafta", focus: "Akademik Essay", tasks: ["Opinion ve Cause-Effect essay şablonları", "Yapay zeka ile anında essay puanlaması"] },
+        { phase: "4. Aşama", weekRange: "7 - 8. Hafta", focus: "Deneme Simülasyonu", tasks: ["Tam süreli üniversite muafiyet denemeleri", "Zayıf kalan konulara özel 1 Soru Daha antrenmanları"] },
+      ],
+      dailyRoutine: {
+        targetQuestions: 30,
+        listeningMins: 15,
+        essaysPerWeek: 2,
+        strategyTip: "Sınavda en çok puan getiren bölümler Reading ve Essay'dir. Her gün düzenli okuma yaparak kelime bilginizi canlı tutun.",
+      },
+    },
   },
 
   BUEPT: {
     code: "BUEPT",
     name: "Boğaziçi Üniversitesi BÜYES / BUEPT Yeterlik Sınavı",
-    shortTitle: "Boğaziçi BUEPT",
+    shortTitle: "Boğaziçi Üniversitesi (BUEPT)",
     category: "UNIVERSITY",
     scoringType: "SCORE_100",
     scoringLabel: "Harf Notu (A-B-C / Geçme: 60)",
@@ -255,16 +299,40 @@ export const EXAM_SYSTEMS: Record<string, ExamSystemConfig> = {
       { id: "buept-essay-1", name: "Writing: Argumentative Essay (Min 300 Kelime)", domain: "WRITING", questionCount: 85, difficulty: "C1", description: "Karşıt görüşleri çürüten yapılandırılmış akademik makale", isWritingRequired: true },
       { id: "buept-essay-2", name: "Writing: Cause-Effect & Problem-Solution Essay", domain: "WRITING", questionCount: 75, difficulty: "C1", description: "Akademik problem analizi ve çözüm önerisi sunumu", isWritingRequired: true },
     ],
+    studyPlan: {
+      targetUniversity: "Boğaziçi Üniversitesi",
+      examName: "BUEPT / BÜYES Hazırlık Atlama Sınavı",
+      passingScore: "60 / 100 (C Notu) - Bazı Mühendislik Bölümleri için 70 (B)",
+      examStructureSummary: "Search Reading (Süre baskılı hızlı tarama), 15 dk ses kayıtlı Note-Taking dersi ve 2 ayrı TWE Essay.",
+      recommendedDurationWeeks: 8,
+      criticalFocus: [
+        "Search Reading Hızlı Tarama & Anahtar Kelime Yakalama",
+        "15 Dk Kesintisiz Akademik Not Alma (Note-Taking)",
+        "Argümantatif ve Problem-Çözüm Çift Essay Formatı",
+      ],
+      weeklyRoadmap: [
+        { phase: "1. Aşama", weekRange: "1 - 2. Hafta", focus: "Search Reading Taktikleri", tasks: ["Metni baştan sona okumadan anahtar kelime eşleştirme tekniği", "Zaman yönetimi (Paragraf başına 90 saniye)"] },
+        { phase: "2. Aşama", weekRange: "3 - 4. Hafta", focus: "Note-Taking Dinleme", tasks: ["15 dakikalık ders kayıtlarından kısaltmalarla not çıkarma", "While-listening diyalog sorularında dikkat ve odaklanma"] },
+        { phase: "3. Aşama", weekRange: "5 - 6. Hafta", focus: "Boğaziçi TWE 2 Essay", tasks: ["Task 1 Opinion Essay (Karşıt görüşü çürütme kurgusu)", "Task 2 Problem-Solution akademik makale şablonları"] },
+        { phase: "4. Aşama", weekRange: "7 - 8. Hafta", focus: "Tam Deneme & Simülasyon", tasks: ["210 dakikalık tam süreli BUEPT denemeleri", "Yapay Zeka Essay analizi ile zayıf argümanları onarma"] },
+      ],
+      dailyRoutine: {
+        targetQuestions: 25,
+        listeningMins: 20,
+        essaysPerWeek: 2,
+        strategyTip: "Search Reading bölümünde metni baştan sona okumak en büyük tuzaktır. Önce soruları okuyup spesifik anahtar kelimeleri tespit edin.",
+      },
+    },
   },
 
   ODTU_IYS: {
     code: "ODTU_IYS",
-    name: "ODTÜ & İTÜ İngilizce Yeterlik Sınavı (İYS / EPE)",
-    shortTitle: "ODTÜ / İTÜ İYS",
+    name: "ODTÜ İngilizce Yeterlik Sınavı (EPE / İYS)",
+    shortTitle: "ODTÜ (EPE Yeterlik)",
     category: "UNIVERSITY",
     scoringType: "SCORE_100",
     scoringLabel: "100 Puan Üzerinden (Geçme: 60)",
-    description: "ODTÜ EPE ve İTÜ İYS standartlarında Language Use, Note-Taking, Reading ve Expository Essay.",
+    description: "ODTÜ EPE standartlarında Language Use, Restatement, Note-Taking, Reading ve Expository Essay.",
     badgeColor: "#b91c1c",
     durationMins: 165,
     totalQuestions: 60,
@@ -276,21 +344,91 @@ export const EXAM_SYSTEMS: Record<string, ExamSystemConfig> = {
       { domain: "GRAMMAR_VOCAB", label: "Language Use, Cloze & Restatement", icon: "🔤", percentage: 20 },
     ],
     categories: [
-      { id: "odtu-restatement", name: "Language Use: Restatement (Anlamca En Yakın Cümle)", domain: "GRAMMAR_VOCAB", questionCount: 220, difficulty: "B2 - C1", description: "ODTÜ/İTÜ sınavlarının ayırt edici karmaşık restatement soruları" },
+      { id: "odtu-restatement", name: "Language Use: Restatement (Anlamca En Yakın Cümle)", domain: "GRAMMAR_VOCAB", questionCount: 220, difficulty: "B2 - C1", description: "ODTÜ sınavının ayırt edici karmaşık restatement soruları" },
       { id: "odtu-note-taking", name: "Listening: Note-Taking (Dinlerken Not Alma & Soru Yanıtlama)", domain: "LISTENING", questionCount: 140, difficulty: "B2 - C1", description: "Uzun akademik ders kaydını dinlerken not alıp cevaplama" },
       { id: "odtu-reading", name: "Reading: Makale Okuma & Yazar Amacı Analizi", domain: "READING", questionCount: 210, difficulty: "B2 - C1", description: "Bilimsel ve felsefi metinlerde ana fikir, detay ve çıkarım" },
       { id: "odtu-essay", name: "Writing: Academic Essay (Min 250 Kelime)", domain: "WRITING", questionCount: 90, difficulty: "B2 - C1", description: "Giriş-gelişme-sonuç formatında tutarlı akademik düşünce yazısı", isWritingRequired: true },
     ],
+    studyPlan: {
+      targetUniversity: "Orta Doğu Teknik Üniversitesi (ODTÜ)",
+      examName: "ODTÜ EPE (English Proficiency Exam)",
+      passingScore: "60 / 100 (Bazı bölümler için 65 - 70)",
+      examStructureSummary: "Language Use (Restatement / Paraphrasing), Academic Reading, Note-Taking dinleme ve Expository Essay.",
+      recommendedDurationWeeks: 8,
+      criticalFocus: [
+        "Restatement (Eş Anlamlı Cümle) Mantığı & Bağlaçlar",
+        "Akademik Makale Derin Çıkarım & Yazar Amacı",
+        "Giriş-Gelişme-Sonuç Formatında Expository Essay",
+      ],
+      weeklyRoadmap: [
+        { phase: "1. Aşama", weekRange: "1 - 2. Hafta", focus: "Restatement & Dil Kullanımı", tasks: ["ODTÜ'ye özgü karmaşık restatement yapılarını çözme", "Zıtlık ve neden-sonuç bağlaçlarının varyasyonları"] },
+        { phase: "2. Aşama", weekRange: "3 - 4. Hafta", focus: "Akademik Okuma", tasks: ["Bilimsel ve felsefi makalelerde yazarın ana fikrini bulma", "Kelime tahmini ve bağlamsal çıkarım alıştırmaları"] },
+        { phase: "3. Aşama", weekRange: "5 - 6. Hafta", focus: "Note-Taking & Essay", tasks: ["Konferans derslerinden not çıkarıp soruları yanıtlama", "Giriş-gelişme-sonuç formatında 250+ kelimelik Expository Essay"] },
+        { phase: "4. Aşama", weekRange: "7 - 8. Hafta", focus: "EPE Deneme Kampı", tasks: ["165 dakikalık tam EPE denemeleri", "Soru çözüm hızını 60 soru için optimize etme"] },
+      ],
+      dailyRoutine: {
+        targetQuestions: 30,
+        listeningMins: 15,
+        essaysPerWeek: 2,
+        strategyTip: "ODTÜ EPE'de Restatement sorularını doğru yapmak sınavı geçmenin kilit anahtarıdır. Cümledeki zaman (tense) ve kesinlik (modals) dengesine dikkat edin.",
+      },
+    },
+  },
+
+  ITU_IYS: {
+    code: "ITU_IYS",
+    name: "İTÜ İngilizce Yeterlik Sınavı (İYS)",
+    shortTitle: "İTÜ (İYS Yeterlik)",
+    category: "UNIVERSITY",
+    scoringType: "SCORE_100",
+    scoringLabel: "100 Puan Üzerinden (Geçme: 60)",
+    description: "İTÜ İYS standartlarında Use of English, Reading Comprehension, Note-Taking ve Akademik Essay.",
+    badgeColor: "#1e3a8a",
+    durationMins: 150,
+    totalQuestions: 50,
+    supportedSkills: ["READING", "LISTENING", "WRITING", "GRAMMAR_VOCAB"],
+    skillDistribution: [
+      { domain: "READING", label: "Reading Comprehension & Analysis", icon: "📖", percentage: 30 },
+      { domain: "GRAMMAR_VOCAB", label: "Use of English, Cloze & Cümle Tamamlama", icon: "🔤", percentage: 25 },
+      { domain: "WRITING", label: "Academic Essay (Min 250 Kelime)", icon: "✍️", percentage: 25 },
+      { domain: "LISTENING", label: "Note-Taking & Lecture Comprehension", icon: "🎧", percentage: 20 },
+    ],
+    categories: [
+      { id: "itu-use-of-english", name: "Use of English: Paragraf ve Cümle Tamamlama", domain: "GRAMMAR_VOCAB", questionCount: 200, difficulty: "B2 - C1", description: "İTÜ sınavına özel dilbilgisi ve bağlam analizi" },
+      { id: "itu-reading", name: "Reading: Akademik Metin & Çıkarım Soruları", domain: "READING", questionCount: 190, difficulty: "B2 - C1", description: "Teknik ve sosyal bilim metinlerinde detay ve yazar amacı" },
+      { id: "itu-listening", name: "Listening: Note-Taking & While-Listening", domain: "LISTENING", questionCount: 130, difficulty: "B2 - C1", description: "Ders kaydı dinleyerek ana argümanları not alma" },
+      { id: "itu-essay", name: "Writing: Opinion / Advantage-Disadvantage Essay", domain: "WRITING", questionCount: 80, difficulty: "B2 - C1", description: "250 kelimelik yapılandırılmış akademik makale", isWritingRequired: true },
+    ],
+    studyPlan: {
+      targetUniversity: "İstanbul Teknik Üniversitesi (İTÜ)",
+      examName: "İTÜ İngilizce Yeterlik Sınavı (İYS)",
+      passingScore: "60 / 100",
+      examStructureSummary: "Use of English dil bilgisi, Reading okuma anlama, Note-Taking dinleme ve Akademik Essay.",
+      recommendedDurationWeeks: 8,
+      criticalFocus: ["Use of English Gramer ve Cümle Tamamlama", "Reading Soru-Paragraf Eşleştirme Hızı", "250 Kelimelik Akademik Essay Şablonu"],
+      weeklyRoadmap: [
+        { phase: "1. Aşama", weekRange: "1 - 2. Hafta", focus: "Use of English", tasks: ["Cümle ve paragraf tamamlama soru taktikleri", "İTÜ formatındaki akademik bağlaçlar"] },
+        { phase: "2. Aşama", weekRange: "3 - 4. Hafta", focus: "Reading & Dinleme", tasks: ["Hızlı tarama ve detay bulma alıştırmaları", "Note-taking dinleme sırasında anahtar kelimeleri yakalama"] },
+        { phase: "3. Aşama", weekRange: "5 - 6. Hafta", focus: "Essay Yazımı", tasks: ["Advantage-Disadvantage ve Opinion essay şablonları", "Geçiş kelimeleri ve argüman destekleme"] },
+        { phase: "4. Aşama", weekRange: "7 - 8. Hafta", focus: "Deneme Kampı", tasks: ["150 dakikalık tam İTÜ İYS denemeleri", "Hata analizleri ve son tekrarlar"] },
+      ],
+      dailyRoutine: {
+        targetQuestions: 30,
+        listeningMins: 15,
+        essaysPerWeek: 2,
+        strategyTip: "İTÜ İYS'de Use of English netlerini yüksek tutmak, essay puanı öncesinde güvenli baraja ulaşmanızı sağlar.",
+      },
+    },
   },
 
   BILKENT_PAE: {
     code: "BILKENT_PAE",
-    name: "Bilkent PAE / Koç KUEPE / Sabancı ELAE Muafiyet",
-    shortTitle: "Bilkent / Koç PAE",
+    name: "Bilkent Üniversitesi PAE İngilizce Yeterlik Sınavı",
+    shortTitle: "Bilkent Üniversitesi (PAE)",
     category: "UNIVERSITY",
     scoringType: "SCORE_100",
-    scoringLabel: "100 Puan Skalası (Geçme: 60-65)",
-    description: "Vakıf üniversiteleri 2 aşamalı hazırlık atlama: Dilbilgisi, Dinleme, Essay ve Ses Kayıtlı Speaking mülakatı.",
+    scoringLabel: "Stage 1 %60 Eleme, Stage 2 60-65/100",
+    description: "Bilkent 2 Aşamalı PAE: Stage 1 eleme, Stage 2 Note-Taking, Comparison Essay ve Ses Kayıtlı Speaking mülakatı.",
     badgeColor: "#4f46e5",
     durationMins: 180,
     totalQuestions: 55,
@@ -308,11 +446,176 @@ export const EXAM_SYSTEMS: Record<string, ExamSystemConfig> = {
       { id: "bilkent-reading", name: "Reading: Text Synthesizing & Analysis", domain: "READING", questionCount: 175, difficulty: "B2 - C1", description: "Çoklu metin sentezi ve akademik argüman takibi" },
       { id: "bilkent-listening", name: "Listening: Academic Seminar & Note-Taking", domain: "LISTENING", questionCount: 130, difficulty: "B2 - C1", description: "Konferans konuşmalarından not çıkarımı" },
     ],
+    studyPlan: {
+      targetUniversity: "Bilkent Üniversitesi",
+      examName: "Bilkent PAE (Proficiency in Academic English)",
+      passingScore: "Stage 1: %60 Eleme Barajı • Stage 2: 60-65 / 100",
+      examStructureSummary: "2 Aşamalı Sınav: 1. Aşama dil bilgisi ve okuma elemesi; 2. Aşama dinleme, essay ve ses kayıtlı sözlü mülakat.",
+      recommendedDurationWeeks: 8,
+      criticalFocus: ["Stage 1 Hızlı Eleme Netlerini Garantiye Alma", "Comparison & Contrast Essay Yapısı", "Ses Kayıtlı Akademik Speaking Mülakatı"],
+      weeklyRoadmap: [
+        { phase: "1. Aşama", weekRange: "1 - 2. Hafta", focus: "Stage 1 Eleme", tasks: ["Vocabulary ve gramer yapılarını hızlandırarak Stage 1 barajını aşma"] },
+        { phase: "2. Aşama", weekRange: "3 - 4. Hafta", focus: "Metin Sentezi & Dinleme", tasks: ["Seminer dinleme ve not alma teknikleri", "Birden fazla akademik kaynaktan bilgi sentezleme"] },
+        { phase: "3. Aşama", weekRange: "5 - 6. Hafta", focus: "Writing & Speaking", tasks: ["Comparison & Contrast essay formatı", "Mikrofona ses kaydı ile akıcı fikir savunma"] },
+        { phase: "4. Aşama", weekRange: "7 - 8. Hafta", focus: "Tam PAE Simülasyonu", tasks: ["Stage 1 + Stage 2 ardışık simülasyon denemeleri"] },
+      ],
+      dailyRoutine: {
+        targetQuestions: 25,
+        listeningMins: 15,
+        essaysPerWeek: 2,
+        strategyTip: "Stage 1 elemesini geçemeyen öğrenci Stage 2'ye giremez. Bu yüzden ilk 2 haftada dilbilgisi ve kelime netlerinizi %80 üzerine çıkarın.",
+      },
+    },
+  },
+
+  KOC_KUEPE: {
+    code: "KOC_KUEPE",
+    name: "Koç Üniversitesi İngilizce Yeterlik Sınavı (KUEPE)",
+    shortTitle: "Koç Üniversitesi (KUEPE)",
+    category: "UNIVERSITY",
+    scoringType: "SCORE_100",
+    scoringLabel: "100 Puan Skalası (Geçme: 60)",
+    description: "Koç KUEPE: İleri düzey akademik okuma, ders dinleme, 300 kelimelik argümantatif essay ve sözlü mülakat.",
+    badgeColor: "#991b1b",
+    durationMins: 180,
+    totalQuestions: 55,
+    supportedSkills: ["READING", "LISTENING", "WRITING", "SPEAKING"],
+    skillDistribution: [
+      { domain: "READING", label: "Academic Reading & Critical Analysis", icon: "📖", percentage: 30 },
+      { domain: "WRITING", label: "Synthesized Argumentative Essay", icon: "✍️", percentage: 30 },
+      { domain: "LISTENING", label: "Lecture Comprehension & Note-Taking", icon: "🎧", percentage: 20 },
+      { domain: "SPEAKING", label: "Academic Discussion & Interview", icon: "🎙️", percentage: 20 },
+    ],
+    categories: [
+      { id: "koc-reading", name: "Reading: Critical Analysis & Reference", domain: "READING", questionCount: 190, difficulty: "C1", description: "Eleştirel okuma, yazar tutumu ve veri sentezi" },
+      { id: "koc-listening", name: "Listening: Lecture Comprehension & Note-Taking", domain: "LISTENING", questionCount: 140, difficulty: "C1", description: "Uzun ders kaydı ve soru-cevap oturumları" },
+      { id: "koc-writing", name: "Writing: Synthesized Argumentative Essay", domain: "WRITING", questionCount: 85, difficulty: "C1", description: "300 kelimelik güçlü argümantatif akademik essay", isWritingRequired: true },
+      { id: "koc-speaking", name: "Speaking: Academic Discussion & Interview", domain: "SPEAKING", questionCount: 100, difficulty: "B2 - C1", description: "Akademik soruya düşünce savunusu geliştirme", isAudioRequired: true },
+    ],
+    studyPlan: {
+      targetUniversity: "Koç Üniversitesi",
+      examName: "Koç KUEPE (Koç University English Proficiency Exam)",
+      passingScore: "60 / 100",
+      examStructureSummary: "Akademik okuma, ders dinleme ve not alma, 300+ kelimelik sentez essay ve sözlü mülakat.",
+      recommendedDurationWeeks: 8,
+      criticalFocus: ["Eleştirel Okuma & Argüman Tespiti", "Sentez Essay (Synthesized Writing)", "Akademik Mülakat / Speaking Akıcılığı"],
+      weeklyRoadmap: [
+        { phase: "1. Aşama", weekRange: "1 - 2. Hafta", focus: "Akademik Okuma & Kelime", tasks: ["C1 seviyesi eleştirel analiz metinleri", "Yazar tutumu ve tonu çıkarma"] },
+        { phase: "2. Aşama", weekRange: "3 - 4. Hafta", focus: "Note-Taking & Mülakat", tasks: ["Ders notu çıkarma ve dinleme soruları", "Speaking soru kalıplarına sesli yanıt pratiği"] },
+        { phase: "3. Aşama", weekRange: "5 - 6. Hafta", focus: "KUEPE Essay", tasks: ["Kaynak metne referans vererek essay yazma", "Tez cümlesi ve argüman savunusu"] },
+        { phase: "4. Aşama", weekRange: "7 - 8. Hafta", focus: "Tam Simülasyon", tasks: ["Tam KUEPE denemeleri ve zaman yönetimi"] },
+      ],
+      dailyRoutine: {
+        targetQuestions: 25,
+        listeningMins: 20,
+        essaysPerWeek: 2,
+        strategyTip: "Koç KUEPE essay bölümünde sadece fikir belirtmek yetmez; metinden kanıt göstererek argüman inşa etmelisiniz.",
+      },
+    },
+  },
+
+  SABANCI_ELAE: {
+    code: "SABANCI_ELAE",
+    name: "Sabancı Üniversitesi İngilizce Dil Ölçme Sınavı (ELAE)",
+    shortTitle: "Sabancı Üniversitesi (ELAE)",
+    category: "UNIVERSITY",
+    scoringType: "SCORE_100",
+    scoringLabel: "Geçme Notu: 65 / 100",
+    description: "Sabancı ELAE: 2 Aşamalı sınav. Metin analizi, Lecture Note-Taking ve metin sentezi (Synthesized Writing).",
+    badgeColor: "#1e40af",
+    durationMins: 170,
+    totalQuestions: 50,
+    supportedSkills: ["READING", "LISTENING", "WRITING"],
+    skillDistribution: [
+      { domain: "READING", label: "Reading Comprehension & Synthesis", icon: "📖", percentage: 35 },
+      { domain: "WRITING", label: "Academic Synthesis Essay", icon: "✍️", percentage: 35 },
+      { domain: "LISTENING", label: "Lecture Listening & Note-Taking", icon: "🎧", percentage: 30 },
+    ],
+    categories: [
+      { id: "sabanci-reading", name: "Stage 1: Reading Comprehension & Structure", domain: "READING", questionCount: 210, difficulty: "B2", description: "Hızlı eleme metinleri ve çıkarım soruları" },
+      { id: "sabanci-listening", name: "Stage 2: Seminar Listening & Note-Taking", domain: "LISTENING", questionCount: 130, difficulty: "C1", description: "Konferans konuşmasından detaylı not çıkarma" },
+      { id: "sabanci-writing", name: "Stage 2: Synthesis Essay Writing", domain: "WRITING", questionCount: 95, difficulty: "C1", description: "Dinleme ve okuma parçalarını birleştiren essay", isWritingRequired: true },
+    ],
+    studyPlan: {
+      targetUniversity: "Sabancı Üniversitesi",
+      examName: "Sabancı ELAE (English Language Assessment Exam)",
+      passingScore: "65 / 100 (Stage 1 ve Stage 2 Toplamı)",
+      examStructureSummary: "2 Aşamalı sınav: Metin analizi, seminer dinleme not alma ve dinleme ile metni birleştiren sentez essay.",
+      recommendedDurationWeeks: 8,
+      criticalFocus: ["Metin ve Dinlemeyi Birleştiren Sentez Essay", "Seminer Note-Taking", "Hızlı Okuma Elemesi"],
+      weeklyRoadmap: [
+        { phase: "1. Aşama", weekRange: "1 - 2. Hafta", focus: "Stage 1 Eleme", tasks: ["Hızlı okuma ve temel anlama soruları"] },
+        { phase: "2. Aşama", weekRange: "3 - 4. Hafta", focus: "Note-Taking", tasks: ["Seminer konuşmalarını bölümlere ayırarak not alma"] },
+        { phase: "3. Aşama", weekRange: "5 - 6. Hafta", focus: "Synthesis Essay", tasks: ["Okuma ve dinlemedeki iki farklı görüşü sentezleme"] },
+        { phase: "4. Aşama", weekRange: "7 - 8. Hafta", focus: "ELAE Deneme Kampı", tasks: ["Tam süreli ELAE sınav simülasyonları"] },
+      ],
+      dailyRoutine: {
+        targetQuestions: 25,
+        listeningMins: 20,
+        essaysPerWeek: 2,
+        strategyTip: "ELAE Synthesis Essay'de sadece kendi fikrinizi değil, metin ve ses kaydındaki bilgileri doğru referansla aktarmalısınız.",
+      },
+    },
+  },
+
+  YTU_IYS: {
+    code: "YTU_IYS",
+    name: "Yıldız Teknik Üniversitesi İngilizce Yeterlik Sınavı (YTÜ İYS)",
+    shortTitle: "Yıldız Teknik (YTÜ İYS)",
+    category: "UNIVERSITY",
+    scoringType: "SCORE_100",
+    scoringLabel: "100 Puan Üzerinden (Geçme: 60)",
+    description: "YTÜ İYS: Use of English, Cloze Test, Reading Comprehension, Dinleme ve Essay kompozisyonu.",
+    badgeColor: "#0f766e",
+    durationMins: 150,
+    totalQuestions: 50,
+    supportedSkills: ["READING", "LISTENING", "WRITING", "GRAMMAR_VOCAB"],
+    skillDistribution: [
+      { domain: "READING", label: "Reading Comprehension", icon: "📖", percentage: 30 },
+      { domain: "GRAMMAR_VOCAB", label: "Use of English & Cloze Test", icon: "🔤", percentage: 30 },
+      { domain: "WRITING", label: "Academic Essay Writing", icon: "✍️", percentage: 20 },
+      { domain: "LISTENING", label: "While-Listening Comprehension", icon: "🎧", percentage: 20 },
+    ],
+    categories: [
+      { id: "ytu-grammar", name: "Use of English & Cloze Test", domain: "GRAMMAR_VOCAB", questionCount: 240, difficulty: "B2", description: "YTÜ sınavı gramer yapıları ve boşluk doldurma" },
+      { id: "ytu-reading", name: "Reading Comprehension & Analysis", domain: "READING", questionCount: 180, difficulty: "B2", description: "Akademik metin anlama ve ana fikir" },
+      { id: "ytu-listening", name: "While-Listening Comprehension", domain: "LISTENING", questionCount: 120, difficulty: "B2", description: "Konuşma akarken soru yanıtlama" },
+      { id: "ytu-essay", name: "Academic Essay Writing", domain: "WRITING", questionCount: 70, difficulty: "B2", description: "250 kelimelik akademik kompozisyon", isWritingRequired: true },
+    ],
+    studyPlan: {
+      targetUniversity: "Yıldız Teknik Üniversitesi",
+      examName: "YTÜ İYS (İngilizce Yeterlik Sınavı)",
+      passingScore: "60 / 100",
+      examStructureSummary: "Use of English gramer ve cloze test, reading pasajları, while-listening ve 250 kelimelik essay.",
+      recommendedDurationWeeks: 8,
+      criticalFocus: ["Gramer & Cloze Test Netleri", "Reading Paragraf Hızı", "Essay Şablonu"],
+      weeklyRoadmap: [
+        { phase: "1. Aşama", weekRange: "1 - 2. Hafta", focus: "Use of English & Cloze", tasks: ["YTÜ soru tipleri ile gramer açıklarını kapatma"] },
+        { phase: "2. Aşama", weekRange: "3 - 4. Hafta", focus: "Reading & Dinleme", tasks: ["Paragraf soruları ve dinleme teknikleri"] },
+        { phase: "3. Aşama", weekRange: "5 - 6. Hafta", focus: "Essay Yazımı", tasks: ["Opinion ve Cause-Effect essay yazım şablonları"] },
+        { phase: "4. Aşama", weekRange: "7 - 8. Hafta", focus: "Deneme Kampı", tasks: ["Tam süreli YTÜ İYS denemeleri"] },
+      ],
+      dailyRoutine: {
+        targetQuestions: 30,
+        listeningMins: 15,
+        essaysPerWeek: 2,
+        strategyTip: "Use of English ve Cloze test sorularını hızlı ve hatasız bitirmek essay için zaman kazandırır.",
+      },
+    },
   },
 };
 
 export const ALL_EXAM_CODES = Object.keys(EXAM_SYSTEMS);
 
 export function getExamConfig(code: string): ExamSystemConfig {
-  return EXAM_SYSTEMS[code] || EXAM_SYSTEMS.YDT;
+  if (!code) return EXAM_SYSTEMS.BUEPT;
+  const upper = code.toUpperCase();
+  if (upper === "ODTU" || upper === "ODTU_EPE") return EXAM_SYSTEMS.ODTU_IYS;
+  if (upper === "ITU") return EXAM_SYSTEMS.ITU_IYS;
+  if (upper === "BILKENT") return EXAM_SYSTEMS.BILKENT_PAE;
+  if (upper === "KOC") return EXAM_SYSTEMS.KOC_KUEPE;
+  if (upper === "SABANCI") return EXAM_SYSTEMS.SABANCI_ELAE;
+  if (upper === "YTU") return EXAM_SYSTEMS.YTU_IYS;
+  if (upper === "BOGAZICI") return EXAM_SYSTEMS.BUEPT;
+  return EXAM_SYSTEMS[code] || EXAM_SYSTEMS.BUEPT;
 }

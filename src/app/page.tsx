@@ -741,9 +741,9 @@ export default function LandingPage() {
             { code: "YDT", name: "YKS-Dil Hazırlık", tag: "ÖSYM / Ulusal" },
             { code: "YDS & YÖKDİL", name: "Akademik Dil Sınavları", tag: "ÖSYM / Ulusal" },
             { code: "BUEPT", name: "Boğaziçi BÜYES Yeterlik", tag: "Hazırlık Atlama" },
-            { code: "ODTÜ / İTÜ İYS", name: "İngilizce Yeterlik (EPE/İYS)", tag: "Hazırlık Atlama" },
+            { code: "ODTÜ & İTÜ", name: "EPE & İYS İngilizce Yeterlik", tag: "Hazırlık Atlama" },
             { code: "PROFICIENCY", name: "Genel Üniversite Muafiyet", tag: "Hazırlık Atlama" },
-            { code: "BİLKENT & KOÇ", name: "PAE / KUEPE Muafiyet", tag: "Hazırlık Atlama" },
+            { code: "BİLKENT & KOÇ", name: "PAE / KUEPE / ELAE Muafiyet", tag: "Hazırlık Atlama" },
             { code: "IELTS Academic", name: "Band 7.5+ 4 Beceri", tag: "Uluslararası" },
             { code: "TOEFL iBT & PTE", name: "Yeni Nesil Entegre Sınav", tag: "Uluslararası" },
           ].map((item, idx) => (
@@ -811,7 +811,7 @@ export default function LandingPage() {
                 <li><Link href="/student?category=YDT" className="hover:text-[#4255ff] transition-colors">YDT (YKS-Dil)</Link></li>
                 <li><Link href="/student?category=YDS" className="hover:text-[#4255ff] transition-colors">YDS & YÖKDİL</Link></li>
                 <li><Link href="/student?category=UNIVERSITY" className="hover:text-[#4255ff] transition-colors">Boğaziçi BUEPT</Link></li>
-                <li><Link href="/student?category=UNIVERSITY" className="hover:text-[#4255ff] transition-colors">ODTÜ / İTÜ İYS</Link></li>
+                <li><Link href="/student?category=UNIVERSITY" className="hover:text-[#4255ff] transition-colors">ODTÜ & İTÜ İYS</Link></li>
                 <li><Link href="/student?category=IELTS" className="hover:text-[#4255ff] transition-colors">IELTS & TOEFL iBT</Link></li>
               </ul>
             </div>

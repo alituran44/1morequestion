@@ -36,9 +36,13 @@ const EXAM_DISPLAY_NAMES: Record<string, string> = {
   YDT: "YDT (YKS-Dil)",
   YDS: "YDS & YÖKDİL",
   YOKDIL: "YÖKDİL",
-  BUEPT: "Boğaziçi Üniversitesi BUEPT / BÜYES",
-  ODTU_IYS: "ODTÜ & İTÜ İYS (EPE)",
-  PROFICIENCY: "Bilkent PAE / Koç KUEPE",
+  BUEPT: "Boğaziçi Üniversitesi (BUEPT)",
+  ODTU_IYS: "ODTÜ (EPE Yeterlik)",
+  ITU_IYS: "İTÜ (İYS Yeterlik)",
+  BILKENT_PAE: "Bilkent Üniversitesi (PAE)",
+  KOC_KUEPE: "Koç Üniversitesi (KUEPE)",
+  SABANCI_ELAE: "Sabancı Üniversitesi (ELAE)",
+  PROFICIENCY: "Genel Üniversite Muafiyet",
   IELTS: "IELTS Academic",
   TOEFL: "TOEFL iBT",
 };
@@ -134,9 +138,17 @@ function StudentPortalContent() {
       } else if (target === "BUEPT") {
         matchesExamCode = code === "BUEPT" || title.includes("BUEPT") || title.includes("BÜYES") || title.includes("BOĞAZİÇİ");
       } else if (target === "ODTU_IYS" || target === "ODTU") {
-        matchesExamCode = code === "ODTU_IYS" || title.includes("ODTÜ") || title.includes("İYS") || title.includes("EPE");
-      } else if (target === "PROFICIENCY" || target === "BILKENT_PAE") {
-        matchesExamCode = code === "PROFICIENCY" || code === "BILKENT_PAE" || title.includes("BILKENT") || title.includes("PAE") || title.includes("PROFICIENCY");
+        matchesExamCode = code === "ODTU_IYS" || title.includes("ODTÜ") || title.includes("EPE");
+      } else if (target === "ITU_IYS" || target === "ITU") {
+        matchesExamCode = code === "ITU_IYS" || code === "ODTU_IYS" || title.includes("İTÜ") || title.includes("İYS");
+      } else if (target === "BILKENT_PAE" || target === "BILKENT") {
+        matchesExamCode = code === "BILKENT_PAE" || code === "PROFICIENCY" || title.includes("BILKENT") || title.includes("PAE");
+      } else if (target === "KOC_KUEPE" || target === "KOC") {
+        matchesExamCode = code === "KOC_KUEPE" || code === "PROFICIENCY" || title.includes("KOÇ") || title.includes("KUEPE");
+      } else if (target === "SABANCI_ELAE" || target === "SABANCI") {
+        matchesExamCode = code === "SABANCI_ELAE" || code === "PROFICIENCY" || title.includes("SABANCI") || title.includes("ELAE");
+      } else if (target === "PROFICIENCY") {
+        matchesExamCode = code === "PROFICIENCY" || title.includes("HAZIRLIK") || title.includes("MUAFİYET") || title.includes("PROFICIENCY");
       } else if (target === "IELTS" || target === "IELTS_ACAD") {
         matchesExamCode = code === "IELTS" || code === "IELTS_ACAD" || title.includes("IELTS");
       } else if (target === "TOEFL" || target === "TOEFL_IBT") {
@@ -425,9 +437,13 @@ function StudentPortalContent() {
                   {[
                     { code: "YDT", name: "YDT (YKS-Dil)", tag: "ÖSYM" },
                     { code: "YDS", name: "YDS & YÖKDİL", tag: "ÖSYM" },
-                    { code: "BUEPT", name: "Boğaziçi BUEPT", tag: "Hazırlık" },
-                    { code: "ODTU_IYS", name: "ODTÜ / İTÜ İYS", tag: "Hazırlık" },
-                    { code: "PROFICIENCY", name: "Bilkent & Koç PAE", tag: "Hazırlık" },
+                    { code: "BUEPT", name: "Boğaziçi Üniversitesi (BUEPT)", tag: "Hazırlık" },
+                    { code: "ODTU_IYS", name: "ODTÜ (EPE Yeterlik)", tag: "Hazırlık" },
+                    { code: "ITU_IYS", name: "İTÜ (İYS Yeterlik)", tag: "Hazırlık" },
+                    { code: "BILKENT_PAE", name: "Bilkent Üniversitesi (PAE)", tag: "Hazırlık" },
+                    { code: "KOC_KUEPE", name: "Koç Üniversitesi (KUEPE)", tag: "Hazırlık" },
+                    { code: "SABANCI_ELAE", name: "Sabancı Üniversitesi (ELAE)", tag: "Hazırlık" },
+                    { code: "PROFICIENCY", name: "Genel Hazırlık Muafiyet", tag: "Hazırlık" },
                     { code: "IELTS", name: "IELTS Academic", tag: "Global" },
                     { code: "TOEFL", name: "TOEFL iBT", tag: "Global" },
                   ].map((item) => {
