@@ -34,7 +34,7 @@ export function BrandLogo({
         <img
           src={logoSrc}
           alt="1morequiz Logo"
-          className={`${currentSize.imgClass} object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_14px_rgba(245,158,11,0.35)]`}
+          className={`${currentSize.imgClass} object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_10px_rgba(66,85,255,0.2)]`}
           onError={(e) => {
             (e.target as HTMLImageElement).src = "/logo.png";
           }}
@@ -44,11 +44,11 @@ export function BrandLogo({
       {showText && (
         <div className="flex flex-col justify-center">
           <div className="flex items-center gap-1.5 leading-none">
-            <span className="font-black text-slate-100 tracking-tight text-base group-hover:text-amber-300 transition-colors">
+            <span className="font-black text-[#282e3e] tracking-tight text-base group-hover:text-[#4255ff] transition-colors">
               1morequiz
             </span>
           </div>
-          <span className="text-[10px] font-bold tracking-widest text-amber-400 uppercase mt-0.5">
+          <span className="text-[10px] font-bold tracking-widest text-[#4255ff] uppercase mt-0.5">
             Sınav & AI Arenası
           </span>
         </div>
