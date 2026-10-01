@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar";
 import { HeaderActions } from "@/components/HeaderActions";
 import { MockExamCard, MockExamItem } from "@/components/MockExamCard";
@@ -25,11 +26,25 @@ import {
   Mic,
   PenTool,
   Settings2,
-  ChevronRight
+  ChevronRight,
+  Filter,
+  X
 } from "lucide-react";
 import Link from "next/link";
 
-export default function StudentPortalPage() {
+const EXAM_DISPLAY_NAMES: Record<string, string> = {
+  YDT: "YDT (YKS-Dil)",
+  YDS: "YDS & YÖKDİL",
+  YOKDIL: "YÖKDİL",
+  BUEPT: "Boğaziçi Üniversitesi BUEPT / BÜYES",
+  ODTU_IYS: "ODTÜ & İTÜ İYS (EPE)",
+  PROFICIENCY: "Bilkent PAE / Koç KUEPE",
+  IELTS: "IELTS Academic",
+  TOEFL: "TOEFL iBT",
+};
+
+function StudentPortalContent() {
+  const searchParams = useSearchParams();
   const [activeRole, setActiveRole] = useState<"INSTRUCTOR" | "STUDENT">("STUDENT");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
@@ -45,6 +60,23 @@ export default function StudentPortalPage() {
   const [mockExams, setMockExams] = useState<MockExamItem[]>([]);
   const [poolQuestions, setPoolQuestions] = useState<PoolQuestion[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Read URL query params or localStorage for active exam pool
+  useEffect(() => {
+    const examParam = searchParams.get("exam");
+    const categoryParam = searchParams.get("category");
+
+    if (examParam) {
+      setSelectedExamCode(examParam.toUpperCase());
+    } else if (categoryParam) {
+      setSelectedCategory(categoryParam.toUpperCase());
+    } else if (typeof window !== "undefined") {
+      const savedActivePool = localStorage.getItem("1mq_active_exam_pool");
+      if (savedActivePool && savedActivePool !== "ALL") {
+        setSelectedExamCode(savedActivePool);
+      }
+    }
+  }, [searchParams]);
 
   // Fetch initial data & load saved target exams
   useEffect(() => {
@@ -79,7 +111,7 @@ export default function StudentPortalPage() {
     loadData();
   }, []);
 
-  // Filter logic: search, category, exam code, and prioritize user's target exams
+  // Filter logic: search, category, and strict exam code matching
   const filteredExams = mockExams.filter((exam) => {
     const matchesSearch =
       exam.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -89,8 +121,30 @@ export default function StudentPortalPage() {
     const matchesCategory =
       selectedCategory === "ALL" || exam.exam.category === selectedCategory;
 
-    const matchesExamCode =
-      selectedExamCode === "ALL" || exam.exam.code === selectedExamCode;
+    let matchesExamCode = true;
+    if (selectedExamCode !== "ALL") {
+      const target = selectedExamCode.toUpperCase();
+      const code = exam.exam.code.toUpperCase();
+      const title = exam.title.toUpperCase();
+
+      if (target === "YDT") {
+        matchesExamCode = code === "YDT" || title.includes("YDT");
+      } else if (target === "YDS" || target === "YOKDIL") {
+        matchesExamCode = code === "YDS" || code === "YOKDIL" || title.includes("YDS") || title.includes("YÖKDİL");
+      } else if (target === "BUEPT") {
+        matchesExamCode = code === "BUEPT" || title.includes("BUEPT") || title.includes("BÜYES") || title.includes("BOĞAZİÇİ");
+      } else if (target === "ODTU_IYS" || target === "ODTU") {
+        matchesExamCode = code === "ODTU_IYS" || title.includes("ODTÜ") || title.includes("İYS") || title.includes("EPE");
+      } else if (target === "PROFICIENCY" || target === "BILKENT_PAE") {
+        matchesExamCode = code === "PROFICIENCY" || code === "BILKENT_PAE" || title.includes("BILKENT") || title.includes("PAE") || title.includes("PROFICIENCY");
+      } else if (target === "IELTS" || target === "IELTS_ACAD") {
+        matchesExamCode = code === "IELTS" || code === "IELTS_ACAD" || title.includes("IELTS");
+      } else if (target === "TOEFL" || target === "TOEFL_IBT") {
+        matchesExamCode = code === "TOEFL" || code === "TOEFL_IBT" || title.includes("TOEFL");
+      } else {
+        matchesExamCode = code === target;
+      }
+    }
 
     return matchesSearch && matchesCategory && matchesExamCode;
   });
@@ -108,6 +162,20 @@ export default function StudentPortalPage() {
       prev.map((item) => (item.id === examId ? { ...item, isPurchased: true } : item))
     );
   };
+
+  const handleExamFilterClick = (code: string) => {
+    setSelectedExamCode(code);
+    setSelectedCategory("ALL");
+    if (typeof window !== "undefined") {
+      if (code === "ALL") {
+        localStorage.removeItem("1mq_active_exam_pool");
+      } else {
+        localStorage.setItem("1mq_active_exam_pool", code);
+      }
+    }
+  };
+
+  const activeExamName = EXAM_DISPLAY_NAMES[selectedExamCode] || selectedExamCode;
 
   return (
     <div className="min-h-screen bg-[#f8fafc] flex text-slate-900 selection:bg-amber-500 selection:text-slate-950">
@@ -147,10 +215,15 @@ export default function StudentPortalPage() {
                   return (
                     <span
                       key={code}
-                      className="text-xs font-black px-2.5 py-1 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 flex items-center gap-1.5 shadow-xs"
+                      onClick={() => handleExamFilterClick(code)}
+                      className={`text-xs font-black px-2.5 py-1 rounded-xl border flex items-center gap-1.5 shadow-xs cursor-pointer transition-all ${
+                        selectedExamCode === code 
+                          ? "bg-amber-500 text-slate-950 border-amber-500 ring-2 ring-amber-300"
+                          : "bg-amber-50 text-amber-900 border-amber-200 hover:bg-amber-100"
+                      }`}
                     >
                       <span>{conf?.shortTitle || code}</span>
-                      <span className="text-[10px] font-medium text-slate-500">
+                      <span className="text-[10px] font-medium opacity-75">
                         ({conf?.category === "UNIVERSITY" ? "🎓 Hazırlık Atlama" : conf?.supportedSkills.includes("SPEAKING") ? "🎙️ Speaking Dahil" : "Test"})
                       </span>
                     </span>
@@ -160,92 +233,22 @@ export default function StudentPortalPage() {
             </div>
           </div>
 
-          <button
-            onClick={() => setIsOnboardingOpen(true)}
-            className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-extrabold transition-all border border-slate-200 shadow-xs flex items-center justify-center gap-2 cursor-pointer shrink-0"
-          >
-            <Settings2 className="w-4 h-4 text-slate-600" />
-            <span>Hedef Sınavları Düzenle</span>
-          </button>
-        </section>
-
-        {/* Assigned Homework / Tasks */}
-        <section className="p-5 rounded-3xl bg-white border border-slate-200 space-y-4 shadow-xs animate-in fade-in">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center">
-                <BookOpen className="w-4 h-4" />
-              </div>
-              <div>
-                <h3 className="text-base font-extrabold text-slate-900">
-                  Öğretmeninizin Size Atadığı Ödevler
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Sınıfınız için belirlenen son teslim tarihli deneme ve pekiştirme görevleri
-                </p>
-              </div>
-            </div>
+          <div className="flex items-center gap-2 shrink-0">
             <Link
-              href="/join"
-              className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 cursor-pointer"
+              href="/pricing"
+              className="px-4 py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-extrabold transition-all border border-indigo-200 shadow-xs flex items-center gap-1.5 cursor-pointer"
             >
-              <span>Tümünü Gör</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <Coins className="w-4 h-4 text-indigo-600" />
+              <span>Deneme Paketi Satın Al</span>
             </Link>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {/* Assignment 1 */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-amber-300 flex items-center justify-between gap-4 transition-all shadow-xs">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-900">2026 YDT Şampiyonlar Özgün Deneme #1</span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200 font-bold">
-                    Son 2 Gün
-                  </span>
-                </div>
-                <div className="text-[11px] text-slate-500">
-                  Eğitmen: Ahmet Hoca • Kod: <strong className="font-mono text-sky-600">904182</strong>
-                </div>
-                <div className="text-[10px] text-emerald-600 font-medium">
-                  18/24 Sınıf Arkadaşın Tamamladı
-                </div>
-              </div>
-
-              <Link
-                href="/join/904182"
-                className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs transition-all shadow-xs shrink-0 flex items-center gap-1 cursor-pointer"
-              >
-                <span>Ödevi Çöz</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            {/* Assignment 2 */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-sky-300 flex items-center justify-between gap-4 transition-all shadow-xs">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-900">2026 YDS Master Akademik Paragraf & Çeviri</span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 border border-sky-200 font-bold">
-                    Son 5 Gün
-                  </span>
-                </div>
-                <div className="text-[11px] text-slate-500">
-                  Eğitmen: Ahmet Hoca • Kod: <strong className="font-mono text-sky-600">812044</strong>
-                </div>
-                <div className="text-[10px] text-slate-500 font-medium">
-                  Zayıf Kazanım Pekiştirmesi (Phrasal Verbs)
-                </div>
-              </div>
-
-              <Link
-                href="/join/812044"
-                className="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-xs transition-all shadow-xs shrink-0 flex items-center gap-1 cursor-pointer"
-              >
-                <span>Başla</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
+            <button
+              onClick={() => setIsOnboardingOpen(true)}
+              className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-extrabold transition-all border border-slate-200 shadow-xs flex items-center justify-center gap-2 cursor-pointer shrink-0"
+            >
+              <Settings2 className="w-4 h-4 text-slate-600" />
+              <span>Hedefleri Düzenle</span>
+            </button>
           </div>
         </section>
 
@@ -294,99 +297,172 @@ export default function StudentPortalPage() {
             </p>
           </div>
 
-          {/* 2-Column Layout: Left Vertical Categories (Yukarıdan Aşağıya) + Right Mock Cards */}
+          {/* ACTIVE EXAM FILTER BANNER (Sadece Seçilen Sınavın Denemeleri Listeleniyor) */}
+          {selectedExamCode !== "ALL" && (
+            <div className="p-4 rounded-2xl bg-indigo-50/90 border border-indigo-200 text-indigo-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs animate-in fade-in">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#4255ff] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-xs">
+                  🎯
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-extrabold text-sm text-[#282e3e]">
+                      Aktif Havuz: {activeExamName}
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#4255ff] text-white font-bold">
+                      Yalnızca Bu Sınav
+                    </span>
+                  </div>
+                  <p className="text-xs text-indigo-800/80">
+                    Seçtiğiniz <strong>{activeExamName}</strong> sınavına ait toplam <strong>{filteredExams.length} adet</strong> özgün deneme listeleniyor.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => handleExamFilterClick("ALL")}
+                className="px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-[#4255ff] text-xs font-bold transition-all border border-indigo-200 shrink-0 cursor-pointer shadow-xs flex items-center gap-1.5 self-start sm:self-center"
+              >
+                <X className="w-3.5 h-3.5" />
+                <span>Tüm Sınavları Göster</span>
+              </button>
+            </div>
+          )}
+
+          {/* 2-Column Layout: Left Vertical Categories + Right Mock Cards */}
           <div className="flex flex-col lg:flex-row items-start gap-6">
             {/* Left Column: Vertical Category Filters */}
-            <aside className="w-full lg:w-72 xl:w-80 shrink-0 bg-white border border-slate-200 rounded-3xl p-3.5 shadow-xs space-y-3 lg:sticky lg:top-6">
-              <div className="flex items-center justify-between px-2 pt-1 pb-2 border-b border-slate-100">
-                <span className="text-xs font-black uppercase tracking-wider text-slate-500">
-                  Kategori Filtresi
-                </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
-                  {filteredExams.length} Sonuç
-                </span>
+            <aside className="w-full lg:w-72 xl:w-80 shrink-0 bg-white border border-slate-200 rounded-3xl p-3.5 shadow-xs space-y-4 lg:sticky lg:top-6">
+              {/* Category Filter */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between px-2 pt-1 pb-1 border-b border-slate-100">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-500">
+                    Kategori Filtresi
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                    {filteredExams.length} Sonuç
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  {/* All */}
+                  <button
+                    onClick={() => {
+                      setSelectedCategory("ALL");
+                      setSelectedExamCode("ALL");
+                    }}
+                    className={`w-full text-left p-2.5 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
+                      selectedCategory === "ALL" && selectedExamCode === "ALL"
+                        ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
+                        : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
+                    }`}
+                  >
+                    <div className="text-xs font-extrabold">Tüm Denemeler</div>
+                    <ChevronRight className={`w-4 h-4 shrink-0 ${
+                      selectedCategory === "ALL" && selectedExamCode === "ALL" ? "text-slate-950" : "text-slate-400"
+                    }`} />
+                  </button>
+
+                  {/* National */}
+                  <button
+                    onClick={() => {
+                      setSelectedCategory("NATIONAL");
+                      setSelectedExamCode("ALL");
+                    }}
+                    className={`w-full text-left p-2.5 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
+                      selectedCategory === "NATIONAL" && selectedExamCode === "ALL"
+                        ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
+                        : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
+                    }`}
+                  >
+                    <div className="text-xs font-extrabold">🏛️ ÖSYM / Ulusal Sınavlar</div>
+                    <ChevronRight className="w-4 h-4 text-slate-400" />
+                  </button>
+
+                  {/* University */}
+                  <button
+                    onClick={() => {
+                      setSelectedCategory("UNIVERSITY");
+                      setSelectedExamCode("ALL");
+                    }}
+                    className={`w-full text-left p-2.5 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
+                      selectedCategory === "UNIVERSITY" && selectedExamCode === "ALL"
+                        ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
+                        : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
+                    }`}
+                  >
+                    <div className="text-xs font-extrabold">🎓 Hazırlık Atlama</div>
+                    <ChevronRight className="w-4 h-4 text-slate-400" />
+                  </button>
+
+                  {/* International */}
+                  <button
+                    onClick={() => {
+                      setSelectedCategory("INTERNATIONAL");
+                      setSelectedExamCode("ALL");
+                    }}
+                    className={`w-full text-left p-2.5 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
+                      selectedCategory === "INTERNATIONAL" && selectedExamCode === "ALL"
+                        ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
+                        : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
+                    }`}
+                  >
+                    <div className="text-xs font-extrabold">🌐 Uluslararası Sınavlar</div>
+                    <ChevronRight className="w-4 h-4 text-slate-400" />
+                  </button>
+                </div>
               </div>
 
-              <div className="flex flex-col gap-1.5">
-                {/* 1. All */}
-                <button
-                  onClick={() => setSelectedCategory("ALL")}
-                  className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
-                    selectedCategory === "ALL"
-                      ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
-                      : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
-                  }`}
-                >
-                  <div className="space-y-0.5">
-                    <div className="text-xs font-extrabold">Tüm Denemeler</div>
-                    <div className={`text-[10px] ${selectedCategory === "ALL" ? "text-slate-900 font-medium" : "text-slate-500"}`}>
-                      Tüm kategorilerdeki denemeler
-                    </div>
-                  </div>
-                  <ChevronRight className={`w-4 h-4 shrink-0 transition-transform ${
-                    selectedCategory === "ALL" ? "text-slate-950 translate-x-0.5" : "text-slate-400"
-                  }`} />
-                </button>
+              {/* SPECIFIC EXAM POOLS (Seçen Kişiye Sadece O Kısımla İlgili Denemeler Gelsin) */}
+              <div className="space-y-2 pt-2 border-t border-slate-100">
+                <div className="flex items-center justify-between px-2 pb-1">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-[#4255ff]">
+                    Sınava Özel Havuzlar
+                  </span>
+                  <span className="text-[9px] font-semibold text-slate-400">Tek Tık Filtre</span>
+                </div>
 
-                {/* 2. National */}
-                <button
-                  onClick={() => setSelectedCategory("NATIONAL")}
-                  className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
-                    selectedCategory === "NATIONAL"
-                      ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
-                      : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
-                  }`}
-                >
-                  <div className="space-y-0.5">
-                    <div className="text-xs font-extrabold">🏛️ ÖSYM / Ulusal Sınavlar</div>
-                    <div className={`text-[10px] ${selectedCategory === "NATIONAL" ? "text-slate-900 font-medium" : "text-slate-500"}`}>
-                      YDT, YDS ve YÖKDİL denemeleri
-                    </div>
-                  </div>
-                  <ChevronRight className={`w-4 h-4 shrink-0 transition-transform ${
-                    selectedCategory === "NATIONAL" ? "text-slate-950 translate-x-0.5" : "text-slate-400"
-                  }`} />
-                </button>
+                <div className="flex flex-col gap-1">
+                  {[
+                    { code: "YDT", name: "YDT (YKS-Dil)", tag: "ÖSYM" },
+                    { code: "YDS", name: "YDS & YÖKDİL", tag: "ÖSYM" },
+                    { code: "BUEPT", name: "Boğaziçi BUEPT", tag: "Hazırlık" },
+                    { code: "ODTU_IYS", name: "ODTÜ / İTÜ İYS", tag: "Hazırlık" },
+                    { code: "PROFICIENCY", name: "Bilkent & Koç PAE", tag: "Hazırlık" },
+                    { code: "IELTS", name: "IELTS Academic", tag: "Global" },
+                    { code: "TOEFL", name: "TOEFL iBT", tag: "Global" },
+                  ].map((item) => {
+                    const isSelected = selectedExamCode === item.code;
+                    return (
+                      <button
+                        key={item.code}
+                        onClick={() => handleExamFilterClick(item.code)}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-between border ${
+                          isSelected
+                            ? "bg-[#4255ff] text-white border-[#4255ff] shadow-sm font-black"
+                            : "bg-slate-50/70 hover:bg-[#edefff] text-slate-700 hover:text-[#4255ff] border-slate-200/70"
+                        }`}
+                      >
+                        <span>{item.name}</span>
+                        <span className={`text-[9px] px-1.5 py-0.5 rounded-full uppercase ${
+                          isSelected ? "bg-white/20 text-white" : "bg-white text-slate-500 border border-slate-200"
+                        }`}>
+                          {item.tag}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
-                {/* 3. University */}
-                <button
-                  onClick={() => setSelectedCategory("UNIVERSITY")}
-                  className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
-                    selectedCategory === "UNIVERSITY"
-                      ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
-                      : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
-                  }`}
+              {/* Pricing Shortcut Button */}
+              <div className="pt-2">
+                <Link
+                  href="/pricing"
+                  className="w-full py-2.5 px-3 rounded-2xl bg-[#edefff] hover:bg-[#dbe0ff] text-[#4255ff] text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-[#c7d0ff]"
                 >
-                  <div className="space-y-0.5">
-                    <div className="text-xs font-extrabold">🎓 Üniversite Hazırlık Atlama</div>
-                    <div className={`text-[10px] ${selectedCategory === "UNIVERSITY" ? "text-slate-900 font-medium" : "text-slate-500"}`}>
-                      Boğaziçi BUEPT, ODTÜ İYS, Bilkent PAE
-                    </div>
-                  </div>
-                  <ChevronRight className={`w-4 h-4 shrink-0 transition-transform ${
-                    selectedCategory === "UNIVERSITY" ? "text-slate-950 translate-x-0.5" : "text-slate-400"
-                  }`} />
-                </button>
-
-                {/* 4. International */}
-                <button
-                  onClick={() => setSelectedCategory("INTERNATIONAL")}
-                  className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer flex items-center justify-between gap-2 border ${
-                    selectedCategory === "INTERNATIONAL"
-                      ? "bg-amber-500 text-slate-950 border-amber-500 shadow-sm font-black"
-                      : "bg-slate-50/70 hover:bg-slate-100/90 border-slate-200/80 text-slate-700 hover:text-slate-900"
-                  }`}
-                >
-                  <div className="space-y-0.5">
-                    <div className="text-xs font-extrabold">🌐 Uluslararası Sınavlar</div>
-                    <div className={`text-[10px] ${selectedCategory === "INTERNATIONAL" ? "text-slate-900 font-medium" : "text-slate-500"}`}>
-                      IELTS, TOEFL ve PTE / DET
-                    </div>
-                  </div>
-                  <ChevronRight className={`w-4 h-4 shrink-0 transition-transform ${
-                    selectedCategory === "INTERNATIONAL" ? "text-slate-950 translate-x-0.5" : "text-slate-400"
-                  }`} />
-                </button>
+                  <Coins className="w-3.5 h-3.5" />
+                  <span>5-20 Deneme Satın Al</span>
+                </Link>
               </div>
             </aside>
 
@@ -394,13 +470,27 @@ export default function StudentPortalPage() {
             <div className="flex-1 min-w-0 w-full">
               {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {[1, 2, 3].map((n) => (
+                  {[1, 2, 3, 4].map((n) => (
                     <div key={n} className="h-64 rounded-2xl bg-white border border-slate-200 animate-pulse" />
                   ))}
                 </div>
               ) : filteredExams.length === 0 ? (
-                <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-sm shadow-xs">
-                  Arama kriterlerine uygun sınav denemesi bulunamadı.
+                <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 text-slate-500 space-y-3 shadow-xs">
+                  <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                    <Filter className="w-6 h-6" />
+                  </div>
+                  <div className="text-base font-bold text-slate-800">
+                    Seçilen kriterlere uygun deneme bulunamadı
+                  </div>
+                  <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                    Arama filtrenizi temizleyerek tüm sınav havuzunu görüntüleyebilirsiniz.
+                  </p>
+                  <button
+                    onClick={() => handleExamFilterClick("ALL")}
+                    className="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 text-xs font-bold hover:bg-amber-600 transition-all cursor-pointer"
+                  >
+                    Tüm Denemeleri Listele
+                  </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -418,7 +508,7 @@ export default function StudentPortalPage() {
         </section>
 
         {/* Section 3: Topic Curriculum Tree */}
-        <TopicCurriculumSection initialExamCode={targetExams[0] || "IELTS"} />
+        <TopicCurriculumSection initialExamCode={selectedExamCode !== "ALL" ? selectedExamCode : targetExams[0] || "IELTS"} />
       </main>
 
       {/* Target Exams Onboarding Modal */}
@@ -442,5 +532,13 @@ export default function StudentPortalPage() {
         />
       )}
     </div>
+  );
+}
+
+export default function StudentPortalPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f8fafc] flex items-center justify-center text-slate-500 text-sm">Yükleniyor...</div>}>
+      <StudentPortalContent />
+    </Suspense>
   );
 }
